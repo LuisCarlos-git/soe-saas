@@ -1,7 +1,14 @@
 import { spawn } from "node:child_process";
 import { startTestPostgres } from "@soe/test-utils";
+import { migrateTestDatabase } from "./migrate-test-database.mjs";
 
 const database = await startTestPostgres();
+try {
+  migrateTestDatabase(database.url);
+} catch (error) {
+  await database.stop();
+  throw error;
+}
 const api = spawn(process.execPath, ["apps/api/dist/main.js"], {
   stdio: "inherit",
   env: {
@@ -18,11 +25,23 @@ const web = spawn(process.execPath, ["server.mjs"], {
   stdio: "inherit",
 });
 let stopping = false;
+async function stopChild(child) {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+  await new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      child.kill("SIGKILL");
+    }, 10_000);
+    child.once("exit", () => {
+      clearTimeout(timer);
+      resolve();
+    });
+    child.kill("SIGTERM");
+  });
+}
 async function stop() {
   if (stopping) return;
   stopping = true;
-  api.kill("SIGTERM");
-  web.kill("SIGTERM");
+  await Promise.all([stopChild(api), stopChild(web)]);
   await database.stop();
   process.exit(0);
 }

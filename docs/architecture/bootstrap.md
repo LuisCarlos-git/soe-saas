@@ -51,8 +51,9 @@ Pino descartam request/headers/query/body e saneiam erros por allowlist.
 
 ## Testes e geração
 
-Testcontainers inicia PostgreSQL 17.9-alpine efêmero e passa a URL explicitamente
-ao deploy das migrações; não lê URL de produção nem usa `db push`. Falha do Docker
+O helper neutro Testcontainers inicia PostgreSQL 17.9-alpine efêmero e entrega a
+URL. As suítes consumidoras executam o deploy das migrações com essa URL explícita;
+não leem URL de produção nem usam `db push`. Falha do Docker
 é falha do teste, sem fallback. Testes consultam a API pública, incluindo pause
 do container, readiness 503 e recuperação, com conexão limitada a 1,5 segundo.
 
@@ -60,8 +61,12 @@ O contrato Zod gera DTOs Nest e OpenAPI. O build publica OpenAPI como artefato;
 Swagger UI não é exposto. Vitest cobre configuração pura; Jest/Supertest cobre
 HTTP/Nest/banco e saneamento; Playwright usa builds reais em desktop/celular.
 
-Dependency-cruiser verifica código autoral e rejeita fixture negativa de import
-backend no web. O cliente Prisma e a árvore de rotas são gerados e ficam fora
+Dependency-cruiser verifica código autoral e rejeita fixtures negativas de import
+backend no web, Nest na aplicação pura e acesso a internals de outro pacote.
+O bloqueio de pacotes de servidor reconhece tanto os nomes públicos quanto os
+caminhos resolvidos, funcionando antes de existirem builds locais. Isso foi
+validado removendo temporariamente os outputs gerados do grafo e restaurando-os
+após o check. O cliente Prisma e a árvore de rotas são gerados e ficam fora
 da verificação de ciclos: ambos contêm referências de tipos próprias do gerador.
 A árvore do Router é produzida pelo build e nunca editada manualmente.
 O bundle cliente é inspecionado separadamente para dependências/URLs de servidor.

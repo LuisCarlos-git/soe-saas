@@ -16,7 +16,7 @@ module.exports = {
       severity: "error",
       from: { path: "^apps/web/src/" },
       to: {
-        path: "packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino)/",
+        path: "^@soe/(backend|database)$|packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino)/",
       },
     },
     {
@@ -29,7 +29,7 @@ module.exports = {
       name: "api-no-database",
       severity: "error",
       from: { path: "^apps/api/src/" },
-      to: { path: "packages/database/|/(@prisma|prisma|pg)/" },
+      to: { path: "^@soe/database$|packages/database/|/(@prisma|prisma|pg)/" },
     },
     {
       name: "pure-business",
@@ -45,14 +45,16 @@ module.exports = {
       name: "neutral-ui",
       severity: "error",
       from: { path: "^packages/ui/" },
-      to: { path: "^apps/|^packages/(backend|database|contracts|api-client)/" },
+      to: {
+        path: "^@soe/(backend|database|contracts|api-client)$|^apps/|^packages/(backend|database|contracts|api-client)/",
+      },
     },
     {
       name: "neutral-contracts",
       severity: "error",
       from: { path: "^packages/(contracts|api-client)/" },
       to: {
-        path: "^apps/|^packages/(backend|database|ui)/|/(@nestjs|@prisma|prisma|react|pg)/",
+        path: "^@soe/(backend|database|ui)$|^apps/|^packages/(backend|database|ui)/|/(@nestjs|@prisma|prisma|react|pg)/",
       },
     },
     ...[

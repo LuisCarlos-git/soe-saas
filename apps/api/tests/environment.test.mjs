@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import request from "supertest";
 import { startTestPostgres } from "@soe/test-utils";
+import { migrateTestDatabase } from "../../../scripts/migrate-test-database.mjs";
 
 describe("percurso público com PostgreSQL real", () => {
   let database;
@@ -9,6 +10,7 @@ describe("percurso público com PostgreSQL real", () => {
   const logs = [];
   beforeAll(async () => {
     database = await startTestPostgres();
+    migrateTestDatabase(database.url);
     const { createApi, createOpenApi } = await import("../dist/app.js");
     openApi = createOpenApi;
     app = await createApi(
