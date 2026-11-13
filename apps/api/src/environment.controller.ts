@@ -1,0 +1,29 @@
+import { Controller, Get, Header, Inject, Query } from "@nestjs/common";
+import { ReadEnvironment } from "@soe/backend";
+import { environmentQuerySchema, environmentSchema } from "@soe/contracts";
+import { createZodDto, ZodResponse } from "nestjs-zod";
+import {
+  ApiBadRequestResponse,
+  ApiServiceUnavailableResponse,
+} from "@nestjs/swagger";
+import { SafeErrorResponse } from "./transport.dto.js";
+
+class EnvironmentQuery extends createZodDto(environmentQuerySchema) {}
+class EnvironmentResponse extends createZodDto(environmentSchema) {}
+
+@Controller("api/v1/environment")
+export class EnvironmentController {
+  constructor(
+    @Inject(ReadEnvironment) private readonly read: ReadEnvironment,
+  ) {}
+
+  @Get()
+  @Header("Cache-Control", "no-store")
+  @ZodResponse({ type: EnvironmentResponse, status: 200 })
+  @ApiBadRequestResponse({ type: SafeErrorResponse })
+  @ApiServiceUnavailableResponse({ type: SafeErrorResponse })
+  get(@Query() _query: EnvironmentQuery) {
+    void _query;
+    return this.read.execute();
+  }
+}

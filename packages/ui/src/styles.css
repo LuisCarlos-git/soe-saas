@@ -1,0 +1,14 @@
+@theme {
+  --color-primary: #0f766e;
+  --color-primary-hover: #115e59;
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-ink: #0f172a;
+  --color-muted: #475569;
+  --color-rule: #e2e8f0;
+  --color-control: #64748b;
+  --color-positive: #166534;
+  --color-positive-surface: #dcfce7;
+  --color-negative: #b91c1c;
+  --color-negative-surface: #fee2e2;
+}

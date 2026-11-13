@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17.9-alpine
+    environment:
+      POSTGRES_USER: soe
+      POSTGRES_PASSWORD: soe_local_only
+      POSTGRES_DB: soe_dev
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - soe-development:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soe -d soe_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  soe-development:

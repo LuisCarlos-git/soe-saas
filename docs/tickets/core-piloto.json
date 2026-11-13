@@ -1,0 +1,533 @@
+{
+  "repository": "LuisCarlos-git/soe-saas",
+  "parent": 1,
+  "label": "ready-for-agent",
+  "tickets": [
+    {
+      "id": 1,
+      "title": "Primeiro percurso Start → NestJS → PostgreSQL",
+      "blockedBy": [],
+      "delivery": "Aplicação acessível com saúde/prontidão verificáveis, contrato HTTP, configuração validada, logs saneados e CI com fronteiras arquiteturais; substituir o scaffold necessário a esse percurso.",
+      "criteria": [
+        "Uma página Start consulta a API NestJS e apresenta o resultado de uma consulta sintética ao PostgreSQL, com contrato tipado e validação de entrada/saída.",
+        "Liveness responde sem banco; readiness verifica PostgreSQL por adapter público com timeout, retornando indisponibilidade sem expor topologia ou credenciais.",
+        "Fixar versões compatíveis e lockfile; preservar pnpm/Turbo e pacotes com exports explícitos, TypeScript estrito e domínio/aplicação sem frameworks. Não criar módulos futuros vazios.",
+        "Configuração é validada no boot; Compose e migrações locais reproduzem o percurso somente com dados sintéticos. Logs JSON têm correlação e saneamento testado.",
+        "CI executa geração, formato/lint, arquitetura/typecheck, unidades, integração PostgreSQL com migrações, build e E2E do percurso; um import proibido inserido como fixture negativa faz o check arquitetural falhar.",
+        "Comprovar pelo percurso público e banco real a resposta saudável, a falha do banco e a ausência de código/configuração backend no bundle cliente. Registrar decisões de versões e limites ainda não implementados, sem declarar o produto pronto."
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Entrar e encerrar sessão",
+      "blockedBy": [1],
+      "delivery": "Autenticação centralizada no backend, sessão segura e revogação, com integração validada do fornecedor escolhido.",
+      "criteria": [
+        "Validar o candidato de autenticação com NestJS/Prisma e documentar compatibilidade antes da adoção, sem autenticação paralela no Start nem contratação automática.",
+        "Entrar e sair funciona no navegador e na API com cookie HttpOnly/Secure, SameSite e proteção CSRF adequados; credenciais e tokens não aparecem em logs ou respostas indevidas.",
+        "Sessão encerrada deixa de autorizar novas chamadas; erros de autenticação são seguros e não revelam existência de contas.",
+        "Endpoints de acesso, inclusive handlers fora dos controllers Nest, têm limitação de tentativas e proxies confiáveis testados; limites numéricos continuam configuráveis conforme o PRD.",
+        "SSR encaminha somente credenciais permitidas ao destino interno fixo; duas sessões concorrentes não compartilham cookies, client HTTP ou QueryClient. Testar login/logout por HTTP real e jornada web."
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Proteger acessos privilegiados com MFA",
+      "blockedBy": [2],
+      "delivery": "Inscrição e verificação de MFA, exigida para os perfis definidos no PRD.",
+      "criteria": [
+        "Profissional pode inscrever e verificar MFA pelo fluxo suportado do provedor validado, sem segredos em logs ou bundle.",
+        "Operações de administração privilegiada e leitura restrita não são autorizadas sem satisfazer MFA, mesmo por chamada direta à API.",
+        "Fluxo apresenta estados de inscrição, verificação inválida e acesso negado sem perda da proteção; sessão antiga não contorna a exigência.",
+        "Testes HTTP e jornada web cobrem usuário sem MFA, com MFA válida e desafio inválido; registrar limitações operacionais reais, sem presumir recuperação de conta não validada."
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Provisionar uma escola piloto",
+      "blockedBy": [2],
+      "delivery": "Criação administrativa da escola, responsável inicial e configurações básicas, com isolamento demonstrado entre duas escolas.",
+      "criteria": [
+        "Operador autorizado provisiona escola piloto sem pagamento e sem receber leitura padrão de conteúdo escolar.",
+        "Responsável inicial e configuração de nome, fuso, ano letivo e nomenclaturas são explícitos, persistidos e auditados.",
+        "Uma organização representa uma escola, mesmo sob mantenedora comum; apenas identidades/sessões são globais.",
+        "Duas escolas sintéticas têm configurações independentes, e leitura/escrita por IDs manipulados não cruza organização.",
+        "Operação tem interface aplicável e contrato HTTP validado, com testes contra PostgreSQL real; nenhuma condição de dados reais é considerada cumprida só por criar a escola."
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Convidar profissionais e atribuir papéis",
+      "blockedBy": [4],
+      "delivery": "Convites de uso único com expiração, aceite e vínculo profissional com permissões explícitas.",
+      "criteria": [
+        "Administrador autorizado envia convite de acesso por e-mail de desenvolvimento; aceitar cria vínculo apenas na escola convidante.",
+        "Convite expirado, reutilizado ou aceito concorrentemente não cria vínculos adicionais nem concede privilégios indevidos.",
+        "Papéis e concessões são explícitos e auditados; administrar cadastros ou ocupar direção não libera relatos restritos.",
+        "Uma identidade pode ter vínculos independentes em duas escolas, sem propagação automática de papel ou permissão.",
+        "Testes HTTP/PostgreSQL e jornada de convite comprovam expiração, uso único, isolamento e saneamento de tokens."
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Escolher e trocar a escola ativa",
+      "blockedBy": [5],
+      "delivery": "Pessoa vinculada a duas escolas troca de contexto sem reaproveitar dados, permissões ou respostas tardias da anterior.",
+      "criteria": [
+        "Usuário com vários vínculos escolhe escola ativa explicitamente e vê apenas contextos autorizados.",
+        "Troca cancela requisições e descarta cache anterior; resposta tardia não reaparece no novo contexto. Logout também limpa o contexto.",
+        "Query keys incluem organização e contexto de sessão/permissão; SSR mantém instâncias por requisição e não usa cache público autenticado.",
+        "Nenhum relato é persistido em localStorage/IndexedDB; acesso via alteração de organização na URL é revalidado pela API.",
+        "Playwright e integração HTTP cobrem alternância rápida entre duas escolas e sessões simultâneas sem vazamento."
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Cadastrar e localizar estudantes",
+      "blockedBy": [4],
+      "delivery": "Cadastro mínimo, chave escolar estável, consulta e arquivamento sem perda do histórico permitido.",
+      "criteria": [
+        "Profissional autorizado cadastra nome, chave escolar estável e situação mínima pertinente sem exigir CPF, foto, endereço ou saúde; detalhes de matrícula são completados na entrega própria.",
+        "Chave identifica o estudante dentro da escola, não pelo nome; homônimos e escolas distintas não são unidos automaticamente.",
+        "Lista, busca não sensível, detalhe e arquivamento funcionam com autorização e paginação no servidor, sem exclusão do histórico.",
+        "Unicidade e relações incluem organização; API não confia em autor ou permissões enviados no body.",
+        "Testes HTTP/PostgreSQL e jornada de cadastro demonstram validação, homônimos, chave duplicada e isolamento."
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Manter turmas e matrículas por período",
+      "blockedBy": [7],
+      "delivery": "Ano letivo, turma principal e transferência com datas e histórico preservados.",
+      "criteria": [
+        "Cadastrar anos, turmas e matrícula por período vinculados à escola e estudante autorizados.",
+        "Troca de turma mantém datas e vínculo anterior, com no máximo uma turma principal vigente por estudante/ano; grupos complementares não são segunda turma principal.",
+        "Consultar estudante arquivado ou período anterior preserva histórico permitido sem reativar vínculo silenciosamente.",
+        "Constraints ou proteção transacional impedem sobreposição indevida e associação a turma/estudante de outra escola.",
+        "Jornada e integração real cobrem transferência, concorrência, datas e consulta histórica."
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Validar e visualizar uma importação CSV",
+      "blockedBy": [8],
+      "delivery": "Modelo, prévia por linha, alterações propostas e identificação de ambiguidades, sem gravar mudanças antes da confirmação.",
+      "criteria": [
+        "Disponibilizar modelo e leitura CSV com limites seguros; prévia identifica criação, atualização, rejeição e pendência por linha.",
+        "Chave estável confiável é exigida; matrícula anual reutilizada ou identidade conflitante exige resolução assistida, sem união por nome.",
+        "Para existente, apresentar alterações dos campos permitidos; vazio não propõe apagamento automático e ausente não propõe arquivamento.",
+        "Prévia não altera estudantes/matrículas nem permite mudanças em relatos, permissões ou acompanhamentos.",
+        "Testes reais e jornada comprovam prévia sem gravação, arquivo parcial, homônimos, erros por linha e isolamento do upload/contexto."
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Confirmar e reconciliar a importação",
+      "blockedBy": [9],
+      "delivery": "Aplicação das linhas aprovadas, resultado parcial reconciliável e repetição idempotente, sem apagamentos implícitos.",
+      "criteria": [
+        "Confirmar explicitamente linhas e alterações válidas; pendentes de identidade não são aplicadas até resolução autorizada.",
+        "Resultado distingue importadas, rejeitadas e pendentes e concilia com prévia e cadastros resultantes.",
+        "Repetição/retry não duplica estudante ou vínculo; alterações concorrentes desde a prévia são detectadas sem sobrescrita silenciosa.",
+        "Campo vazio não apaga valor, ausência não encerra matrícula e transferência mantém histórico; efeitos e auditoria são consistentes.",
+        "Testes contra PostgreSQL e jornada cobrem sucesso parcial, repetição, falha transacional, confirmação não autorizada e outra escola."
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Corrigir duplicidade cadastral com assistência",
+      "blockedBy": [8],
+      "delivery": "Procedimento autorizado com confirmação escolar, prévia dos vínculos e histórico, sem fusão automática de homônimos.",
+      "criteria": [
+        "Profissional autorizado conduz procedimento assistido com confirmação documentada da escola sobre a identidade e prévia dos vínculos afetados.",
+        "Correção é limitada à mesma escola, sem fundir automaticamente por nome ou permitir mistura de pessoas diferentes.",
+        "Preservar rastreabilidade e histórico de identidade/matrícula; referências a recursos futuros usam contratos públicos, sem inventar módulos não entregues.",
+        "Operação não amplia permissões; conflito de versão, validação e rollback mantêm vínculos consistentes.",
+        "Integração real e jornada assistida demonstram correção confirmada, recusa por identidade incerta e bloqueio entre escolas; recursos adicionados depois devem estender seus testes de referências."
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Designar concessores e administrar concessões restritas",
+      "blockedBy": [3, 5],
+      "delivery": "Designação formal, concessões delimitadas, revisão, expiração e proibição de autoconcessão, demonstradas inicialmente com conteúdo sintético protegido.",
+      "criteria": [
+        "Representante formal aprova nominalmente primeira designação/substituição; operador efetiva com registro da aprovação e sem receber leitura.",
+        "Conceder leitura não permite nomear concessores; conceder não implica ler. Autoconcessão é negada, exigindo outro concessor ou aprovação pelo processo formal escolar.",
+        "Concessão delimita recursos e ações, separa leitura/exportação e exige justificativa e data de revisão; temporária tem expiração.",
+        "Revisão vencida produz pendência sem revogar por si só; expiração deixa de autorizar na avaliação de acesso, sem depender de execução prévia de job.",
+        "Substituir concessor mantém concessões existentes até revisão explícita. Exercitar interface/API com recurso sintético protegido, MFA, auditoria e testes negativos por papel/contexto, sem depender de relatos ainda inexistentes."
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Configurar a operação de triagem",
+      "blockedBy": [12],
+      "delivery": "Responsável pela fila, triadores autorizados, categorias sensíveis e prazo escolar de avaliação.",
+      "criteria": [
+        "Escola aprova responsável pela fila com substituição explícita, categorias e prazo em horas corridas, sem valor universal presumido.",
+        "Designar triador exige autorização de leitura adequada e MFA; responsabilidade geral não libera conteúdo restrito.",
+        "Recebimento de restritos só pode ser habilitado com pelo menos um triador autorizado ativo.",
+        "Categorias sensíveis exigem restrição; configurações não permitem desligar isolamento, autorização ou auditoria.",
+        "Jornada de configuração e integração real demonstram habilitação válida, bloqueio sem triador e negação a administrador sem autoridade."
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Registrar situação e consultar o próprio envio",
+      "blockedBy": [7, 13],
+      "delivery": "Registro idempotente, protocolo, classificação de restrição e consulta limitada do autor, ainda sem acompanhamento obrigatório.",
+      "criteria": [
+        "Registrar estudante(s), data/hora, categoria, descrição, prioridade e providência imediata, com contexto opcional e autor autenticado; validar campos obrigatórios no servidor.",
+        "Protocolo é único por escola/ano com ID opaco; duplo clique e repetição de rede produzem um único registro.",
+        "Registro pode permanecer sem acompanhamento; autor recebe protocolo e próximo passo e consulta apenas seu envio e retorno operacional autorizado.",
+        "Autor pode aumentar proteção; não remove restrição de categoria sensível. Restringir recebimento quando configuração escolar não permite triagem restrita.",
+        "Página, API e PostgreSQL comprovam idempotência, autoria não forjável, restrição, isolamento e ausência de persistência sensível no navegador."
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Assumir e encerrar uma triagem sem acompanhamento",
+      "blockedBy": [14],
+      "delivery": "Fila autorizada, estados de avaliação, disputa concorrente pelo registro e encerramento com motivo e resultado.",
+      "criteria": [
+        "Triagem percorre Pendente → Em avaliação → Finalizada; assumir indica avaliador autorizado, sem confundi-lo com responsável geral.",
+        "Coordenador sem leitura restrita vê somente protocolo, data, situação e encarregado, sem autor, estudante, categoria ou descrição.",
+        "Encerrar sem acompanhamento exige motivo/resultado por providência suficiente, duplicidade ou envio indevido e preserva o registro.",
+        "Duas tentativas concorrentes de assumir/finalizar aceitam somente primeira operação válida e informam conflito seguro à outra.",
+        "Comprovar fila, detalhe e encerramento via UI/HTTP/banco real, incluindo autorização, auditoria e devolução a Pendente como contrato a ser integrado na desativação."
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Abrir acompanhamento a partir da triagem",
+      "blockedBy": [15],
+      "delivery": "Responsável principal ativo, próxima ação, prazo e início explícito do trabalho, com linha do tempo autorizada.",
+      "criteria": [
+        "Finalizar triagem abrindo acompanhamento exige responsável principal ativo explicitamente escolhido, próxima ação e prazo; abertura deixa estado Aberto.",
+        "Profissional autorizado inicia explicitamente Em acompanhamento; criar/designar responsável não inicia automaticamente.",
+        "Registro, vínculo, transição, auditoria/outbox e versão são consistentes sob transação e concorrência.",
+        "Detalhe apresenta resumo operacional e timeline apenas autorizada; autoria, cargo ou papel de responsável não concede leitura restrita implícita.",
+        "Jornada registro → triagem → acompanhamento e integração real cobrem duplicação concorrente, isolamento e impossibilidade de abrir sem continuidade."
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Vincular registro a acompanhamento existente",
+      "blockedBy": [16],
+      "delivery": "Vínculo principal único, referências autorizadas e correção justificada do destino, preservando intervenções anteriores.",
+      "criteria": [
+        "Avaliador pode finalizar vinculando a acompanhamento autorizado existente; cada registro tem no máximo um vínculo principal.",
+        "Relações a outros acompanhamentos são referências autorizadas e não revelam existência/conteúdo indevido a leitor sem acesso.",
+        "Corrigir destino exige justificativa, preserva decisão anterior e não apaga histórico; intervenções existentes permanecem na origem.",
+        "Orientação revisa separadamente continuidade de origem/destino; nenhuma movimentação ou cancelamento em massa implícito.",
+        "Testes UI/HTTP/PostgreSQL cobrem vínculo concorrente, correção, intervenção preservada e referências entre escolas negadas."
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Reclassificar proteção e revogar acesso ao relato",
+      "blockedBy": [16],
+      "delivery": "Aumento de restrição, redução aprovada, revogação do acesso do autor e concessão explícita para novos relatos restritos.",
+      "criteria": [
+        "Leitor/revisor autorizado pode aumentar restrição; redução exige concessor, justificativa e auditoria. Corrigir categoria não amplia acesso silenciosamente.",
+        "Aumento bloqueia imediatamente acessos incompatíveis e invalida consultas pertinentes; preservar auditoria anterior sem prometer recolher arquivos baixados.",
+        "Profissional autorizado pode revogar acesso posterior do autor por proteção; autor mantém só protocolo e confirmação neutra.",
+        "Concessão ao acompanhamento não libera automaticamente novos relatos restritos nem todo o histórico do estudante; ações de leitura/exportação continuam separadas.",
+        "Demonstrar reclassificação e revogação por UI/HTTP com duas escolas e perfis diferentes; novos recursos de anexos/exportação devem consumir a mesma autorização atual."
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Atribuir uma providência interna",
+      "blockedBy": [16],
+      "delivery": "Destinatário único, instrução mínima, prazo e lista de tarefas recebidas, sem liberar relatos de origem automaticamente.",
+      "criteria": [
+        "Encaminhador autorizado cria tarefa com acompanhamento, um destinatário ativo, instrução própria e prazo; trabalho de várias pessoas gera tarefas separadas.",
+        "Atribuição começa Pendente e tem histórico/auditoria; responsabilidade principal do acompanhamento não transfere execução automaticamente.",
+        "Instrução não copia automaticamente relatos nem libera conteúdo de origem; destinatário acessa somente escopo necessário e autorizado.",
+        "Lista pessoal paginada ordena por prazo com leitura e contagem igualmente autorizadas.",
+        "Jornada criar → receber e testes HTTP/PostgreSQL cobrem autoria/tenant, destinatário inválido, repetição de envio e ausência de liberação implícita."
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Enviar devolutiva ou registrar impedimento",
+      "blockedBy": [19],
+      "delivery": "Início de tarefa, resposta inclusive diretamente de Pendente e impedimento que não encerra a atribuição.",
+      "criteria": [
+        "Destinatário autorizado pode iniciar Em andamento ou enviar de Pendente diretamente, registrando execução sem inventar início.",
+        "Devolutiva exige ação/resultado e data pertinente, passa a Devolutiva enviada e não conclui acompanhamento.",
+        "Impedimento pode ser registrado e preservado sem encerrar tarefa; permanece pendente de replanejamento/reatribuição/cancelamento autorizado.",
+        "Publicação/correção mantém versões ou adendos e informa conflitos sem sobrescrever resposta concorrente.",
+        "Jornada recebimento → resposta e integração real comprovam estados, controle do destinatário, isolamento, idempotência e auditoria."
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Revisar devolutivas e solicitar complementação",
+      "blockedBy": [20],
+      "delivery": "Aceite autorizado, complementação com resposta anterior preservada e correção de aceite por adendo.",
+      "criteria": [
+        "Aceitar/complementar exige permissão explícita de revisão, inclusive do responsável principal; outro revisor da orientação autorizado pode agir.",
+        "Aceite leva a Aceita terminal. Complementação retorna a Em andamento, exige instrução e preserva resposta anterior.",
+        "Prazo só muda por alteração explícita justificada, mantendo valor anterior; receber resposta não encerra espera do acompanhamento automaticamente.",
+        "Aceite indevido é corrigido por adendo sem reabrir tarefa; trabalho adicional deve usar nova atribuição relacionada, integrando requisito de reabertura do acompanhamento quando disponível.",
+        "UI/HTTP/PostgreSQL comprovam revisor sem permissão negado, complementação completa e conflito concorrente entre aceite e revisão."
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Reatribuir e cancelar providências",
+      "blockedBy": [19],
+      "delivery": "Troca justificada de destinatário, preservação do prazo, retirada do acesso exclusivo anterior e cancelamento terminal.",
+      "criteria": [
+        "Reatribuir exige motivo e destinatário ativo autorizado, preservando histórico e prazo salvo mudança explícita justificada.",
+        "Retirar do antigo destinatário somente acessos dependentes exclusivamente da tarefa; novo destinatário consulta a instrução autorizada. Produzir evento de notificação para consumo posterior.",
+        "Cancelar exige autorização/motivo e é terminal; retomar usa nova tarefa relacionada, preservando cancelamento.",
+        "Mudança de responsável principal não reatribui tarefas silenciosamente; contexto de escola e versão são verificados.",
+        "Jornada e integração real cobrem transferência, perda de acesso anterior, acesso independente preservado, cancelamento e conflito."
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Manter próxima ação, espera e replanejamento",
+      "blockedBy": [16],
+      "delivery": "Continuidade obrigatória, retorno esperado, revisão de espera e prazo vencido sem prorrogação automática.",
+      "criteria": [
+        "Acompanhamento ativo exige próxima ação/prazo; registrar execução exige novo passo ou encerramento autorizado quando disponível, nunca estado ativo sem continuidade.",
+        "Aguardando retorno exige retorno esperado e revisão com data, mantém responsável e só volta após decisão autorizada.",
+        "Vencimento torna ação pendente atrasada, sem alterar estado ou prorrogar; replanejar exige motivo/data nova com histórico.",
+        "Prazos usam horas corridas e fuso escolar, com instantes em UTC; não pressupor calendário útil.",
+        "Jornada e testes públicos com clock controlável cobrem espera, vencimento e replanejamento sem sleeps fixos nem mutação de histórico."
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Concluir e reabrir acompanhamento",
+      "blockedBy": [21, 22, 23],
+      "delivery": "Conclusão bloqueada por pendências, resultado obrigatório e reabertura justificada sem reativar tarefas antigas.",
+      "criteria": [
+        "Concluir exige autorização, responsável principal ativo e resultado/motivo; todas as atribuições devem estar Aceitas ou Canceladas com justificativa.",
+        "Pendente, Em andamento e Devolutiva enviada bloqueiam conclusão, inclusive sob concorrência com criação/alteração de tarefas.",
+        "Reabrir Concluído exige permissão, justificativa, responsável ativo, próxima ação e prazo e volta a Em acompanhamento sem reativar tarefas antigas.",
+        "Novos relatos em concluído exigem reabertura ou acompanhamento relacionado; adendos corretivos autorizados preservam conclusão e conteúdo anteriores.",
+        "Jornada completa e integração real demonstram bloqueio por pendência, conclusão, reabertura e rollback de atualização/auditoria/outbox em falha."
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Cancelar acompanhamento preservando suas providências",
+      "blockedBy": [22, 23],
+      "delivery": "Cancelamento inclusive em Aberto, com tratamento explícito das tarefas e retomada apenas por outro acompanhamento relacionado.",
+      "criteria": [
+        "Cancelar exige permissão/motivo e pode ocorrer diretamente em Aberto sem simular início.",
+        "Cada tarefa aberta precisa ser tratada explicitamente com justificativa de encerramento; não apagar nem cancelar silenciosamente.",
+        "Cancelado é terminal; necessidade de retomada cria outro acompanhamento relacionado e autorizado, preservando decisão anterior.",
+        "Registro, tarefas, versão e auditoria ficam consistentes contra concorrência; acompanhamento cancelado não continua aceitando providências como se ativo.",
+        "Jornada e testes HTTP/PostgreSQL cobrem cancelamento com/sem tarefas, tentativa de reabertura indevida e falha transacional."
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Acompanhar vários estudantes sem compartilhar relatos indevidos",
+      "blockedBy": [17, 18],
+      "delivery": "Acompanhamento coletivo com propósito comum e históricos individuais filtrados por autorização.",
+      "criteria": [
+        "Vários estudantes compartilham acompanhamento somente com objetivo/coordenação comuns e vínculos da mesma escola.",
+        "Relatos individuais ficam separados; consultar histórico de um estudante não expõe nomes, relatos ou anexos dos demais sem autorização pertinente.",
+        "Resumo, timeline, referências e contagens aplicam autorização por trecho/participante; vínculo coletivo não concede leitura global.",
+        "Incluir/remover ou corrigir vínculo preserva histórico e não amplia acesso silenciosamente.",
+        "Jornada com dois estudantes e leitores de escopos distintos, mais integração real, comprova ausência de vazamento por detalhe, lista e IDs manipulados."
+      ]
+    },
+    {
+      "id": 27,
+      "title": "Registrar atendimentos e contatos familiares",
+      "blockedBy": [16],
+      "delivery": "Atendimento individual ou coletivo preventivo, compromissos e contatos tentados/realizados, sem mensagens externas automáticas.",
+      "criteria": [
+        "Registrar escuta, orientação, mediação, reunião e contato com data, participantes, objetivo, síntese, compromissos e próximo passo; vínculo ao acompanhamento é opcional.",
+        "Evento coletivo preventivo pode existir sem caso individual, com dados comuns mínimos e observações individuais separadas.",
+        "Contato familiar distingue canal/destinatário, tentativa ou realização e resultado; sem resposta não significa concordância.",
+        "Cadastro de contatos é opcional até necessidade, e registrar evento não dispara mensagem externa.",
+        "Interface/API/banco real demonstram atendimento, contato sem resposta, evento preventivo e proteção de participantes sem permissão."
+      ]
+    },
+    {
+      "id": 28,
+      "title": "Acompanhar encaminhamento externo",
+      "blockedBy": [23],
+      "delivery": "Órgão, profissional, prazo e resposta esperada, sem transmissão automática de documentos.",
+      "criteria": [
+        "Profissional autorizado registra órgão, data, responsável escolar, prazo de acompanhamento e resposta esperada/recebida.",
+        "Espera tem próxima revisão e mantém responsável; ausência de retorno não encerra automaticamente.",
+        "Encaminhamento não cria acesso para órgão nem envia mensagens/documentos automaticamente.",
+        "Eventos e alterações preservam histórico e auditoria; escopo de leitura continua contextual.",
+        "Jornada e integração real comprovam acompanhamento do prazo/retorno e inexistência de transmissão automática."
+      ]
+    },
+    {
+      "id": 29,
+      "title": "Desativar e reativar vínculos com regularização de pendências",
+      "blockedBy": [15, 18, 22, 23],
+      "delivery": "Revogação imediata, tratamento de avaliadores e responsáveis, contingência sem triador e reativação sem recuperar concessões antigas.",
+      "criteria": [
+        "Desativar vínculo revoga acesso à escola e invalida concessões; não desativa vínculo em outra escola. Reativar exige novas concessões.",
+        "Avaliador desativado devolve registros Em avaliação a Pendente com histórico; tarefas pendentes são sinalizadas para reatribuição.",
+        "Desativação normal de responsável principal exige substituto autorizado; bloqueio emergencial de segurança é imediato mesmo sem substituto, deixando pendência visível de regularização.",
+        "Se único triador restrito sai, preservar pendentes, suspender novos envios restritos e avisar operacionalmente sem liberar leitura a administradores.",
+        "UI/HTTP/PostgreSQL cobrem todas as responsabilidades acumuladas, revogação/cache e ausência de restauração automática após reativação."
+      ]
+    },
+    {
+      "id": 30,
+      "title": "Enviar e acessar anexos protegidos",
+      "blockedBy": [18],
+      "delivery": "Upload privado, validação real, quarentena, aprovação/rejeição e download autorizado, sem bloquear envio do relato.",
+      "criteria": [
+        "Aceitar PDF/JPEG/PNG com formato real e limite validado configurável; 10 MB permanece proposta inicial até aprovação operacional.",
+        "Arquivo privado entra em quarentena com verificação de malware; relato pode ser enviado enquanto arquivo está indisponível.",
+        "Aprovação libera somente leitura autorizada; rejeição informa, preserva relato e permite novo envio autorizado. Processo durável/reprocessável não duplica efeitos.",
+        "Anexo herda restrição do registro; download/URL curta exige autorização atual, e conhecer caminho não basta. Aumento de restrição ou revogação impede novo acesso.",
+        "Jornada e integração de storage/HTTP comprovam quarentena, arquivo disfarçado, rejeição/reenvio, outra escola e auditagem de download."
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Compartilhar anexos específicos em uma atribuição",
+      "blockedBy": [19, 30],
+      "delivery": "Liberação explícita dos arquivos necessários ao destinatário, respeitando revogação e restrição de origem.",
+      "criteria": [
+        "Encaminhador seleciona somente anexos cuja liberação está autorizado a conceder para o destinatário específico.",
+        "Receber tarefa ou ler instrução não abre todos os arquivos nem os relatos de origem.",
+        "Arquivo precisa estar aprovado; revalidar escola, concessão e restrição no acesso, inclusive após revogação.",
+        "Permissão de leitura não implica exportação; mudanças e downloads ficam auditados.",
+        "Jornada tarefa → anexo e integração real negam arquivo não selecionado, quarentena, outro destinatário e acesso após perda de autorização."
+      ]
+    },
+    {
+      "id": 32,
+      "title": "Receber notificações de atribuição e devolutiva",
+      "blockedBy": [20],
+      "delivery": "Avisos internos por outbox e worker idempotente, com autorização atual na consulta e no destino.",
+      "criteria": [
+        "Nova atribuição e devolutiva publicada produzem outbox na transação e aviso interno processado pelo worker NestJS/pg-boss com contexto explícito.",
+        "Retry ou queda após commit não perde aviso nem duplica efeitos; worker chama mesmos casos de uso compartilhados sem importar app.",
+        "Texto/título/prévia contêm somente mínimo autorizado; consulta e abertura revalidam acesso e ocultam referências após revogação, mesmo em aviso antigo.",
+        "Notificação de reatribuição consome evento do módulo quando presente, sem exigir leitura do relato; nenhum aviso externo operacional é disparado automaticamente.",
+        "Jornada e testes de job/HTTP/PostgreSQL demonstram entrega, reprocessamento, falha transacional e revogação; worker expõe monitoramento interno, sem HTTP público."
+      ]
+    },
+    {
+      "id": 33,
+      "title": "Receber alertas de prazos e revisões vencidas",
+      "blockedBy": [13, 23, 32],
+      "delivery": "Lembretes configuráveis de triagem, ações e concessões, sem duplicação após reprocessamento.",
+      "criteria": [
+        "Alertar prazo de triagem, ação próxima/vencida e revisão de concessão com políticas aprovadas pela escola, sem valor universal presumido.",
+        "Proposta de dia anterior/vencimento é configurável; vencimento de revisão não revoga acesso, enquanto expiração definida é respeitada.",
+        "Fuso escolar/horas corridas e alterações justificadas de prazo governam lembretes, sem repetir aviso indevidamente por retry.",
+        "Destinatários e conteúdo seguem autorização atual, inclusive ausência de triador e pendência operacional sem leitura sensível.",
+        "Demonstrar alerta na interface e testes reais de job com relógio controlado, reprocessamento e mudança de prazo/permissão."
+      ]
+    },
+    {
+      "id": 34,
+      "title": "Consultar painel operacional e filtros conciliáveis",
+      "blockedBy": [19, 23],
+      "delivery": "Pendências, vencidos, retornos e próximos prazos, visão de equipe autorizada e listas paginadas conciliáveis com indicadores.",
+      "criteria": [
+        "Painel mostra minhas pendências, vencidos, aguardando devolutiva e próximos prazos; visão de equipe exige autorização específica.",
+        "Cada indicador abre lista com mesmo escopo/filtro; totais conciliam com consultas paginadas do servidor.",
+        "Combinar filtros de estudante, turma, período, categoria, prioridade, responsável, tutor, autor do encaminhamento e situação; monitores são filtráveis por papel. Entregar vínculo de tutor autorizado necessário à consulta.",
+        "Busca livre/nomes/relatos sensíveis não entram em URL ou logs; URL mantém apenas filtros não sensíveis validados. Não criar ranking de estudantes.",
+        "Jornada e integração de contagens/listas cobrem dois tenants, escopos restritos, paginação e filtros combinados; capacidades futuras entram sem retornar dados não autorizados."
+      ]
+    },
+    {
+      "id": 35,
+      "title": "Exportar CSV operacional autorizado",
+      "blockedBy": [34],
+      "delivery": "Exportação mínima, neutralização de fórmulas, processamento assíncrono quando necessário e autorização em todas as etapas.",
+      "criteria": [
+        "Exportar dados operacionais mínimos dos mesmos filtros/listas, sem texto sensível por padrão e com células perigosas neutralizadas.",
+        "Solicitação, geração e download verificam autorização atual; permissão de leitura não substitui exportação restrita.",
+        "Arquivos grandes usam job durável/idempotente e storage privado, sem carregar dados completos no navegador; este percurso inclui infraestrutura de job necessária se ainda não presente.",
+        "Arquivo gerado antes de revogação não pode ser entregue depois; gerar/download ficam auditados e metadados permitem política de expiração posterior.",
+        "Jornada e testes HTTP/banco/storage reais cobrem fórmulas, conciliação, outra escola, retry e revogação entre etapas, sem expor relatos nos logs."
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Gerar PDF individual com prévia e seleção de seções",
+      "blockedBy": [26, 35],
+      "delivery": "Relatório por estudante/período, inclusão explícita de conteúdo restrito permitido e exclusão de terceiros por padrão.",
+      "criteria": [
+        "Selecionar período/seções e mostrar prévia fiel; PDF identifica escola, autor e data de geração.",
+        "Começar com informação operacional autorizada; incluir relato restrito exige seleção explícita e permissão de exportação por trecho.",
+        "Dados de outros estudantes ficam excluídos por padrão mesmo se gerador puder lê-los; inclusão exige seleção/permissão específica.",
+        "Reusar autorização nas três etapas e infraestrutura privada de exportação; revogação bloqueia entrega e auditoria registra geração/download.",
+        "Jornada e testes do documento demonstram conteúdo/intervalo corretos, ausência de campos privados indevidos, caso coletivo e revogação. Inspecionar saída PDF representativa com dados sintéticos."
+      ]
+    },
+    {
+      "id": 37,
+      "title": "Consultar a auditoria com autorização própria",
+      "blockedBy": [18],
+      "delivery": "Consulta aos eventos já produzidos pelos recursos, sem reproduzir relatos, auditando também essa consulta.",
+      "criteria": [
+        "Permissão própria controla consulta de acessos sensíveis, alterações, concessões e exportações conforme recursos já entregues; administração de cadastros não a concede.",
+        "Exibir metadados necessários com paginação/filtros seguros, sem copiar relatos, tokens ou anexos.",
+        "Auditar a consulta à auditoria sem loop infinito de registros por renderização e sem duplicação por retries.",
+        "Contexto escolar e escopo autorizado valem para listagem/contagens e detalhe; nenhum operador ganha leitura escolar padrão.",
+        "Interface e testes HTTP/PostgreSQL cobrem autorização específica, ausência de conteúdo sensível e registro da consulta."
+      ]
+    },
+    {
+      "id": 38,
+      "title": "Expirar arquivos e remover temporários com controle",
+      "blockedBy": [30, 35, 36],
+      "delivery": "Expiração de relatórios, limpeza de temporários/órfãos e preservação da auditoria, com política operacional configurada.",
+      "criteria": [
+        "Política aprovada define disponibilidade dos relatórios, sem prazo inventado ou retenção indefinida; expiração impede download e informa estado compreensível.",
+        "Rotina durável remove relatórios expirados e temporários/órfãos elegíveis com limites e reprocessamento seguro.",
+        "Não confundir arquivo expirado com exclusão de relato/histórico; auditoria de geração/download e remoção permanece.",
+        "Não remover arquivo ativo ou de outra escola por erro de seleção; política de retenção escolar/backups continua distinta e precisa de aprovação.",
+        "Jornada e integração real de job/storage demonstram expiração, remoção idempotente, falha parcial e arquivo referenciado preservado."
+      ]
+    },
+    {
+      "id": 39,
+      "title": "Investigar uma operação e seu job por correlação",
+      "blockedBy": [32],
+      "delivery": "Percurso sintético rastreável entre API, banco e worker com OpenTelemetry, sem dados escolares, incluindo falha do Collector e shutdown limitado.",
+      "criteria": [
+        "Instrumentação carrega antes dos módulos e identifica API/worker separadamente; operação e job pg-boss compartilham correlação técnica sem sessão ou relato em baggage.",
+        "Collector local fixado recebe dados saneados e destino de visualização/armazenamento é validado separadamente; não declarar Collector como painel persistente.",
+        "Pino, spans HTTP/banco/jobs e métricas não duplicam eventos nem coletam body, SQL/binds, query string sensível, cookies ou IDs de alta cardinalidade em labels.",
+        "Falha do destino de telemetria não interrompe operação; batching, memória/fila, timeout e flush/shutdown são limitados. Medir overhead e volume, sem transformar propostas de sampling/retenção em SLA.",
+        "Testes com segredos sintéticos e execução correlacionada comprovam saneamento e comportamento; runbook permite investigar correlationId e falha de job. Sentry/CASL permanecem condicionais e não são contratados/instalados automaticamente."
+      ]
+    },
+    {
+      "id": 40,
+      "title": "Demonstrar prontidão para o piloto real",
+      "blockedBy": [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+        39
+      ],
+      "delivery": "Evidências consolidadas de jornadas, isolamento, MFA, acessibilidade, restauração, migração/deploy e aprovações escolares; dados reais bloqueados enquanto houver requisito pendente.",
+      "criteria": [
+        "Executar jornadas reais de ponta a ponta em desktop/celular e revisão tablet, teclado, foco, leitor de tela, contraste, zoom, toque, estados de conexão/erro/conflito e movimento reduzido; wrappers ilustrativos têm SSR/hidratação comprovados.",
+        "Reexecutar matriz crítica com duas escolas, casos coletivos, restrição, revogação/cache, concorrência, importação/jobs idempotentes e MFA exigida. Todas as falhas obrigatórias bloqueiam o aceite.",
+        "Demonstrar backup restaurado e comparado em ambiente isolado, migrações reais compatíveis e release com job único, health/smoke e limites de rollback documentados.",
+        "Verificar convites/configuração inicial, tutor, contexto opcional Tempo Escola/Tempo Comunidade e ausência de alternância em escola que não a utiliza; fechar lacunas de integração da spec sem introduzir módulos futuros.",
+        "Registrar responsáveis escolares e aprovações da matriz de acesso, tratamento, retenção/backups, disponibilidade de exportações e suporte; valores/fornecedores/escolas ainda não escolhidos permanecem pendentes e impedem dados reais quando aplicável.",
+        "Entregar evidências de CI, runbooks de operação/incidente/saída e observabilidade saneada; metas de desempenho/carga/piloto são hipóteses medidas no cenário aprovado, não SLA presumido.",
+        "Não liberar dados reais por mera conclusão técnica: ausência de escola/aprovação mantém gate fechado. Nenhuma contratação, billing, importação real ou deploy externo é autorizada automaticamente por este ticket."
+      ]
+    }
+  ]
+}

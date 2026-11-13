@@ -1,26 +1,28 @@
 {
-  "name": "@repo/ui",
-  "version": "0.0.0",
+  "name": "@soe/ui",
   "private": true,
-  "exports": {
-    "./*": "./src/*.tsx"
-  },
-  "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "26.4.1",
-    "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.5",
-    "eslint": "10.9.1",
-    "typescript": "7.0.2"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "dependencies": {
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "lucide-react": "1.72.0"
+  },
+  "devDependencies": {
+    "@soe/typescript-config": "workspace:*",
+    "@types/react": "19.3.0",
+    "typescript": "6.0.3",
+    "eslint": "10.14.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./src/styles.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0"
   }
 }

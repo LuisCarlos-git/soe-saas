@@ -8,3 +8,27 @@ Read `docs/README.md` inside that installed package first, then read the relevan
 
 This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": true` in the root `turbo.json` or `turbo.jsonc` to opt in; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
 <!-- END:turborepo-agent-rules -->
+
+## Product requirements
+
+Antes de planejar, implementar ou revisar funcionalidades, arquitetura, segurança
+ou interface do SOE, leia `docs/PRD.md` (PRD 1.3). As seções 6 e 7 contêm
+regras obrigatórias; a seção 16 orienta a implementação das ferramentas backend.
+Preserve a distinção entre decisões confirmadas, propostas e perguntas abertas.
+
+## Agent skills
+
+### Issue tracker
+
+Issues e specs ficam no GitHub, em LuisCarlos-git/soe-saas.
+Antes de operar tickets, leia `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Usamos as cinco labels padrão de triagem.
+Antes de classificar tickets, leia `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Layout single-context. Antes de explorar o domínio,
+leia `docs/agents/domain.md`.

@@ -1,20 +1,49 @@
 {
-  "name": "SOE",
+  "name": "soe",
   "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
-  },
-  "devDependencies": {
-    "prettier": "3.9.6",
-    "turbo": "^2.11.10",
-    "typescript": "7.0.2"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=24"
+    "node": ">=24.22.1 <25"
+  },
+  "devDependencies": {
+    "prettier": "3.10.1",
+    "turbo": "2.11.10",
+    "typescript": "6.0.3",
+    "eslint": "10.14.0",
+    "typescript-eslint": "8.72.2",
+    "@eslint/js": "10.0.1",
+    "globals": "17.14.0",
+    "eslint-config-prettier": "10.1.8",
+    "dependency-cruiser": "18.7.2",
+    "vitest": "5.1.0",
+    "@playwright/test": "1.65.0",
+    "@axe-core/playwright": "4.14.0",
+    "jest": "30.5.2",
+    "supertest": "7.3.2",
+    "tsx": "4.23.15",
+    "@types/node": "26.6.6",
+    "@soe/eslint-config": "workspace:*",
+    "@soe/test-utils": "workspace:*",
+    "@soe/backend": "workspace:*",
+    "@soe/contracts": "workspace:*",
+    "@jest/globals": "30.5.2"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "turbo run typecheck",
+    "check-types": "pnpm typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "architecture:check": "node scripts/architecture-check.mjs",
+    "test:unit": "vitest run",
+    "test:integration": "turbo run build --filter=@soe/api --filter=@soe/test-utils && node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.integration.config.cjs --runInBand",
+    "test:e2e": "playwright test",
+    "db:generate": "pnpm --filter @soe/database db:generate",
+    "db:migrate:deploy": "pnpm --filter @soe/database db:migrate:deploy",
+    "bundle:check": "node scripts/check-client-bundle.mjs"
   }
 }
