@@ -19,6 +19,7 @@ export function getRouter() {
     routeTree,
     context: { queryClient, api: createClient() },
     scrollRestoration: true,
+    defaultViewTransition: true,
   });
   setupRouterSsrQueryIntegration({ router, queryClient });
   return router;

@@ -88,7 +88,7 @@ export function LoginPage({ api }: { api: ApiClient }) {
 
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(pending) => (
-              <Button type="submit" disabled={pending}>
+              <Button type="submit" loading={pending}>
                 {pending ? "Entrando…" : "Entrar"}
               </Button>
             )}

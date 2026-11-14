@@ -8,6 +8,7 @@ import {
 import type { QueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Toaster } from "@soe/ui";
+import { PageNavigation } from "../app/page-navigation";
 import stylesheet from "../styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -25,7 +26,10 @@ export const Route = createRootRouteWithContext<{
   }),
   component: () => (
     <Document>
-      <Outlet />
+      <div className="soe-page-transition">
+        <Outlet />
+      </div>
+      <PageNavigation />
     </Document>
   ),
   notFoundComponent: () => (

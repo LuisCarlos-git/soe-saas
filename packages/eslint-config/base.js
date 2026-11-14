@@ -10,6 +10,7 @@ export const config = tseslint.config(
       "**/.next/**",
       "**/.output/**",
       "**/generated/**",
+      "**/vendor/hairline/**",
       "**/routeTree.gen.ts",
       "**/node_modules/**",
       "**/playwright-report/**",

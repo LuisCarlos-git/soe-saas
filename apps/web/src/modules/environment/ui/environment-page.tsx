@@ -57,12 +57,12 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
           </div>
           <div className="mt-8">
             <Button
-              disabled={checking}
+              loading={checking}
               onClick={() => {
                 void result.refetch();
               }}
             >
-              <RefreshCw aria-hidden="true" className="size-4" />
+              {!checking && <RefreshCw aria-hidden="true" className="size-4" />}
               Verificar novamente
             </Button>
           </div>

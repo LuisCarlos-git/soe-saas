@@ -38,7 +38,7 @@ export function AccountPage({ api }: { api: ApiClient }) {
               O acesso às escolas será disponibilizado nas próximas etapas.
             </p>
             <Button
-              disabled={pending}
+              loading={pending}
               onClick={() => {
                 void logout();
               }}

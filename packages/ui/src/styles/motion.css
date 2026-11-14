@@ -1,0 +1,69 @@
+/* Adapted from Transitions.dev page-side-by-side / loader reveal, consulted 2026-11-14. */
+:root {
+  --soe-motion-quick: 160ms;
+  --soe-motion-page: 220ms;
+  --soe-motion-ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+.soe-page-transition {
+  view-transition-name: soe-page;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-old(soe-page) {
+  animation: soe-page-out var(--soe-motion-quick) var(--soe-motion-ease) both;
+}
+::view-transition-new(soe-page) {
+  animation: soe-page-in var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+.soe-page-loading {
+  animation: soe-loader-in var(--soe-motion-quick) var(--soe-motion-ease) both;
+}
+.soe-button-spinner {
+  animation: soe-spin 900ms linear infinite;
+}
+.soe-book-illustration {
+  --hairline-plate: var(--color-canvas);
+  --hairline-hi: var(--color-primary);
+  --hairline-edge: var(--color-control);
+  --hairline-mid: var(--color-muted);
+  --hairline-lo: var(--color-rule);
+}
+@keyframes soe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes soe-page-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes soe-page-out {
+  to {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+@keyframes soe-loader-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soe-button-spinner,
+  .soe-page-loading,
+  ::view-transition-old(soe-page),
+  ::view-transition-new(soe-page) {
+    animation: none;
+  }
+}

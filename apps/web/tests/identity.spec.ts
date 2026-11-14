@@ -27,6 +27,15 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
     page.locator("[data-sonner-toast][data-type=error][data-rich-colors=true]"),
   ).toHaveCount(2);
   await page.getByLabel("Senha", { exact: true }).fill("12345678");
+  // Measure settled colors rather than Sonner's intermediate fade-in opacity.
+  await page.evaluate(async () => {
+    const finite = document
+      .getAnimations()
+      .filter(
+        (animation) => animation.effect?.getTiming().iterations !== Infinity,
+      );
+    await Promise.allSettled(finite.map((animation) => animation.finished));
+  });
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
     path: `test-results/login-${test.info().project.name}.png`,

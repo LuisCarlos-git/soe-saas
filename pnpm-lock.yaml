@@ -293,6 +293,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@lucasmarkes/hairline':
+        specifier: 0.5.1
+        version: 0.5.1(react@19.2.8)
       lucide-react:
         specifier: 1.72.0
         version: 1.72.0(@types/react@19.3.0)(react@19.2.8)
@@ -1134,6 +1137,14 @@ packages:
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
+
+  '@lucasmarkes/hairline@0.5.1':
+    resolution: {integrity: sha512-zjY3bdMC3As/+enKitZ1X+D1HjpesQiAKzG1sbCFsOrb5xIuJEoepkJTBIO4jmFh6JXOQlGGylhV71nr9ipNpQ==}
+    peerDependencies:
+      react: '>=18'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -6361,6 +6372,10 @@ snapshots:
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
+
+  '@lucasmarkes/hairline@0.5.1(react@19.2.8)':
+    optionalDependencies:
+      react: 19.2.8
 
   '@lukeed/csprng@1.1.0': {}
 

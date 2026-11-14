@@ -11,3 +11,8 @@ playwright-report
 test-results
 .taste-skill
 .impeccable
+
+packages/ui/vendor/hairline/kernel.js
+packages/ui/src/illustrations/book/book.js
+artifacts/hairline/
+hairline-book.html

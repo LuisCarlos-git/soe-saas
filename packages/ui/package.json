@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
+    "@lucasmarkes/hairline": "0.5.1",
     "lucide-react": "1.72.0",
     "react": "19.2.8",
     "sonner": "2.0.8"
@@ -19,10 +20,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./motion.css": "./src/styles/motion.css"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node scripts/build-book.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint . --max-warnings 0"
   }
