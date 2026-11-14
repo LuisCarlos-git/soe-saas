@@ -52,11 +52,8 @@ Para servir o build, inicie API e web separadamente. A API exige configuração
 validada passada pelo ambiente ou `node --env-file=../../.env dist/main.js`
 dentro do app; o web usa `pnpm --filter @soe/web start`.
 
-## Limites da entrega
+## Backend e login local
 
-Sem autenticação, escolas, estudantes, auditoria escolar, storage de anexos,
-e-mail ou worker. Nenhum módulo futuro foi criado vazio. A única tabela é uma
-fixture global protegida por constraints, sem dados de escola ou estudante.
-O operador pode investigar requests por correlationId nos logs saneados; nunca
-adicionar query/body/cookies à coleta. Telemetria distribuída pertence ao ticket
-específico; a infraestrutura desta fatia não representa autorização de piloto real.
+O backend exclusivo fica em apps/api; veja [ADR 0003](../adr/0003-api-local-backend.md). Após o build, `pnpm dev:seed` prepara as duas contas sintéticas locais com senha 12345678 e reinicia seu contador de tentativas. Não há seed automático no boot nem cadastro público. Veja o [runbook de autenticação](authentication.md).
+
+Não inserir dados escolares reais. MFA, permissões por escola e preparação do piloto continuam nas próximas entregas. API e banco são locais; telemetria distribuída pertence ao ticket específico.

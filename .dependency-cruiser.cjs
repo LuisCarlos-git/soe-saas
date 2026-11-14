@@ -16,7 +16,7 @@ module.exports = {
       severity: "error",
       from: { path: "^apps/web/src/" },
       to: {
-        path: "^@soe/(backend|database)$|packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
+        path: "^apps/api/|^@soe/api(?:/|$)|^@soe/(backend|database)$|/(@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
       },
     },
     {
@@ -26,20 +26,23 @@ module.exports = {
       to: { path: "^apps/" },
     },
     {
-      name: "api-no-database",
-      severity: "error",
-      from: { path: "^apps/api/src/" },
-      to: { path: "^@soe/database$|packages/database/|/(@prisma|prisma|pg)/" },
-    },
-    {
       name: "pure-business",
       severity: "error",
       from: {
-        path: "^packages/backend/src/(modules/[^/]+/(domain|application)|shared/(domain|application))/",
+        path: "^apps/api/src/modules/[^/]+/(domain|repositories|use-cases)/",
       },
       to: {
-        path: "(node_modules/|packages/(database|contracts)/|/(infrastructure|composition)/)",
+        path: "node_modules/|^@|packages/contracts/|/(infrastructure|factories|controllers|http|shared)/|[.]module[.]",
       },
+    },
+    {
+      name: "orm-only-infrastructure",
+      severity: "error",
+      from: {
+        path: "^apps/api/src/",
+        pathNot: "/(infrastructure|factories|cli)/|[.]module[.]ts$",
+      },
+      to: { path: "(@prisma|prisma|/pg/)|/infrastructure/database/" },
     },
     {
       name: "neutral-ui",
@@ -57,14 +60,7 @@ module.exports = {
         path: "^@soe/(backend|database|ui)$|^apps/|^packages/(backend|database|ui)/|/(@nestjs|@prisma|prisma|react|pg)/",
       },
     },
-    ...[
-      "backend",
-      "database",
-      "contracts",
-      "api-client",
-      "ui",
-      "test-utils",
-    ].map((name) => ({
+    ...["contracts", "api-client", "ui"].map((name) => ({
       name: `no-${name}-internals`,
       severity: "error",
       from: { path: "^(apps|packages)/", pathNot: `^packages/${name}/` },
@@ -104,7 +100,9 @@ module.exports = {
     },
   ],
   options: {
-    exclude: { path: "packages/database/src/generated/|/routeTree.gen.ts$" },
+    exclude: {
+      path: "apps/api/src/infrastructure/database/generated/|/routeTree.gen.ts$",
+    },
     doNotFollow: { path: "node_modules|/dist/" },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: "tsconfig.json" },

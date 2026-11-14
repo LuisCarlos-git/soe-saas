@@ -1,5 +1,5 @@
-import { createApi } from "./app.js";
-import { parseConfiguration } from "@soe/backend";
+import { createApi } from "./app";
+import { parseConfiguration } from "./shared/config";
 
 const config = parseConfiguration(process.env);
 const app = await createApi(config);

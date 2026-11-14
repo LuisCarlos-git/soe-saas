@@ -11,14 +11,21 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
   await page.getByLabel("Senha", { exact: true }).fill("wrong-password");
   await page.context().setOffline(true);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "Sem conexão com o serviço",
-  );
+  await expect(
+    page
+      .locator("[data-sonner-toast][data-type=error]")
+      .filter({ hasText: "Sem conexão com o serviço" }),
+  ).toBeVisible();
   await page.context().setOffline(false);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText(
-    "E-mail ou senha inválidos",
-  );
+  await expect(
+    page
+      .locator("[data-sonner-toast][data-type=error]")
+      .filter({ hasText: "E-mail ou senha inválidos" }),
+  ).toBeVisible();
+  await expect(
+    page.locator("[data-sonner-toast][data-type=error][data-rich-colors=true]"),
+  ).toHaveCount(2);
   await page.getByLabel("Senha", { exact: true }).fill("12345678");
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
@@ -66,9 +73,11 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
     ).toBe(true);
     await page.context().setOffline(true);
     await page.getByRole("button", { name: "Sair", exact: true }).click();
-    await expect(page.getByRole("alert")).toContainText(
-      "Não foi possível encerrar a sessão",
-    );
+    await expect(
+      page
+        .locator("[data-sonner-toast][data-type=error]")
+        .filter({ hasText: "Sem conexão com o serviço" }),
+    ).toBeVisible();
     await expect(page).toHaveURL(/\/account$/);
     await page.context().setOffline(false);
     await page.getByRole("button", { name: "Sair", exact: true }).click();

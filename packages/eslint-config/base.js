@@ -6,6 +6,7 @@ export const config = tseslint.config(
   {
     ignores: [
       "**/dist/**",
+      "**/.build/**",
       "**/.next/**",
       "**/.output/**",
       "**/generated/**",

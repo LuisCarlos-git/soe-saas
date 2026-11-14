@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import request from "supertest";
-import { startTestPostgres } from "@soe/test-utils";
+import { startTestPostgres } from "./support/postgres.mjs";
 import { migrateTestDatabase } from "../../../scripts/migrate-test-database.mjs";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";

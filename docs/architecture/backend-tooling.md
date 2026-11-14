@@ -2,7 +2,7 @@
 
 Validado em 14/11/2026: Node 24.22.1, pnpm 11.25.0, NestJS 11.2.10, Prisma/CLI/adapter-pg 7.10.1, PostgreSQL 17.9, Better Auth e @better-auth/prisma-adapter 1.7.23, Zod 4.6.7. Dependências diretas exatas e lockfile único. TanStack Form 1.33.5 integra o formulário; Router/Query/Start mantêm as versões do bootstrap.
 
-A CLI oficial `pnpm dlx auth@1.7.23 generate --config packages/backend/auth.schema.ts --output /tmp/soe-auth-schema.prisma --yes` gerou os modelos do provedor. Foram incorporados ao schema existente sem substituir generator/config Prisma 7. `prisma migrate diff --from-schema ... --to-schema ... --script` gerou a migração, acrescida da auditoria transacional. O arquivo de configuração da CLI é apenas fonte de geração, sem conexão ou segredo. Não executar novamente sobre o schema completo sem revisar a diferença.
+A CLI oficial `pnpm dlx auth@1.7.23 generate --config apps/api/auth.schema.ts --output /tmp/soe-auth-schema.prisma --yes` gerou os modelos do provedor. Foram incorporados ao schema existente sem substituir generator/config Prisma 7. `prisma migrate diff --from-schema ... --to-schema ... --script` gerou a migração, acrescida da auditoria transacional. O arquivo de configuração da CLI é apenas fonte de geração, sem conexão ou segredo. Não executar novamente sobre o schema completo sem revisar a diferença.
 
 O adapter Prisma do provedor documenta suporte ao Prisma 7. Não adotamos wrapper Nest comunitário: a API monta o handler oficial e valida seu contrato público. Entrada Zod e documentação OpenAPI derivam dos mesmos contratos; saída de sessão é uma projeção explícita. Domain/application não importam o SDK. Uma porta de leitura de sessão protege o caso de uso de identidade; a composição Nest controla o encerramento do pool.
 

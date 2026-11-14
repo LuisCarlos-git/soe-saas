@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
+    "lucide-react": "1.72.0",
     "react": "19.2.8",
-    "lucide-react": "1.72.0"
+    "sonner": "2.0.8"
   },
   "devDependencies": {
     "@soe/typescript-config": "workspace:*",
     "@types/react": "19.3.0",
-    "typescript": "6.0.3",
-    "eslint": "10.14.0"
+    "eslint": "10.14.0",
+    "typescript": "6.0.3"
   },
   "exports": {
     ".": {

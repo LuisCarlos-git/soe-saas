@@ -5,41 +5,85 @@ import {
   loginSchema,
 } from "@soe/contracts";
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly code: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+export type ApiErrorHandler = (error: ApiError) => void;
+
+// Transport stays framework-independent. Browser composition supplies the notification adapter.
 export function createApiClient(
   baseUrl: string,
   fetcher: typeof fetch = fetch,
   credential?: string,
+  onError?: ApiErrorHandler,
 ) {
+  function reject(error: ApiError): never {
+    onError?.(error);
+    throw error;
+  }
+  async function send(url: string, options: RequestInit) {
+    try {
+      return await fetcher(url, {
+        credentials: "same-origin",
+        cache: "no-store",
+        ...options,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") throw error;
+      return reject(
+        new ApiError(
+          "Sem conexão com o serviço. Verifique a rede e tente novamente.",
+          0,
+          "NETWORK_ERROR",
+        ),
+      );
+    }
+  }
+  async function check(response: Response) {
+    if (response.ok) return;
+    const body: unknown = await response.json().catch(() => null);
+    const parsed = errorSchema.safeParse(body);
+    if (parsed.success)
+      return reject(
+        new ApiError(parsed.data.message, response.status, parsed.data.code),
+      );
+    return reject(
+      new ApiError(
+        "Não foi possível concluir a solicitação. Tente novamente.",
+        response.status,
+        "INVALID_RESPONSE",
+      ),
+    );
+  }
   async function identity(signal?: AbortSignal) {
-    const response = await fetcher(`${baseUrl}/identity/session`, {
-      ...(signal ? { signal } : {}),
-      headers: credential ? { cookie: credential } : {},
-      credentials: "same-origin",
-      cache: "no-store",
+    const headers = new Headers();
+    if (credential) headers.set("cookie", credential);
+    const response = await send(`${baseUrl}/identity/session`, {
+      headers,
+      ...(signal && { signal }),
     });
+    // Missing session is a normal authentication state, not an error notification.
     if (response.status === 401) return null;
-    if (!response.ok) throw new Error("Não foi possível consultar sua sessão.");
+    await check(response);
     return identitySchema.parse(await response.json());
   }
   async function access(path: string, body: unknown) {
-    const response = await fetcher(
+    const response = await send(
       `${baseUrl.replace(/\/v1$/, "")}/auth/${path}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        cache: "no-store",
         body: JSON.stringify(body),
       },
     );
-    if (!response.ok) {
-      const parsed = errorSchema.safeParse(await response.json());
-      throw new Error(
-        parsed.success
-          ? parsed.data.message
-          : "Não foi possível acessar. Tente novamente.",
-      );
-    }
+    await check(response);
   }
   return {
     identity,
@@ -47,21 +91,12 @@ export function createApiClient(
       access("sign-in/email", loginSchema.parse(input)),
     logout: () => access("sign-out", {}),
     async environment(signal?: AbortSignal) {
-      const response = await fetcher(`${baseUrl}/environment`, {
+      const response = await send(`${baseUrl}/environment`, {
         headers: { Accept: "application/json" },
-        cache: "no-store",
-        ...(signal ? { signal } : {}),
+        ...(signal && { signal }),
       });
-      const body: unknown = await response.json();
-      if (!response.ok) {
-        const error = errorSchema.safeParse(body);
-        throw new Error(
-          error.success
-            ? error.data.message
-            : "Não foi possível verificar o ambiente.",
-        );
-      }
-      return environmentSchema.parse(body);
+      await check(response);
+      return environmentSchema.parse(await response.json());
     },
   };
 }

@@ -9,6 +9,12 @@ aprovado na entrevista `grill-with-docs`, incluindo a revisão explícita da dec
 5 pela decisão 11. As perguntas ainda abertas permanecem identificadas no
 complemento; esta documentação não representa implementação concluída.
 
+## Atualização normativa — 14/11/2026
+
+Por decisão explícita do responsável pelo produto, a organização de código das seções 7 e 16 passa a seguir [ADR 0003](adr/0003-api-local-backend.md). Todo backend exclusivo fica em `apps/api`: Prisma/schema/migrations, domínio, use-cases, repositórios, implementações, factories e testes. Os antigos `packages/backend`, `packages/database` e `packages/test-utils` deixam de existir. `packages` contém somente código independente ou compartilhável entre runtimes/produtos. Os mapas anteriores de caminhos e a premissa de um worker compartilhando esses pacotes são substituídos por esta decisão; requisitos funcionais, segurança e stack permanecem vigentes. Jobs futuros serão definidos dentro desta arquitetura sem importar código entre apps.
+
+Padrão de feedback confirmado: erros seguros retornados pela API aparecem em toasts Sonner com `richColors`, por um ponto global de tratamento. Validação local de campos mantém associação acessível ao campo. Não duplicar o mesmo erro de API em toast e mensagem inline.
+
 ## 1. Resumo e decisões confirmadas
 
 Construir um SaaS de orientação e acompanhamento educacional para escolas em geral. O produto deve permitir que a equipe registre uma situação, defina providências e responsáveis, acompanhe devolutivas e prazos e documente o resultado. O valor central é dar continuidade ao cuidado com o estudante e evitar que demandas se percam entre profissionais.
@@ -341,7 +347,7 @@ A instalação da skill do agente não instala componentes no app. Adicionar som
 
 ## 7. Stack TanStack e pacotes
 
-Decisão obrigatória: monorepo TypeScript com pnpm e Turborepo. TanStack Start cuida do web e SSR; NestJS concentra API, autorização e casos de uso; PostgreSQL com Prisma ORM mantém os dados; worker NestJS executa tarefas demoradas. API e worker compartilham módulos backend sem importar código entre apps. A organização e as regras da seção 7.1 em diante prevalecem sobre exemplos genéricos de frameworks.
+Decisão obrigatória: monorepo TypeScript com pnpm e Turborepo. TanStack Start cuida do web e SSR; NestJS concentra API, autorização e casos de uso; PostgreSQL com Prisma ORM mantém os dados. A API mantém os módulos e os jobs de backend; um processo separado só será definido quando houver necessidade validada, sem importar código de outro app. A organização e as regras da seção 7.1 em diante prevalecem sobre exemplos genéricos de frameworks.
 
 A documentação consultada apresenta Start como estável e React Server Components como experimental. Usar os recursos estáveis e verificar versões compatíveis no início da implementação. Não usar latest sem lockfile em builds reprodutíveis. [T1]
 
@@ -375,7 +381,7 @@ Prisma/PostgreSQL e ferramentas marcadas como obrigatórias na seção 7.10 são
 
 | Escolha sugerida                                      | Finalidade e limite                                                                                                              |
 | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| PostgreSQL + Prisma ORM                               | Persistência e migrações obrigatórias; acesso restrito a adapters backend e pacote database                                      |
+| PostgreSQL + Prisma ORM                               | Persistência e migrações obrigatórias; acesso restrito à infraestrutura de persistência da API                                   |
 | Better Auth (better-auth)                             | Candidato para sessões/login/MFA hospedado no NestJS; validar integração com Prisma; não instalar autenticação paralela no Start |
 | Zod (zod)                                             | Contratos de entrada validados no cliente e servidor                                                                             |
 | Tailwind CSS + shadcn/ui                              | Estilo e componentes adaptados à identidade do SOE; shadcn distribui código de componentes                                       |
@@ -400,7 +406,7 @@ Esta seção é normativa para desenvolvedores e agentes de código: DEVE indica
 
 Stack definida: TypeScript estrito, pnpm workspaces, Turborepo, TanStack Start/React no web, NestJS na API e no processo de worker, PostgreSQL e Prisma ORM. NestJS é o framework de backend; PostgreSQL é o banco; Prisma é a camada de acesso ao banco. Não usar Drizzle nem adicionar um segundo ORM.
 
-O backend será um monólito modular, executável como API e worker separados e com módulos de negócio compartilhados. Não adotar microsserviços no core. Turborepo coordena o workspace; não criar um segundo workspace com modo monorepo do Nest CLI dentro dele.
+O backend será um monólito modular dentro de apps/api, com casos de uso reutilizáveis entre controllers e futuros consumidores de jobs. Um processo separado será avaliado somente quando houver necessidade validada. Não adotar microsserviços no core. Turborepo coordena o workspace; não criar um segundo workspace com modo monorepo do Nest CLI dentro dele.
 
 ### 7.2 Pesquisa de arquiteturas para o frontend
 
@@ -413,36 +419,20 @@ O backend será um monólito modular, executável como API e worker separados e 
 
 Não há, nas fontes consultadas, uma exigência oficial do TanStack para usar FSD ou Clean Architecture. A organização modular abaixo é uma decisão específica deste projeto. [A1–A5]
 
-### 7.3 Estrutura obrigatória do monorepo
+### 7.3 Estrutura obrigatória do monorepo — revisão aprovada
 
-Todos os caminhos são relativos à raiz do repositório. A tabela é o mapa de pastas; diretórios de funcionalidades futuras só devem ser criados quando houver implementação.
+| Caminho                                             | Responsabilidade                                                            |
+| --------------------------------------------------- | --------------------------------------------------------------------------- |
+| apps/web                                            | TanStack Start/React, SSR e composição da UI                                |
+| apps/api                                            | Todo backend exclusivo: NestJS, módulos, Prisma, migrations, CLIs e testes  |
+| packages/contracts                                  | Schemas Zod de transporte, sem Nest/Prisma/React                            |
+| packages/api-client                                 | Cliente HTTP neutro, fetch injetável e tratamento de erro desacoplado da UI |
+| packages/ui                                         | Componentes genéricos Tailwind/shadcn, Sonner global, figuras e estilos     |
+| packages/eslint-config e packages/typescript-config | Configurações independentes compartilhadas                                  |
+| docs/architecture, docs/adr, docs/runbooks          | Fronteiras, decisões e operação                                             |
+| infra e .github/workflows                           | Serviços locais e CI                                                        |
 
-| Caminho                     | Responsabilidade                                                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| apps/web/                   | Aplicação TanStack Start, SSR e interface React                                                                                 |
-| apps/api/                   | Bootstrap NestJS, controladores HTTP, guards, pipes e composição da API                                                         |
-| apps/worker/                | Bootstrap NestJS sem servidor HTTP público e consumidores de jobs                                                               |
-| packages/backend/           | Módulos de domínio, casos de uso, portas, adapters e composição Nest reutilizáveis por API/worker; pacote exclusivo de servidor |
-| packages/database/          | Configuração Prisma, definição persistente, migrações, geração do cliente e ciclo de conexão; exclusivo de servidor             |
-| packages/contracts/         | Schemas Zod de entrada/saída HTTP e envelopes de erro/paginação; sem regras de negócio                                          |
-| packages/api-client/        | Transporte HTTP tipado com fetch injetável; sem React, Nest ou Prisma                                                           |
-| packages/ui/                | Design system Tailwind, componentes genéricos, wrappers Hairline e receitas Transitions.dev; sem conceitos de estudante ou caso |
-| packages/eslint-config/     | Configuração de lint compartilhada                                                                                              |
-| packages/typescript-config/ | Configurações TypeScript por runtime                                                                                            |
-| packages/test-utils/        | Utilitários de teste neutros, usados apenas como dependências de desenvolvimento                                                |
-| docs/architecture/          | Matriz de dependências, decisões e convenções                                                                                   |
-| docs/adr/                   | Registros de decisões de arquitetura                                                                                            |
-| docs/runbooks/              | Migração, restauração, incidentes, implantação e jobs                                                                           |
-| infra/compose.yaml          | PostgreSQL, storage compatível com S3 e serviço de e-mail de desenvolvimento                                                    |
-| .github/workflows/          | CI e implantação; adaptar apenas se o provedor de Git escolhido for outro                                                       |
-| package.json                | Scripts de orquestração e versão fixada do gerenciador                                                                          |
-| pnpm-workspace.yaml         | Somente padrões apps/* e packages/*                                                                                             |
-| pnpm-lock.yaml              | Lockfile único, versionado                                                                                                      |
-| turbo.json                  | Grafo de tarefas, cache e dependências de build                                                                                 |
-| .dependency-cruiser.cjs     | Regras executáveis de dependência por camada/pacote                                                                             |
-| AGENTS.md                   | Instruções para agentes derivadas destas regras, a criar no bootstrap                                                           |
-
-Cada app/pacote possui package.json, nome único @soe/_, tsconfig.json, dependências explícitas e exports públicos quando aplicável. Dependências internas usam workspace:_. Apps são folhas do grafo: nenhum pacote nem outro app importa código de apps/*. Não usar aliases que atravessem a raiz de outro pacote; imports internos de workspace passam pelos exports. [A6]
+Não criar pacotes backend/database/test-utils. Todo pacote deve ser independente ou compartilhável. Apps não importam código de outros apps; packages não importam apps. Dependências internas usam workspace:* e exports explícitos. Manter lockfile único e pnpm-workspace com apps/* e packages/*. Worker separado não é exigido nesta arquitetura; jobs futuros serão definidos por necessidade sem copiar regras nem importar um app de outro.
 
 ### 7.4 Estrutura obrigatória do web
 
@@ -478,7 +468,7 @@ Regras de frontend:
 2. Páginas podem combinar módulos. Um módulo não importa outro módulo diretamente; integração visual acontece na página, por props/callbacks tipados. Código realmente genérico pode descer para shared ou ui.
 3. Dentro de um módulo, ui pode usar model e data; data pode usar model e contratos; model não importa ui nem data. Exports públicos não podem criar ciclos com imports internos.
 4. Estado remoto pertence a Query; estado de formulário a Form; filtros públicos compartilháveis ao Router; estado efêmero ao React. Store só entra se houver necessidade documentada. Não duplicar a mesma fonte de verdade.
-5. React Query acessa a API NestJS por @soe/api-client. É proibido espalhar fetch em componentes, criar uma segunda API de negócio em server functions ou importar @soe/backend, @soe/database, Nest ou Prisma no web, inclusive em seu servidor SSR.
+5. React Query acessa a API NestJS por @soe/api-client. É proibido espalhar fetch em componentes, criar uma segunda API de negócio em server functions ou importar @soe/api, @soe/api, Nest ou Prisma no web, inclusive em seu servidor SSR.
 6. src/server só pode ser importado por entrypoints server-only reconhecidos pelo Start. O sufixo de arquivo sozinho não é mecanismo de segurança. Usar os mecanismos oficiais de isolamento e verificar o bundle cliente. [A3]
 7. Uma server function do Start, se necessária, é apenas adapter para o NestJS e não decide permissão nem executa persistência. Preferir acesso HTTP direto à API através do ingress compartilhado.
 8. Negócio e autorização permanecem no NestJS. Desabilitar um botão, validar um formulário ou redirecionar beforeLoad melhora UX, mas não autoriza uma operação.
@@ -497,35 +487,27 @@ Filtros de URL são validados; buscas sensíveis não entram na URL. Consultas e
 
 REST versionado com schemas em @soe/contracts. Nest valida entrada através de pipe que usa esses schemas e mapeia para comandos de aplicação. Respostas são DTOs explícitos, nunca objetos Prisma. Manter OpenAPI gerado dos contratos/metadata compatíveis e testar divergências; não manter dois schemas manuais para o mesmo payload. Datas em ISO 8601, IDs opacos, paginação limitada e erros com código estável, mensagem segura, campos inválidos e correlationId.
 
-### 7.6 Estrutura obrigatória do backend
+### 7.6 Estrutura obrigatória do backend — revisão aprovada
 
-| Caminho                                                         | Responsabilidade                                                            |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| apps/api/src/main.ts                                            | Inicialização, limites HTTP, segurança e encerramento gracioso              |
-| apps/api/src/app.module.ts                                      | Composição do processo HTTP                                                 |
-| apps/api/src/modules/cases/cases.controller.ts                  | Converter HTTP em comando/query e chamar caso de uso                        |
-| apps/api/src/modules/cases/cases-http.module.ts                 | Importar composição backend e registrar controller                          |
-| apps/api/src/common/guards/                                     | Validar sessão e construir contexto autenticado                             |
-| apps/api/src/common/pipes/                                      | Validar contratos de transporte                                             |
-| apps/api/src/common/filters/                                    | Mapear erros de aplicação para HTTP, sem stack sensível                     |
-| packages/backend/src/modules/cases/domain/                      | Entidades, value objects, invariantes e eventos puros                       |
-| packages/backend/src/modules/cases/application/use-cases/       | Abrir, encaminhar, concluir e reabrir casos                                 |
-| packages/backend/src/modules/cases/application/ports/           | CaseRepository, UnitOfWork e interfaces estritamente necessárias            |
-| packages/backend/src/modules/cases/application/models/          | Comandos, resultados e projeções independentes de HTTP/ORM                  |
-| packages/backend/src/modules/cases/infrastructure/prisma/       | Implementação de repositórios, consultas e mapeadores Prisma                |
-| packages/backend/src/modules/cases/infrastructure/integrations/ | Adapters para portas que consultam outros módulos                           |
-| packages/backend/src/modules/cases/composition/                 | Módulo Nest, tokens e factories de injeção                                  |
-| packages/backend/src/modules/cases/public.ts                    | Contratos de aplicação explicitamente expostos                              |
-| packages/backend/src/shared/domain/                             | Primitivos de domínio efetivamente comuns, sem frameworks                   |
-| packages/backend/src/shared/application/                        | Contexto autenticado, clock, IDs e contratos transacionais comuns           |
-| packages/backend/src/platform/                                  | Adapters técnicos de autenticação, logs, storage, fila e configuração       |
-| packages/database/prisma/                                       | Fonte do modelo persistente e migrações da versão Prisma fixada             |
-| packages/database/src/                                          | Factory de conexão/cliente, integração do driver e exports somente servidor |
-| packages/database/generated/                                    | Cliente gerado quando exigido pela versão; nunca editar manualmente         |
-| apps/worker/src/main.ts                                         | Inicialização do contexto Nest e shutdown                                   |
-| apps/worker/src/processors/                                     | Desserializar job, resolver contexto e chamar caso de uso compartilhado     |
+Todos os caminhos abaixo ficam em apps/api.
 
-Repetir a divisão do módulo cases para identity/access, organizations, students, referrals, records, notifications, documents e reporting conforme forem entregues. Evitar criar dezenas de pacotes de domínio antes de necessidade real. O pacote backend compartilha código entre processos; não é acessível ao frontend.
+| Caminho                                   | Responsabilidade                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------- |
+| src/main.ts e src/app.module.ts           | Bootstrap, configuração e composição Nest                           |
+| src/modules/<feature>/domain              | Modelos, entidades e invariantes puros                              |
+| src/modules/<feature>/repositories        | Contratos pequenos de persistência/leitura orientados ao consumidor |
+| src/modules/<feature>/use-cases           | Uma intenção por caso de uso, sem Nest/Prisma/HTTP                  |
+| src/modules/<feature>/infrastructure      | Repositórios concretos e adapters de fornecedores                   |
+| src/modules/<feature>/factories           | Construção de repositórios e casos de uso por injeção de construtor |
+| src/modules/<feature>/controllers e http  | Conversão de HTTP e integração com handlers externos                |
+| src/modules/<feature>/<feature>.module.ts | Providers e exports Nest explícitos                                 |
+| src/infrastructure/database               | Factory de conexão única, ciclo de vida e cliente gerado            |
+| prisma e prisma.config.ts                 | Schema, migrations e configuração da CLI Prisma                     |
+| src/common                                | Pipes, filtros e DTOs HTTP compartilhados                           |
+| src/shared                                | Configuração, logging e utilidades técnicas comuns                  |
+| src/cli e tests/support                   | Rotinas locais e suporte de testes exclusivo do backend             |
+
+Factories podem depender das implementações concretas; casos de uso dependem somente de domínio e contratos de repositório. Não criar GenericRepository/BaseService nem camadas de mero repasse. Prisma permanece encapsulado em infrastructure/factories/CLI; controllers não consultam o banco. Módulos compartilham capacidades pelas APIs públicas, preservando grafo acíclico. Não criar diretórios vazios para funcionalidades futuras.
 
 ### 7.7 Clean Architecture e direção dos imports
 
@@ -562,7 +544,7 @@ Proibidos: BaseService com todas as regras, GenericRepository que exponha Prisma
 
 ### 7.9 Prisma, transações e multi-inquilino
 
-Somente packages/database e adapters de infraestrutura aprovados usam Prisma. O domínio não conhece modelo gerado, filtro ORM ou transação Prisma. Repositórios convertem registro persistente em entidade/projeção. Listagens podem usar projeções read-only de aplicação sem montar um agregado completo; isso não autoriza expor modelos ORM.
+Somente infrastructure, factories e CLIs aprovadas de apps/api usam Prisma; controllers não acessam o banco. O domínio não conhece modelo gerado, filtro ORM ou transação Prisma. Repositórios convertem registro persistente em entidade/projeção. Listagens podem usar projeções read-only de aplicação sem montar um agregado completo; isso não autoriza expor modelos ORM.
 
 O repositório recebe contexto de organização autenticado e filtra leitura, escrita, contagem, agregação e exportação. Consultar somente por ID é proibido em entidade escolar. Relações incluem integridade de organização, por constraints compostas ou validação transacional equivalente. organizationId vindo da URL só se torna contexto depois de validar Membership. Autor e permissões nunca vêm de campos confiados do body.
 
@@ -570,7 +552,7 @@ Caso de uso depende de UnitOfWork que fornece repositories e audit/outbox no mes
 
 Eventos externos e envio de e-mail ocorrem após commit através de outbox e jobs idempotentes. Não fazer chamadas de rede longas dentro da transação. Retentativas de conflito devem ser limitadas e seguras. Prisma não oferece isolamento de tenant automaticamente. Se adicionar RLS, configurar contexto por transação, testar pooling e usar papel sem bypass.
 
-Prisma tem diferenças entre versões principais. No bootstrap, fixar uma única versão suportada de ORM/CLI/client/adapter, registrar em ADR e usar os comandos e artefatos dessa mesma versão. Este PRD não mistura comandos antigos de migrate com APIs de versões novas. Scripts do pacote database abstraem db:generate, db:validate, db:migrate:dev e db:migrate:deploy; os comandos internos devem ser os oficialmente documentados para a versão fixada. [A9, A10]
+Prisma tem diferenças entre versões principais. No bootstrap, fixar uma única versão suportada de ORM/CLI/client/adapter, registrar em ADR e usar os comandos e artefatos dessa mesma versão. Este PRD não mistura comandos antigos de migrate com APIs de versões novas. Scripts do app API abstraem db:generate, db:validate, db:migrate:dev e db:migrate:deploy; os comandos internos devem ser os oficialmente documentados para a versão fixada. [A9, A10]
 
 Migrações são versionadas, revisadas, ensaiadas em banco temporário e executadas uma vez pelo job de release. É proibido usar sincronização destrutiva de schema, reset, seed real ou migração de desenvolvimento em produção. Evoluções incompatíveis usam expandir/migrar/contrair, mantendo compatibilidade entre releases. Seeds só usam dados sintéticos. SQL manual, quando necessário, é parametrizado, revisado e permanece na infraestrutura/migração.
 
@@ -601,17 +583,17 @@ Versões exatas e compatibilidades são fixadas no bootstrap; não instalar paco
 
 ### 7.11 Tarefas, cache e pipeline
 
-| Script/tarefa                                 | Comportamento obrigatório                                                        |
-| --------------------------------------------- | -------------------------------------------------------------------------------- |
-| pnpm dev                                      | turbo run dev; tarefas persistentes, sem cache                                   |
-| pnpm build                                    | turbo run build; depende do build dos pacotes consumidos e da geração necessária |
-| pnpm lint e pnpm typecheck                    | Verificações em todos os pacotes relevantes                                      |
-| pnpm architecture:check                       | dependency-cruiser e regras de fronteira; falha bloqueia merge                   |
-| pnpm test:unit                                | Suítes puras e componentes; cache apenas se herméticas                           |
-| pnpm test:integration                         | Banco temporário, Nest/Prisma e HTTP; sem cache por padrão                       |
-| pnpm test:e2e                                 | Web/API em execução com dados sintéticos; sem cache                              |
-| pnpm --filter @soe/database db:generate       | Geração do client com a versão fixada, antes dos builds dependentes              |
-| pnpm --filter @soe/database db:migrate:deploy | Job exclusivo de release; sem cache; não faz parte de build                      |
+| Script/tarefa                            | Comportamento obrigatório                                                        |
+| ---------------------------------------- | -------------------------------------------------------------------------------- |
+| pnpm dev                                 | turbo run dev; tarefas persistentes, sem cache                                   |
+| pnpm build                               | turbo run build; depende do build dos pacotes consumidos e da geração necessária |
+| pnpm lint e pnpm typecheck               | Verificações em todos os pacotes relevantes                                      |
+| pnpm architecture:check                  | dependency-cruiser e regras de fronteira; falha bloqueia merge                   |
+| pnpm test:unit                           | Suítes puras e componentes; cache apenas se herméticas                           |
+| pnpm test:integration                    | Banco temporário, Nest/Prisma e HTTP; sem cache por padrão                       |
+| pnpm test:e2e                            | Web/API em execução com dados sintéticos; sem cache                              |
+| pnpm --filter @soe/api db:generate       | Geração do client com a versão fixada, antes dos builds dependentes              |
+| pnpm --filter @soe/api db:migrate:deploy | Job exclusivo de release; sem cache; não faz parte de build                      |
 
 Configurar outputs reais por pacote em turbo.json, incluindo artefatos de geração quando cacheáveis. A geração que depender de ambiente/conexão deve ser não cacheável. Não presumir o diretório de saída do Start: usar o emitido pela configuração escolhida. Dependências de build usam o grafo do workspace, inclusive ^build quando aplicável. Variáveis que alteram artefatos entram no hash; segredos, .env, relatórios com dados pessoais e logs sensíveis nunca entram no cache remoto. [A11]
 
@@ -844,10 +826,10 @@ Comandos iniciais de resolução, para executar somente após validar os manifes
 
 ```sh
 pnpm --filter @soe/api add --save-exact @nestjs/throttler @nestjs/terminus nestjs-zod @nestjs/swagger
-pnpm --filter @soe/backend add --save-exact pino nestjs-pino pino-http
-pnpm --filter @soe/backend add -D --save-exact pino-pretty
-pnpm --filter @soe/test-utils add -D --save-exact testcontainers @testcontainers/postgresql
-pnpm --filter @soe/backend add --save-exact @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/sdk-metrics @opentelemetry/auto-instrumentations-node @opentelemetry/exporter-trace-otlp-http @opentelemetry/exporter-metrics-otlp-http
+pnpm --filter @soe/api add --save-exact pino nestjs-pino pino-http
+pnpm --filter @soe/api add -D --save-exact pino-pretty
+pnpm --filter @soe/api add -D --save-exact testcontainers @testcontainers/postgresql
+pnpm --filter @soe/api add --save-exact @opentelemetry/api @opentelemetry/sdk-node @opentelemetry/sdk-metrics @opentelemetry/auto-instrumentations-node @opentelemetry/exporter-trace-otlp-http @opentelemetry/exporter-metrics-otlp-http
 ```
 
 Zod deve estar declarado em @soe/contracts; declarar também nos demais pacotes se houver import direto. Mesma regra para dependências e peers de qualquer adapter. pino-pretty é exclusivo de desenvolvimento. Sentry e CASL não entram no comando obrigatório: seguir seus guias condicionais.
@@ -856,28 +838,28 @@ Zod deve estar declarado em @soe/contracts; declarar também nos demais pacotes 
 
 Os caminhos abaixo refinam o mapa existente; criar arquivos com responsabilidade real e testes correspondentes, sem pastas vazias.
 
-| Caminho                                                             | Responsabilidade                                                     |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| apps/api/src/common/rate-limit/                                     | Configuração e guards de rate limiting                               |
-| apps/api/src/common/pipes/                                          | Validação de contratos HTTP                                          |
-| apps/api/src/common/filters/                                        | Conversão de erros em respostas seguras                              |
-| apps/api/src/health/                                                | Controllers e composição de health checks                            |
-| apps/api/src/openapi/                                               | Geração e publicação controlada do OpenAPI                           |
-| apps/api/src/instrumentation.ts                                     | Entrada de telemetria carregada antes do bootstrap da API            |
-| apps/worker/src/instrumentation.ts                                  | Entrada de telemetria carregada antes do bootstrap do worker         |
-| packages/backend/src/platform/logging/                              | Configuração Pino, serializers e redaction                           |
-| packages/backend/src/platform/telemetry/                            | Inicialização OTel, instrumentação permitida e ciclo de encerramento |
-| packages/backend/src/platform/error-reporting/                      | Adapter opcional de erros para Sentry                                |
-| packages/backend/src/modules/identity/application/ports/            | Porta de autorização independente da biblioteca                      |
-| packages/backend/src/modules/identity/infrastructure/authorization/ | Adapter CASL, se adotado                                             |
-| packages/contracts/src/                                             | Schemas públicos Zod, sem imports de Nest, Swagger ou Prisma         |
-| packages/test-utils/src/postgres/                                   | Ciclo de vida do banco temporário, sem importar código dos apps      |
-| infra/otel-collector.yaml                                           | Recepção, saneamento, limites e exportação da telemetria             |
-| docs/runbooks/observability.md                                      | Como investigar erros, lentidão e falhas de jobs                     |
+| Caminho                                                     | Responsabilidade                                                     |
+| ----------------------------------------------------------- | -------------------------------------------------------------------- |
+| apps/api/src/common/rate-limit/                             | Configuração e guards de rate limiting                               |
+| apps/api/src/common/pipes/                                  | Validação de contratos HTTP                                          |
+| apps/api/src/common/filters/                                | Conversão de erros em respostas seguras                              |
+| apps/api/src/health/                                        | Controllers e composição de health checks                            |
+| apps/api/src/openapi/                                       | Geração e publicação controlada do OpenAPI                           |
+| apps/api/src/instrumentation.ts                             | Entrada de telemetria carregada antes do bootstrap da API            |
+| apps/worker/src/instrumentation.ts                          | Entrada de telemetria carregada antes do bootstrap do worker         |
+| apps/api/src/platform/logging/                              | Configuração Pino, serializers e redaction                           |
+| apps/api/src/platform/telemetry/                            | Inicialização OTel, instrumentação permitida e ciclo de encerramento |
+| apps/api/src/platform/error-reporting/                      | Adapter opcional de erros para Sentry                                |
+| apps/api/src/modules/identity/application/ports/            | Porta de autorização independente da biblioteca                      |
+| apps/api/src/modules/identity/infrastructure/authorization/ | Adapter CASL, se adotado                                             |
+| packages/contracts/src/                                     | Schemas públicos Zod, sem imports de Nest, Swagger ou Prisma         |
+| apps/api/tests/support/                                     | Ciclo de vida do banco temporário, sem importar código dos apps      |
+| infra/otel-collector.yaml                                   | Recepção, saneamento, limites e exportação da telemetria             |
+| docs/runbooks/observability.md                              | Como investigar erros, lentidão e falhas de jobs                     |
 
 Domain e application não importam SDKs, Nest, Pino, Sentry ou CASL. Telemetria fica em adapters, decorators externos e composição. Só criar porta de logging/telemetria na application quando existir uma necessidade concreta do caso de uso. Preferir instrumentar sua chamada externamente. Eventos de auditoria de negócio continuam persistidos separadamente; logs e traces não substituem auditoria.
 
-Aplicar as regras de imports no dependency-cruiser, incluindo bloqueio de @soe/backend e dependências server-only no web. Expor factories por exports públicos do pacote backend. Nenhum app importa outro app.
+Aplicar as regras de imports no dependency-cruiser, incluindo bloqueio de @soe/api e dependências server-only no web. Expor factories por exports públicos do pacote backend. Nenhum app importa outro app.
 
 ### 16.4 Rate limiting com @nestjs/throttler
 
@@ -933,7 +915,7 @@ Aceite: requisição e job têm correlação rastreável; logs seguem JSON váli
 
 Finalidade: executar testes contra uma instância temporária real de PostgreSQL. Fonte: [B6].
 
-Implementação no SOE: disponibilizar Docker ou runtime compatível localmente e no CI. Fixar imagem PostgreSQL compatível com produção. Criar helper em @soe/test-utils para iniciar container, aguardar prontidão e entregar URL ao runner. O helper não importa Prisma nem apps; a suíte consumidora gera o cliente, executa migrações e instancia os adapters reais do seu pacote.
+Implementação no SOE: disponibilizar Docker ou runtime compatível localmente e no CI. Fixar imagem PostgreSQL compatível com produção. Criar helper em @soe/api para iniciar container, aguardar prontidão e entregar URL ao runner. O helper não importa Prisma nem apps; a suíte consumidora gera o cliente, executa migrações e instancia os adapters reais do seu pacote.
 
 Nunca executar migração/reset em URL obtida de ambiente de produção. Passar a URL do container explicitamente e validar ambiente de teste. Isolar suites por banco/schema ou container; não executar suites paralelas sobre a mesma fixture mutável. Encerrar cliente/pools antes de parar container, inclusive em falhas. Não usar sleep fixo como prontidão.
 

@@ -48,31 +48,12 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
             aria-busy={checking}
             className="mt-6"
           >
-            {checking ? (
-              <p className="text-muted">Verificando a conexão…</p>
-            ) : healthy ? (
-              <>
-                <p className="flex items-center gap-3 font-semibold text-positive">
-                  <CircleCheck aria-hidden="true" className="size-5 shrink-0" />
-                  Conexão verificada
-                </p>
-                <p className="mt-3 leading-relaxed text-muted">
-                  {result.data.sample}
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="flex items-center gap-3 font-semibold text-negative">
-                  <CircleAlert aria-hidden="true" className="size-5 shrink-0" />
-                  Não foi possível verificar a conexão
-                </p>
-                <p className="mt-3 leading-relaxed text-muted">
-                  {result.isPaused
-                    ? "Sem conexão com a rede. Reconecte para verificar novamente."
-                    : "Confira se os serviços locais estão disponíveis e tente novamente."}
-                </p>
-              </>
-            )}
+            <ConnectionResult
+              checking={checking}
+              healthy={healthy}
+              paused={result.isPaused}
+              sample={result.data?.sample}
+            />
           </div>
           <div className="mt-8">
             <Button
@@ -94,5 +75,42 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
         </aside>
       </main>
     </div>
+  );
+}
+
+function ConnectionResult({
+  checking,
+  healthy,
+  paused,
+  sample,
+}: {
+  checking: boolean;
+  healthy: boolean;
+  paused: boolean;
+  sample: string | undefined;
+}) {
+  if (checking) return <p className="text-muted">Verificando a conexão…</p>;
+  if (healthy)
+    return (
+      <>
+        <p className="flex items-center gap-3 font-semibold text-positive">
+          <CircleCheck aria-hidden="true" className="size-5 shrink-0" />
+          Conexão verificada
+        </p>
+        <p className="mt-3 leading-relaxed text-muted">{sample}</p>
+      </>
+    );
+  let message =
+    "Confira se os serviços locais estão disponíveis e tente novamente.";
+  if (paused)
+    message = "Sem conexão com a rede. Reconecte para verificar novamente.";
+  return (
+    <>
+      <p className="flex items-center gap-3 font-semibold text-negative">
+        <CircleAlert aria-hidden="true" className="size-5 shrink-0" />
+        Não foi possível verificar a conexão
+      </p>
+      <p className="mt-3 leading-relaxed text-muted">{message}</p>
+    </>
   );
 }

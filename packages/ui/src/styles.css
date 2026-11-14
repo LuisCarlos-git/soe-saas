@@ -9,6 +9,10 @@
   --color-control: #64748b;
   --color-positive: #166534;
   --color-positive-surface: #dcfce7;
+  --color-info: #1d4ed8;
+  --color-info-surface: #dbeafe;
+  --color-warning: #92400e;
+  --color-warning-surface: #fef3c7;
   --color-negative: #b91c1c;
   --color-negative-surface: #fee2e2;
 }

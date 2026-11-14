@@ -1,20 +1,14 @@
 import { Module, type DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TerminusModule } from "@nestjs/terminus";
-import {
-  EnvironmentModule,
-  CurrentIdentity,
-  createAuthentication,
-  httpLoggerOptions,
-  type parseConfiguration,
-} from "@soe/backend";
 import { LoggerModule } from "nestjs-pino";
 import type { DestinationStream } from "pino";
-import { EnvironmentController } from "./environment.controller.js";
-import { HealthController } from "./health.controller.js";
-
-import { IdentityController } from "./identity.controller.js";
-
+import { parseConfiguration } from "./shared/config";
+import { httpLoggerOptions } from "./shared/logging";
+import { DatabaseModule } from "./infrastructure/database/database.module";
+import { EnvironmentModule } from "./modules/environment/environment.module";
+import { IdentityModule } from "./modules/identity/identity.module";
+import { HealthController } from "./health.controller";
 @Module({})
 export class AppModule {
   static configure(
@@ -22,33 +16,21 @@ export class AppModule {
     destination?: DestinationStream,
   ): DynamicModule {
     const logger = httpLoggerOptions(config.LOG_LEVEL);
+    let pinoHttp:
+      | ReturnType<typeof httpLoggerOptions>
+      | [ReturnType<typeof httpLoggerOptions>, DestinationStream] = logger;
+    if (destination) pinoHttp = [logger, destination];
     return {
       module: AppModule,
       imports: [
         ConfigModule.forRoot({ ignoreEnvFile: true, load: [() => config] }),
-        EnvironmentModule.forRoot(config.DATABASE_URL),
+        DatabaseModule.forRoot(config.DATABASE_URL),
+        EnvironmentModule,
+        IdentityModule.forRoot(config),
         TerminusModule.forRoot({ logger: false }),
-        LoggerModule.forRoot({
-          pinoHttp: destination ? [logger, destination] : logger,
-        }),
+        LoggerModule.forRoot({ pinoHttp }),
       ],
-      providers: [
-        {
-          provide: "AUTHENTICATION",
-          useFactory: () => createAuthentication(config),
-        },
-        {
-          provide: CurrentIdentity,
-          inject: ["AUTHENTICATION"],
-          useFactory: (auth: ReturnType<typeof createAuthentication>) =>
-            new CurrentIdentity(auth.sessions),
-        },
-      ],
-      controllers: [
-        EnvironmentController,
-        HealthController,
-        IdentityController,
-      ],
+      controllers: [HealthController],
     };
   }
 }

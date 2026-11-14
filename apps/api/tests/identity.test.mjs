@@ -1,6 +1,6 @@
 import { beforeAll, afterAll, test, expect } from "@jest/globals";
 import request from "supertest";
-import { startTestPostgres } from "@soe/test-utils";
+import { startTestPostgres } from "./support/postgres.mjs";
 import { migrateTestDatabase } from "../../../scripts/migrate-test-database.mjs";
 let database, app;
 beforeAll(async () => {
@@ -13,7 +13,8 @@ beforeAll(async () => {
     LOG_LEVEL: "silent",
   });
   await app.init();
-  const { provisionTestIdentities } = await import("@soe/backend");
+  const { provisionTestIdentities } =
+    await import("../dist/cli/synthetic-identities.js");
   await provisionTestIdentities(database.url, "test");
   await provisionTestIdentities(database.url, "test");
 });
@@ -194,7 +195,8 @@ test("produção exige HTTPS e segredo próprio; cookie é Secure e nunca retorn
 });
 
 test("provisionamento local recusa produção e bancos fora do Compose", async () => {
-  const { provisionDevelopmentIdentities } = await import("@soe/backend");
+  const { provisionDevelopmentIdentities } =
+    await import("../dist/cli/synthetic-identities.js");
   for (const [url, environment] of [
     ["postgresql://soe:unused@127.0.0.1:54329/soe_dev", "production"],
     ["postgresql://soe:unused@remote.example:54329/soe_dev", "development"],

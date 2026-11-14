@@ -8,3 +8,5 @@ export function Button(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     />
   );
 }
+
+export { Toaster, toast } from "./components/sonner.js";

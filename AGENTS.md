@@ -32,3 +32,11 @@ Antes de classificar tickets, leia `docs/agents/triage-labels.md`.
 
 Layout single-context. Antes de explorar o domínio,
 leia `docs/agents/domain.md`.
+
+## Arquitetura atual
+
+Antes de alterar backend, testes, persistência ou fronteiras, leia
+`docs/adr/0003-api-local-backend.md`. A decisão aprovada substitui os mapas
+antigos do PRD: backend exclusivo em `apps/api`; packages apenas independentes
+ou compartilháveis. Domain/repositories/use-cases são puros; factories compõem
+adapters. Para erros da API no web, usar o Toaster Sonner global com richColors.

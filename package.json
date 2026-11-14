@@ -25,8 +25,6 @@
     "tsx": "4.23.15",
     "@types/node": "26.6.6",
     "@soe/eslint-config": "workspace:*",
-    "@soe/test-utils": "workspace:*",
-    "@soe/backend": "workspace:*",
     "@soe/contracts": "workspace:*",
     "@jest/globals": "30.5.2"
   },
@@ -40,11 +38,11 @@
     "format:check": "prettier --check .",
     "architecture:check": "node scripts/architecture-check.mjs",
     "test:unit": "vitest run",
-    "test:integration": "turbo run build --filter=@soe/api --filter=@soe/test-utils && node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.integration.config.cjs --runInBand",
+    "test:integration": "turbo run build --filter=@soe/api && node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.integration.config.cjs --runInBand",
     "test:e2e": "playwright test",
-    "db:generate": "pnpm --filter @soe/database db:generate",
-    "db:migrate:deploy": "pnpm --filter @soe/database db:migrate:deploy",
+    "db:generate": "pnpm --filter @soe/api db:generate",
+    "db:migrate:deploy": "pnpm --filter @soe/api db:migrate:deploy",
     "bundle:check": "node scripts/check-client-bundle.mjs",
-    "dev:seed": "node --env-file=.env scripts/seed-development.mjs"
+    "dev:seed": "node scripts/seed-development.mjs"
   }
 }

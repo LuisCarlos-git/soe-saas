@@ -9,17 +9,15 @@ export function AccountPage({ api }: { api: ApiClient }) {
   const client = useQueryClient();
   const router = useRouter();
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
   async function logout() {
     setPending(true);
-    setError("");
     try {
       await api.logout();
       await client.cancelQueries();
       client.clear();
       await router.navigate({ to: "/login" });
     } catch {
-      setError("Não foi possível encerrar a sessão. Tente novamente.");
+      // The HTTP client reports errors through the global toast adapter.
     } finally {
       setPending(false);
     }
@@ -54,11 +52,6 @@ export function AccountPage({ api }: { api: ApiClient }) {
             <a className="underline" href="/login">
               Entrar novamente
             </a>
-          </p>
-        )}
-        {error && (
-          <p role="alert" className="mt-4 text-negative">
-            {error}
           </p>
         )}
       </div>

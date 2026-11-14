@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
@@ -6,26 +5,18 @@ import { Button } from "@soe/ui";
 import type { ApiClient } from "@soe/api-client";
 
 export function LoginPage({ api }: { api: ApiClient }) {
-  const [error, setError] = useState("");
   const client = useQueryClient();
   const router = useRouter();
   const form = useForm({
     defaultValues: { email: "", password: "" },
     onSubmit: async ({ value }) => {
-      setError("");
       try {
         await api.login(value);
         await client.cancelQueries();
         client.clear();
         await router.navigate({ to: "/account" });
-      } catch (failure) {
-        setError(
-          failure instanceof TypeError
-            ? "Sem conexão com o serviço. Verifique a rede e tente novamente."
-            : failure instanceof Error
-              ? failure.message
-              : "Não foi possível entrar. Tente novamente.",
-        );
+      } catch {
+        // The HTTP client reports errors through the global toast adapter.
       }
     },
   });
@@ -82,7 +73,6 @@ export function LoginPage({ api }: { api: ApiClient }) {
                 <input
                   id="password"
                   name="password"
-                  aria-describedby={error ? "login-error" : undefined}
                   type="password"
                   autoComplete="current-password"
                   required
@@ -95,11 +85,7 @@ export function LoginPage({ api }: { api: ApiClient }) {
               </div>
             )}
           </form.Field>
-          {error && (
-            <p id="login-error" role="alert" className="text-negative">
-              {error}
-            </p>
-          )}
+
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(pending) => (
               <Button type="submit" disabled={pending}>

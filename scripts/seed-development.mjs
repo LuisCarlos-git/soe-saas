@@ -1,8 +1,7 @@
-import { provisionDevelopmentIdentities } from "@soe/backend";
-await provisionDevelopmentIdentities(
-  process.env.DATABASE_URL ?? "",
-  process.env.NODE_ENV ?? "",
+import { spawnSync } from "node:child_process";
+const result = spawnSync(
+  process.execPath,
+  ["--env-file=.env", "apps/api/dist/cli/seed-development.js"],
+  { stdio: "inherit" },
 );
-console.log(
-  "Contas sintéticas locais preparadas: ana@example.test e bia@example.test. Limite de tentativas reiniciado.",
-);
+process.exit(result.status ?? 1);

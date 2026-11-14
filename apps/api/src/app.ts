@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { parseConfiguration, createAuthentication } from "@soe/backend";
+import { parseConfiguration } from "./shared/config";
+import type { createAuthentication } from "./modules/identity/factories/authentication.factory";
+import { AUTHENTICATION } from "./modules/identity/identity.module";
 import { Logger } from "nestjs-pino";
 import {
   ZodValidationPipe,
@@ -10,12 +12,12 @@ import {
 } from "nestjs-zod";
 import helmet from "helmet";
 import express from "express";
-import { authenticationHandler } from "./authentication-handler.js";
+import { authenticationHandler } from "./modules/identity/http/authentication-handler";
 import type { DestinationStream } from "pino";
-import { AppModule } from "./app.module.js";
-import { documentAuthentication } from "./openapi-authentication.js";
-import { LoginRequest, SafeErrorResponse } from "./transport.dto.js";
-import { SafeErrorFilter } from "./error.filter.js";
+import { AppModule } from "./app.module";
+import { documentAuthentication } from "./modules/identity/http/openapi-authentication";
+import { LoginRequest, SafeErrorResponse } from "./common/dto/transport.dto";
+import { SafeErrorFilter } from "./common/filters/safe-error.filter";
 
 export async function createApi(
   input: unknown,
@@ -32,7 +34,7 @@ export async function createApi(
   app.use(express.json({ limit: "16kb" }));
   app.use(
     authenticationHandler(
-      app.get<ReturnType<typeof createAuthentication>>("AUTHENTICATION"),
+      app.get<ReturnType<typeof createAuthentication>>(AUTHENTICATION),
       config,
       (event) => app.get(Logger).log(event),
     ),

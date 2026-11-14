@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
+import { Toaster } from "@soe/ui";
 import stylesheet from "../styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -43,6 +44,7 @@ function Document({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <Toaster />
         <Scripts />
       </body>
     </html>

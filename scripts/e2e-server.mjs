@@ -1,11 +1,12 @@
 import { spawn } from "node:child_process";
-import { startTestPostgres } from "@soe/test-utils";
+import { startTestPostgres } from "../apps/api/tests/support/postgres.mjs";
 import { migrateTestDatabase } from "./migrate-test-database.mjs";
 
 const database = await startTestPostgres();
 try {
   migrateTestDatabase(database.url);
-  const { provisionTestIdentities } = await import("@soe/backend");
+  const { provisionTestIdentities } =
+    await import("../apps/api/dist/cli/synthetic-identities.js");
   await provisionTestIdentities(database.url, "test");
 } catch (error) {
   await database.stop();
