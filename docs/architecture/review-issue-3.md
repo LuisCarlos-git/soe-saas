@@ -19,3 +19,24 @@ Browser: entrada inválida/válida, duas identidades em contextos independentes,
 ## Limites operacionais
 
 Os processos continuam locais conforme bootstrap. Rate limiting agrega tráfego no IP do socket da borda; configuração de outra topologia exige teste de confiança do proxy. Não há contas na migração nem endpoint de seed: fixtures só no banco temporário. A auditoria é persistida por trigger na mesma transação da sessão. Dados reais, implantação pública, MFA e permissões escolares permanecem dependentes das entregas e validações próprias. Ver [compatibilidade](backend-tooling.md), [ADR](../adr/0002-backend-session-authority.md) e [runbook](../runbooks/authentication.md).
+
+## Checks executados
+
+- `pnpm format:check`, `pnpm lint`, `pnpm typecheck`: aprovados.
+- `pnpm architecture:check`: aprovado, incluindo três fixtures negativas rejeitadas.
+- `pnpm build` e `pnpm bundle:check`: aprovados; após a organização final do módulo, build da API e do web repetidos e aprovados.
+- `pnpm test:unit`: 1 teste aprovado.
+- `pnpm test:integration`: 13 testes aprovados, PostgreSQL temporário com migrations reais.
+- `pnpm test:e2e`: 4 jornadas aprovadas (diagnóstico e autenticação em desktop/celular). Após acrescentar falhas de conexão à jornada de autenticação, o arquivo específico passou novamente nos dois projetos.
+- `git diff --check`: aprovado.
+
+A expectativa antiga de OpenAPI foi ajustada para permitir o campo de entrada `password` no contrato de login, mantendo os schemas de saúde sem campos pessoais/credenciais. A verificação do cookie Secure considera os atributos reais do provedor; valores de credenciais não são gravados em artefatos versionados. Esses resultados são locais; não representam execução do CI remoto.
+
+## Revisão independente
+
+A skill code-review foi executada com dois agentes em contextos novos, ambos somente de leitura, sobre `git diff d5e1645...a154f84`.
+
+- Standards: nenhum achado acionável de violação documentada ou smell relevante.
+- Spec: nenhum requisito ausente/parcial, escopo adicional ou defeito confirmado no recorte aprovado.
+
+Os revisores inspecionaram o código e a evidência; não repetiram os testes. A limitação do ingress local foi mantida explícita e não foi tratada como autorização para outra topologia ou dados reais.
