@@ -57,3 +57,24 @@ outputs, lint, tipos, integração e E2E foram repetidos com sucesso.
 A entrega verifica somente conteúdo sintético global e health; não implementa
 escolas, sessões, permissões escolares ou auditoria de estudantes. Essas entregas
 têm tickets próprios. Não autoriza dados reais, contratação ou produção.
+
+## Revisão posterior — 14 de novembro de 2026
+
+Uma nova revisão identificou um P2 no caminho de JSON malformado: o parser pode
+rejeitar o corpo antes de o Pino criar a correlação, fazendo o próprio filtro
+lançar ZodError e retornar HTML. O teste HTTP reproduziu a falha antes da correção.
+
+O filtro agora valida a correlação existente e gera UUID seguro quando ausente,
+mantendo o mesmo identificador no header e no envelope. Payload excessivo também
+preserva HTTP 413 com mensagem segura, e o OpenAPI documenta essa resposta.
+
+Foram acrescentados testes de JSON malformado (400), corpo excessivo (413) e um
+processo isolado que verifica stderr vazio com logs desabilitados, sem stack ou
+conteúdo sensível e sem mocks do logger. Os testes individuais demonstraram
+falha antes das correções e sucesso depois.
+
+Verificação final desta atualização: lint, formatação, typecheck da API,
+arquitetura e seus três testes negativos aprovados; 1 teste unitário, 7 de
+integração HTTP/PostgreSQL e 2 jornadas Playwright aprovados. Os dois revisores
+reavaliaram o delta e confirmaram a resolução, sem novos achados materiais de
+Standards ou Spec. Nenhuma execução remota de CI ou push foi realizada.

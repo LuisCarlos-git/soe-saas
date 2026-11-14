@@ -2,6 +2,8 @@ import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import request from "supertest";
 import { startTestPostgres } from "@soe/test-utils";
 import { migrateTestDatabase } from "../../../scripts/migrate-test-database.mjs";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 describe("percurso público com PostgreSQL real", () => {
   let database;
@@ -52,6 +54,9 @@ describe("percurso público com PostgreSQL real", () => {
     expect(
       document.paths["/api/v1/environment"].get.responses["400"],
     ).toBeDefined();
+    expect(
+      document.paths["/api/v1/environment"].get.responses["413"],
+    ).toBeDefined();
     expect(document.paths["/health/ready"].get.responses["503"]).toBeDefined();
     expect(
       Object.keys(document.components.schemas.HealthResponse_Output.properties),
@@ -82,6 +87,82 @@ describe("percurso público com PostgreSQL real", () => {
       lines.some((line) => line.correlationId === result.body.correlationId),
     ).toBe(true);
     expect(logs.join("")).not.toContain("PRIVATE_");
+  });
+  test("JSON malformado retorna erro seguro com correlação antes do logger de requisição", async () => {
+    const result = await request(app.getHttpServer())
+      .get("/api/v1/environment")
+      .set("Content-Type", "application/json")
+      .set("x-correlation-id", "PRIVATE_CORRELATION")
+      .send('{"probe":"PRIVATE_REPORT"');
+    expect(result.status).toBe(400);
+    expect(result.headers["content-type"]).toMatch(/application\/json/);
+    expect(result.body).toEqual({
+      code: "INVALID_INPUT",
+      message: "Parâmetros inválidos.",
+      correlationId: expect.stringMatching(/^[0-9a-f-]{36}$/),
+    });
+    expect(result.headers["x-correlation-id"]).toBe(result.body.correlationId);
+    expect(result.headers["cache-control"]).toBe("no-store");
+    expect(JSON.stringify(result.body)).not.toMatch(/PRIVATE_|stack|ZodError/);
+    expect(logs.join("")).not.toContain("PRIVATE_");
+  });
+  test("payload excessivo retorna 413 com envelope seguro sem refletir o conteúdo", async () => {
+    const result = await request(app.getHttpServer())
+      .get("/api/v1/environment")
+      .set("Content-Type", "application/json")
+      .send(
+        JSON.stringify({ probe: `PRIVATE_REPORT_${"x".repeat(128 * 1024)}` }),
+      );
+    expect(result.status).toBe(413);
+    expect(result.headers["content-type"]).toMatch(/application\/json/);
+    expect(result.body).toEqual({
+      code: "INVALID_INPUT",
+      message: "Corpo da requisição excede o limite permitido.",
+      correlationId: expect.stringMatching(/^[0-9a-f-]{36}$/),
+    });
+    expect(result.headers["x-correlation-id"]).toBe(result.body.correlationId);
+    expect(result.headers["cache-control"]).toBe("no-store");
+    expect(JSON.stringify(result.body)).not.toMatch(/PRIVATE_|stack|ZodError/);
+    expect(logs.join("")).not.toContain("PRIVATE_");
+  });
+  test("erros do parser não escrevem stack ou conteúdo sensível no stderr", async () => {
+    const script = `
+      import { createApi } from './apps/api/dist/app.js';
+      import request from 'supertest';
+      const app = await createApi(process.env);
+      try {
+        await app.init();
+        const responses = [];
+        for (const body of ['{"probe":"PRIVATE_REPORT"', JSON.stringify({ probe: 'PRIVATE_REPORT_' + 'x'.repeat(128 * 1024) })]) {
+          const response = await request(app.getHttpServer()).get('/api/v1/environment')
+            .set('Content-Type', 'application/json').send(body).timeout(2000);
+          responses.push({ status: response.status, body: response.body });
+        }
+        process.stdout.write(JSON.stringify(responses));
+      } finally { await app.close(); }
+    `;
+    const { stdout, stderr } = await promisify(execFile)(
+      process.execPath,
+      ["--input-type=module", "-e", script],
+      {
+        env: {
+          ...process.env,
+          DATABASE_URL: database.url,
+          NODE_ENV: "test",
+          LOG_LEVEL: "silent",
+        },
+        timeout: 15_000,
+      },
+    );
+    expect(stderr).toBe("");
+    expect(stdout).not.toContain("PRIVATE_");
+    const responses = JSON.parse(stdout);
+    expect(responses.map((response) => response.status)).toEqual([400, 413]);
+    expect(
+      responses.every((response) =>
+        /^[0-9a-f-]{36}$/.test(response.body.correlationId),
+      ),
+    ).toBe(true);
   });
   test("liveness continua disponível e readiness falha com timeout curto quando PostgreSQL para", async () => {
     database.pause();

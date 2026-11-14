@@ -4,6 +4,7 @@ import { environmentQuerySchema, environmentSchema } from "@soe/contracts";
 import { createZodDto, ZodResponse } from "nestjs-zod";
 import {
   ApiBadRequestResponse,
+  ApiPayloadTooLargeResponse,
   ApiServiceUnavailableResponse,
 } from "@nestjs/swagger";
 import { SafeErrorResponse } from "./transport.dto.js";
@@ -21,6 +22,7 @@ export class EnvironmentController {
   @Header("Cache-Control", "no-store")
   @ZodResponse({ type: EnvironmentResponse, status: 200 })
   @ApiBadRequestResponse({ type: SafeErrorResponse })
+  @ApiPayloadTooLargeResponse({ type: SafeErrorResponse })
   @ApiServiceUnavailableResponse({ type: SafeErrorResponse })
   get(@Query() _query: EnvironmentQuery) {
     void _query;
