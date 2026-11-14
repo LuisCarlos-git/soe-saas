@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// System-level synthetic fixture; no school or personal data is permitted.
+model EnvironmentProbe {
+  id String @id
+  sample String
+  @@map("environment_probe")
+}

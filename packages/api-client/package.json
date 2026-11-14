@@ -1,0 +1,25 @@
+{
+  "name": "@soe/api-client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@soe/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@soe/typescript-config": "workspace:*",
+    "typescript": "6.0.3",
+    "eslint": "10.14.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  }
+}

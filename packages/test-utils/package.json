@@ -1,0 +1,26 @@
+{
+  "name": "@soe/test-utils",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {},
+  "devDependencies": {
+    "@soe/typescript-config": "workspace:*",
+    "@testcontainers/postgresql": "12.2.1",
+    "testcontainers": "12.2.1",
+    "@types/node": "26.6.6",
+    "typescript": "6.0.3",
+    "eslint": "10.14.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  }
+}

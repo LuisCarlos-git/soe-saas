@@ -1,3 +1,12 @@
 packages:
   - "apps/*"
   - "packages/*"
+allowBuilds:
+  "@parcel/watcher": true
+  "@prisma/engines": true
+  "@scarf/scarf": false
+  cpu-features: false
+  esbuild: true
+  prisma: true
+  protobufjs: false
+  ssh2: false

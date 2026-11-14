@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "@soe/ui/styles.css";
+@source '../../../../packages/ui/src';
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+    color-scheme: light;
+  }
+  body {
+    margin: 0;
+  }
+  ::selection {
+    background: #ccfbf1;
+    color: #0f172a;
+  }
+  :focus-visible {
+    outline: 2px solid #0f766e;
+    outline-offset: 4px;
+  }
+}

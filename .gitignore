@@ -36,3 +36,11 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Generated clients and browser evidence
+packages/database/src/generated/
+apps/web/.tanstack/
+playwright-report/
+test-results/
+.taste-skill/
+.impeccable/

@@ -1,0 +1,291 @@
+{
+  "repository": "LuisCarlos-git/soe-saas",
+  "parent": 1,
+  "tickets": {
+    "1": {
+      "number": 2,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/2",
+      "title": "[Core 01] Primeiro percurso Start → NestJS → PostgreSQL",
+      "blockedBy": [],
+      "nativeLinksVerified": true
+    },
+    "2": {
+      "number": 3,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/3",
+      "title": "[Core 02] Entrar e encerrar sessão",
+      "blockedBy": [2],
+      "nativeLinksVerified": true
+    },
+    "3": {
+      "number": 4,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/4",
+      "title": "[Core 03] Proteger acessos privilegiados com MFA",
+      "blockedBy": [3],
+      "nativeLinksVerified": true
+    },
+    "4": {
+      "number": 5,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/5",
+      "title": "[Core 04] Provisionar uma escola piloto",
+      "blockedBy": [3],
+      "nativeLinksVerified": true
+    },
+    "5": {
+      "number": 6,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/6",
+      "title": "[Core 05] Convidar profissionais e atribuir papéis",
+      "blockedBy": [5],
+      "nativeLinksVerified": true
+    },
+    "6": {
+      "number": 7,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/7",
+      "title": "[Core 06] Escolher e trocar a escola ativa",
+      "blockedBy": [6],
+      "nativeLinksVerified": true
+    },
+    "7": {
+      "number": 8,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/8",
+      "title": "[Core 07] Cadastrar e localizar estudantes",
+      "blockedBy": [5],
+      "nativeLinksVerified": true
+    },
+    "8": {
+      "number": 9,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/9",
+      "title": "[Core 08] Manter turmas e matrículas por período",
+      "blockedBy": [8],
+      "nativeLinksVerified": true
+    },
+    "9": {
+      "number": 10,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/10",
+      "title": "[Core 09] Validar e visualizar uma importação CSV",
+      "blockedBy": [9],
+      "nativeLinksVerified": true
+    },
+    "10": {
+      "number": 11,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/11",
+      "title": "[Core 10] Confirmar e reconciliar a importação",
+      "blockedBy": [10],
+      "nativeLinksVerified": true
+    },
+    "11": {
+      "number": 12,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/12",
+      "title": "[Core 11] Corrigir duplicidade cadastral com assistência",
+      "blockedBy": [9],
+      "nativeLinksVerified": true
+    },
+    "12": {
+      "number": 13,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/13",
+      "title": "[Core 12] Designar concessores e administrar concessões restritas",
+      "blockedBy": [4, 6],
+      "nativeLinksVerified": true
+    },
+    "13": {
+      "number": 14,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/14",
+      "title": "[Core 13] Configurar a operação de triagem",
+      "blockedBy": [13],
+      "nativeLinksVerified": true
+    },
+    "14": {
+      "number": 15,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/15",
+      "title": "[Core 14] Registrar situação e consultar o próprio envio",
+      "blockedBy": [8, 14],
+      "nativeLinksVerified": true
+    },
+    "15": {
+      "number": 16,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/16",
+      "title": "[Core 15] Assumir e encerrar uma triagem sem acompanhamento",
+      "blockedBy": [15],
+      "nativeLinksVerified": true
+    },
+    "16": {
+      "number": 17,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/17",
+      "title": "[Core 16] Abrir acompanhamento a partir da triagem",
+      "blockedBy": [16],
+      "nativeLinksVerified": true
+    },
+    "17": {
+      "number": 18,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/18",
+      "title": "[Core 17] Vincular registro a acompanhamento existente",
+      "blockedBy": [17],
+      "nativeLinksVerified": true
+    },
+    "18": {
+      "number": 19,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/19",
+      "title": "[Core 18] Reclassificar proteção e revogar acesso ao relato",
+      "blockedBy": [17],
+      "nativeLinksVerified": true
+    },
+    "19": {
+      "number": 20,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/20",
+      "title": "[Core 19] Atribuir uma providência interna",
+      "blockedBy": [17],
+      "nativeLinksVerified": true
+    },
+    "20": {
+      "number": 21,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/21",
+      "title": "[Core 20] Enviar devolutiva ou registrar impedimento",
+      "blockedBy": [20],
+      "nativeLinksVerified": true
+    },
+    "21": {
+      "number": 22,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/22",
+      "title": "[Core 21] Revisar devolutivas e solicitar complementação",
+      "blockedBy": [21],
+      "nativeLinksVerified": true
+    },
+    "22": {
+      "number": 23,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/23",
+      "title": "[Core 22] Reatribuir e cancelar providências",
+      "blockedBy": [20],
+      "nativeLinksVerified": true
+    },
+    "23": {
+      "number": 24,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/24",
+      "title": "[Core 23] Manter próxima ação, espera e replanejamento",
+      "blockedBy": [17],
+      "nativeLinksVerified": true
+    },
+    "24": {
+      "number": 25,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/25",
+      "title": "[Core 24] Concluir e reabrir acompanhamento",
+      "blockedBy": [22, 23, 24],
+      "nativeLinksVerified": true
+    },
+    "25": {
+      "number": 26,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/26",
+      "title": "[Core 25] Cancelar acompanhamento preservando suas providências",
+      "blockedBy": [23, 24],
+      "nativeLinksVerified": true
+    },
+    "26": {
+      "number": 27,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/27",
+      "title": "[Core 26] Acompanhar vários estudantes sem compartilhar relatos indevidos",
+      "blockedBy": [18, 19],
+      "nativeLinksVerified": true
+    },
+    "27": {
+      "number": 28,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/28",
+      "title": "[Core 27] Registrar atendimentos e contatos familiares",
+      "blockedBy": [17],
+      "nativeLinksVerified": true
+    },
+    "28": {
+      "number": 29,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/29",
+      "title": "[Core 28] Acompanhar encaminhamento externo",
+      "blockedBy": [24],
+      "nativeLinksVerified": true
+    },
+    "29": {
+      "number": 30,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/30",
+      "title": "[Core 29] Desativar e reativar vínculos com regularização de pendências",
+      "blockedBy": [16, 19, 23, 24],
+      "nativeLinksVerified": true
+    },
+    "30": {
+      "number": 31,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/31",
+      "title": "[Core 30] Enviar e acessar anexos protegidos",
+      "blockedBy": [19],
+      "nativeLinksVerified": true
+    },
+    "31": {
+      "number": 32,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/32",
+      "title": "[Core 31] Compartilhar anexos específicos em uma atribuição",
+      "blockedBy": [20, 31],
+      "nativeLinksVerified": true
+    },
+    "32": {
+      "number": 33,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/33",
+      "title": "[Core 32] Receber notificações de atribuição e devolutiva",
+      "blockedBy": [21],
+      "nativeLinksVerified": true
+    },
+    "33": {
+      "number": 34,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/34",
+      "title": "[Core 33] Receber alertas de prazos e revisões vencidas",
+      "blockedBy": [14, 24, 33],
+      "nativeLinksVerified": true
+    },
+    "34": {
+      "number": 35,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/35",
+      "title": "[Core 34] Consultar painel operacional e filtros conciliáveis",
+      "blockedBy": [20, 24],
+      "nativeLinksVerified": true
+    },
+    "35": {
+      "number": 36,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/36",
+      "title": "[Core 35] Exportar CSV operacional autorizado",
+      "blockedBy": [35],
+      "nativeLinksVerified": true
+    },
+    "36": {
+      "number": 37,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/37",
+      "title": "[Core 36] Gerar PDF individual com prévia e seleção de seções",
+      "blockedBy": [27, 36],
+      "nativeLinksVerified": true
+    },
+    "37": {
+      "number": 38,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/38",
+      "title": "[Core 37] Consultar a auditoria com autorização própria",
+      "blockedBy": [19],
+      "nativeLinksVerified": true
+    },
+    "38": {
+      "number": 39,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/39",
+      "title": "[Core 38] Expirar arquivos e remover temporários com controle",
+      "blockedBy": [31, 36, 37],
+      "nativeLinksVerified": true
+    },
+    "39": {
+      "number": 40,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/40",
+      "title": "[Core 39] Investigar uma operação e seu job por correlação",
+      "blockedBy": [33],
+      "nativeLinksVerified": true
+    },
+    "40": {
+      "number": 41,
+      "url": "https://github.com/LuisCarlos-git/soe-saas/issues/41",
+      "title": "[Core 40] Demonstrar prontidão para o piloto real",
+      "blockedBy": [
+        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+        22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+        40
+      ],
+      "nativeLinksVerified": true
+    }
+  },
+  "parentContentStateLabelsUnchanged": true
+}
