@@ -52,10 +52,14 @@ test("spinners e livro acompanham a operação real, respeitando movimento reduz
   await expect(book.locator("svg")).toBeVisible();
   await expect(book).toHaveAttribute("data-playing", String(!reduced));
   if (!reduced) {
-    const initial = await book.locator("svg").innerHTML();
-    await expect
-      .poll(() => book.locator("svg").innerHTML(), { timeout: 4000 })
-      .not.toBe(initial);
+    // Observe more than one complete turn: the loader must not pause between tour stops.
+    for (let sample = 0; sample < 12; sample++) {
+      const initial = await book.locator("svg").innerHTML();
+      await expect
+        .poll(() => book.locator("svg").innerHTML(), { timeout: 600 })
+        .not.toBe(initial);
+      await page.waitForTimeout(300);
+    }
   }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
