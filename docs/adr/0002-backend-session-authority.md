@@ -1,0 +1,5 @@
+# Sessões pertencem ao backend NestJS
+
+Adotamos Better Auth 1.7.23 com seu adapter Prisma 1.7.23, Prisma 7.10.1 e NestJS 11.2.10 após validar login, leitura e revogação contra PostgreSQL real. O Start mantém apenas apresentação e encaminhamento de credenciais; não instala outra autenticação. A integração usa o handler oficial em um adapter HTTP com rotas permitidas, preservando os controles de origem e rate limiting do provedor: chamadas server-side `auth.api` não executam esses controles. A consulta de sessão usa a API server-side somente para leitura, com refresh e cache de cookie desabilitados.
+
+Tokens ficam no cookie HttpOnly, com SameSite=Lax e Secure obrigatório em produção. Respostas do handler são normalizadas para corpo vazio, descartando o token que o fornecedor retorna. O frontend recebe somente identificação mínima. Auditoria global de criação/revogação usa trigger PostgreSQL da migração para compartilhar a transação da sessão sem depender de callbacks posteriores ao commit. Membership e concessões escolares permanecem trabalho das próximas fatias; uma sessão válida não concede acesso escolar.

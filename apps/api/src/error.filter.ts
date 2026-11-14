@@ -33,13 +33,15 @@ export class SafeErrorFilter implements ExceptionFilter {
           ? error.getStatus()
           : 500;
     const code =
-      status === 400 || status === 413
-        ? "INVALID_INPUT"
-        : status === 404
-          ? "NOT_FOUND"
-          : status === 503
-            ? "UNAVAILABLE"
-            : "INTERNAL_ERROR";
+      status === 401
+        ? "AUTH_REQUIRED"
+        : status === 400 || status === 413
+          ? "INVALID_INPUT"
+          : status === 404
+            ? "NOT_FOUND"
+            : status === 503
+              ? "UNAVAILABLE"
+              : "INTERNAL_ERROR";
     response.status(status).setHeader("Cache-Control", "no-store");
     response.json(
       errorSchema.parse({

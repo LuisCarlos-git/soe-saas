@@ -61,9 +61,11 @@ describe("percurso público com PostgreSQL real", () => {
     expect(
       Object.keys(document.components.schemas.HealthResponse_Output.properties),
     ).toEqual(["status"]);
-    expect(JSON.stringify(document)).not.toMatch(
-      /responseTime|DATABASE_URL|password/,
-    );
+    // The login request now legitimately documents a password field; health never does.
+    expect(
+      JSON.stringify(document.components.schemas.HealthResponse_Output),
+    ).not.toMatch(/password|email|token/);
+    expect(JSON.stringify(document)).not.toMatch(/responseTime|DATABASE_URL/);
   });
   test("entrada inválida retorna envelope seguro e logs não capturam segredos", async () => {
     const result = await request(app.getHttpServer())

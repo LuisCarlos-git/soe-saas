@@ -16,7 +16,7 @@ module.exports = {
       severity: "error",
       from: { path: "^apps/web/src/" },
       to: {
-        path: "^@soe/(backend|database)$|packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino)/",
+        path: "^@soe/(backend|database)$|packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
       },
     },
     {
