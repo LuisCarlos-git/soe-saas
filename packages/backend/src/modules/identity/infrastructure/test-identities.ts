@@ -2,13 +2,41 @@ import { createDatabase } from "@soe/database";
 import { hashPassword } from "better-auth/crypto";
 import { randomUUID } from "node:crypto";
 
-// No arbitrary credentials and no production mode: only disposable synthetic fixtures.
+// Fixed synthetic identities only; both entrypoints reject production databases.
 export async function provisionTestIdentities(
   url: string,
   environment: string,
 ) {
   if (environment !== "test" || new URL(url).pathname !== "/soe_test")
     throw new Error("Synthetic identities require an isolated test database");
+  await provision(url);
+}
+
+export async function provisionDevelopmentIdentities(
+  url: string,
+  environment: string,
+) {
+  const target = new URL(url);
+  if (
+    environment !== "development" ||
+    target.hostname !== "127.0.0.1" ||
+    target.port !== "54329" ||
+    target.pathname !== "/soe_dev" ||
+    target.username !== "soe"
+  )
+    throw new Error(
+      "Synthetic identities require the local development database",
+    );
+  await provision(url);
+  const database = createDatabase(url);
+  try {
+    await database.rateLimit.deleteMany();
+  } finally {
+    await database.$disconnect();
+  }
+}
+
+async function provision(url: string) {
   const database = createDatabase(url);
   try {
     for (const [name, email] of [
@@ -16,21 +44,31 @@ export async function provisionTestIdentities(
       ["Bia Teste", "bia@example.test"],
     ]) {
       if (!name || !email) continue;
-      const id = randomUUID();
-      await database.user.create({
-        data: {
-          id,
-          name,
-          email,
-          accounts: {
-            create: {
+      const password = await hashPassword("12345678");
+      await database.$transaction(async (transaction) => {
+        const user = await transaction.user.upsert({
+          where: { email },
+          update: {},
+          create: { id: randomUUID(), name, email },
+        });
+        const account = await transaction.account.findFirst({
+          where: { userId: user.id, providerId: "credential" },
+        });
+        if (account)
+          await transaction.account.update({
+            where: { id: account.id },
+            data: { password },
+          });
+        else
+          await transaction.account.create({
+            data: {
               id: randomUUID(),
               providerId: "credential",
-              accountId: id,
-              password: await hashPassword("Synthetic-only-123!"),
+              accountId: user.id,
+              userId: user.id,
+              password,
             },
-          },
-        },
+          });
       });
     }
   } finally {

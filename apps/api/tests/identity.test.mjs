@@ -15,6 +15,7 @@ beforeAll(async () => {
   await app.init();
   const { provisionTestIdentities } = await import("@soe/backend");
   await provisionTestIdentities(database.url, "test");
+  await provisionTestIdentities(database.url, "test");
 });
 afterAll(async () => {
   await app?.close();
@@ -33,7 +34,7 @@ test("entrar permite leitura mínima; sair revoga inclusive o cookie copiado", a
   const login = await request(app.getHttpServer())
     .post("/api/auth/sign-in/email")
     .set("Origin", "http://127.0.0.1:43120")
-    .send({ email: "ana@example.test", password: "Synthetic-only-123!" });
+    .send({ email: "ana@example.test", password: "12345678" });
   expect(login.status).toBe(204);
   expect(login.text).toBe("");
   expect(login.headers["cache-control"]).toBe("no-store");
@@ -65,7 +66,7 @@ test("entrar permite leitura mínima; sair revoga inclusive o cookie copiado", a
 });
 
 test("origem não confiável e cadastro público são bloqueados", async () => {
-  const input = { email: "ana@example.test", password: "Synthetic-only-123!" };
+  const input = { email: "ana@example.test", password: "12345678" };
   for (const origin of ["https://attacker.example", "null"]) {
     const result = await request(app.getHttpServer())
       .post("/api/auth/sign-in/email")
@@ -166,7 +167,7 @@ test("produção exige HTTPS e segredo próprio; cookie é Secure e nunca retorn
       .post("/api/auth/sign-in/email")
       .set("Origin", "https://soe.example.test")
       .set("Authorization", "PRIVATE_TOKEN")
-      .send({ email: "ana@example.test", password: "Synthetic-only-123!" });
+      .send({ email: "ana@example.test", password: "12345678" });
     expect(response.status).toBe(204);
     expect(response.headers["set-cookie"].join(" ")).toMatch(
       /__Secure-soe\.session_token=.*; HttpOnly; Secure; SameSite=Lax/i,
@@ -185,9 +186,21 @@ test("produção exige HTTPS e segredo próprio; cookie é Secure e nunca retorn
     ).toBeDefined();
     const serialized = logs.join("");
     expect(serialized).not.toMatch(
-      /Synthetic-only-123|ana@example|PRIVATE_TOKEN|session_token/,
+      /12345678|ana@example|PRIVATE_TOKEN|session_token/,
     );
   } finally {
     await production.close();
   }
+});
+
+test("provisionamento local recusa produção e bancos fora do Compose", async () => {
+  const { provisionDevelopmentIdentities } = await import("@soe/backend");
+  for (const [url, environment] of [
+    ["postgresql://soe:unused@127.0.0.1:54329/soe_dev", "production"],
+    ["postgresql://soe:unused@remote.example:54329/soe_dev", "development"],
+    ["postgresql://soe:unused@127.0.0.1:54329/real", "development"],
+  ])
+    await expect(
+      provisionDevelopmentIdentities(url, environment),
+    ).rejects.toThrow("local development database");
 });

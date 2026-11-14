@@ -44,6 +44,7 @@
     "test:e2e": "playwright test",
     "db:generate": "pnpm --filter @soe/database db:generate",
     "db:migrate:deploy": "pnpm --filter @soe/database db:migrate:deploy",
-    "bundle:check": "node scripts/check-client-bundle.mjs"
+    "bundle:check": "node scripts/check-client-bundle.mjs",
+    "dev:seed": "node --env-file=.env scripts/seed-development.mjs"
   }
 }

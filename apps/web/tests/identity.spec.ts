@@ -19,7 +19,7 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
   await expect(page.getByRole("alert")).toContainText(
     "E-mail ou senha inválidos",
   );
-  await page.getByLabel("Senha", { exact: true }).fill("Synthetic-only-123!");
+  await page.getByLabel("Senha", { exact: true }).fill("12345678");
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
     path: `test-results/login-${test.info().project.name}.png`,
@@ -32,9 +32,7 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
     const second = await other.newPage();
     await second.goto("/login");
     await second.getByLabel("E-mail", { exact: true }).fill("bia@example.test");
-    await second
-      .getByLabel("Senha", { exact: true })
-      .fill("Synthetic-only-123!");
+    await second.getByLabel("Senha", { exact: true }).fill("12345678");
     await second.getByRole("button", { name: "Entrar", exact: true }).click();
     await expect(second.getByText("Bia Teste", { exact: true })).toBeVisible();
     const [firstHtml, secondHtml] = await Promise.all([
@@ -47,9 +45,7 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
     expect(ana).not.toContain("Bia Teste");
     expect(bia).toContain("Bia Teste");
     expect(bia).not.toContain("Ana Teste");
-    expect(ana + bia).not.toMatch(
-      /Synthetic-only-123|session_token|AUTH_SECRET/,
-    );
+    expect(ana + bia).not.toMatch(/12345678|session_token|AUTH_SECRET/);
     expect(firstHtml.headers()["cache-control"]).toBe("no-store");
     expect(
       await page.evaluate(() => ({
