@@ -6,7 +6,7 @@ export function BookIllustration({ play = false }: { play?: boolean }) {
   useEffect(() => {
     let disposed = false;
     let cleanup: (() => void) | undefined;
-    void import("./book-runtime.js").then(({ createBookFigure }) => {
+    void import("@soe/ui/book-runtime").then(({ createBookFigure }) => {
       if (disposed || !host.current) return;
       const figure = createBookFigure(host.current, { play, theme: "light" });
       cleanup = () => figure.destroy();

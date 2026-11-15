@@ -19,7 +19,7 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
       <header className="border-b border-rule bg-surface">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-5 sm:px-8">
           <span className="text-xl font-semibold tracking-tight">SOE</span>
-          <span className="text-sm text-muted">
+          <span className="text-sm text-muted-foreground">
             Ambiente de desenvolvimento
           </span>
         </div>
@@ -31,7 +31,7 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
         <h1 className="text-3xl font-semibold tracking-tight">
           Verificação do ambiente
         </h1>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
           Confirme que a aplicação consegue consultar um registro sintético.
           Esta verificação não acessa informações de estudantes.
         </p>
@@ -62,12 +62,12 @@ export function EnvironmentPage({ api }: { api: ApiClient }) {
                 void result.refetch();
               }}
             >
-              {!checking && <RefreshCw aria-hidden="true" className="size-4" />}
+              <RefreshCw aria-hidden="true" className="size-4" />
               Verificar novamente
             </Button>
           </div>
         </section>
-        <aside className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
+        <aside className="mt-8 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           <p>
             Use apenas dados sintéticos neste ambiente. O acesso por escolas e
             as permissões de acompanhamento serão entregues nas próximas etapas.
@@ -89,7 +89,8 @@ function ConnectionResult({
   paused: boolean;
   sample: string | undefined;
 }) {
-  if (checking) return <p className="text-muted">Verificando a conexão…</p>;
+  if (checking)
+    return <p className="text-muted-foreground">Verificando a conexão…</p>;
   if (healthy)
     return (
       <>
@@ -97,7 +98,7 @@ function ConnectionResult({
           <CircleCheck aria-hidden="true" className="size-5 shrink-0" />
           Conexão verificada
         </p>
-        <p className="mt-3 leading-relaxed text-muted">{sample}</p>
+        <p className="mt-3 leading-relaxed text-muted-foreground">{sample}</p>
       </>
     );
   let message =
@@ -110,7 +111,7 @@ function ConnectionResult({
         <CircleAlert aria-hidden="true" className="size-5 shrink-0" />
         Não foi possível verificar a conexão
       </p>
-      <p className="mt-3 leading-relaxed text-muted">{message}</p>
+      <p className="mt-3 leading-relaxed text-muted-foreground">{message}</p>
     </>
   );
 }

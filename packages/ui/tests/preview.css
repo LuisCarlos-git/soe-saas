@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "../src/styles.css";
+@import "../src/styles/motion.css";
+@source "../src";
+@source "./preview.tsx";
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}

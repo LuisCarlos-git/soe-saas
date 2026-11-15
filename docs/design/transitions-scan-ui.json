@@ -1,0 +1,810 @@
+{
+  "version": "0.11.2",
+  "score": 74,
+  "grade": "janky",
+  "scannedFiles": 85,
+  "findings": [
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 185,
+      "recipe": "panel-reveal",
+      "related": [],
+      "message": "Hand-rolled panel reveal. The transitions.dev Panel reveal recipe: 400ms in, 350ms out, smooth ease-out."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 205,
+      "recipe": "tooltip",
+      "related": [],
+      "message": "Hand-rolled tooltip. The transitions.dev Tooltip open/close recipe: 80ms intent delay, 150ms in, 50ms out, scale from 0.98."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 212,
+      "recipe": "accordion",
+      "related": [],
+      "message": "Hand-rolled accordion expand. The transitions.dev Accordion expand recipe: 250ms in, smooth ease-out, grid-rows height."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 221,
+      "recipe": "accordion",
+      "related": [],
+      "message": "Hand-rolled accordion expand. The transitions.dev Accordion expand recipe: 250ms in, smooth ease-out, grid-rows height."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 227,
+      "recipe": "tabs-sliding",
+      "related": [],
+      "message": "Hand-rolled tabs sliding. The transitions.dev Tabs sliding recipe: 250ms in, smooth ease-out."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 231,
+      "recipe": "checkbox-check",
+      "related": [],
+      "message": "Hand-rolled checkbox check. The transitions.dev Checkbox check recipe: 150ms in, smooth ease-out."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 235,
+      "recipe": "checkbox-check",
+      "related": [],
+      "message": "Hand-rolled checkbox check. The transitions.dev Checkbox check recipe: 150ms in, smooth ease-out."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 240,
+      "recipe": "toggle",
+      "related": [],
+      "message": "Hand-rolled toggle. The transitions.dev Toggle recipe: 350ms in."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 244,
+      "recipe": "skeleton-reveal",
+      "related": [],
+      "message": "Hand-rolled skeleton loader and reveal. The transitions.dev Skeleton loader and reveal recipe fits: A placeholder that loads then reveals real content: list rows, cards, profile headers."
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/drawer.tsx",
+      "line": 34,
+      "recipe": "panel-reveal",
+      "message": "panel reveal backdrop open: 150ms -> 400ms (var(--duration-slow))",
+      "usage": "panel reveal backdrop open",
+      "from": "150ms",
+      "to": "400ms (var(--duration-slow))",
+      "related": []
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/drawer.tsx",
+      "line": 34,
+      "recipe": "panel-reveal",
+      "message": "panel reveal backdrop close: 150ms -> 350ms (var(--duration-medium))",
+      "usage": "panel reveal backdrop close",
+      "from": "150ms",
+      "to": "350ms (var(--duration-medium))",
+      "related": []
+    },
+    {
+      "rule": "recipe-mismatch",
+      "severity": "major",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 76,
+      "recipe": "menu-dropdown",
+      "related": [
+        "src/primitives/field.tsx",
+        "src/primitives/native-select.tsx",
+        "src/primitives/radio-group.tsx",
+        "src/primitives/scroll-area.tsx",
+        "src/primitives/table.tsx"
+      ],
+      "message": "Dropdown menu appears and disappears with no transition. The transitions.dev Menu dropdown recipe: 250ms in, 150ms out, scale from 0.97, smooth ease-out, grows from its trigger."
+    },
+    {
+      "rule": "recipe-mismatch",
+      "severity": "warn",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 89,
+      "recipe": "menu-dropdown",
+      "related": [],
+      "message": "Dropdown menu grows from its center, not from its trigger. The transitions.dev Menu dropdown recipe: 250ms in, 150ms out, scale from 0.97, smooth ease-out, grows from its trigger."
+    },
+    {
+      "rule": "recipe-available",
+      "severity": "info",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 144,
+      "recipe": "menu-dropdown",
+      "related": [],
+      "message": "Hand-rolled dropdown menu. The transitions.dev Menu dropdown recipe: 250ms in, 150ms out, scale from 0.97, smooth ease-out, grows from its trigger."
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/sheet.tsx",
+      "line": 35,
+      "recipe": "panel-reveal",
+      "message": "panel reveal backdrop open: 150ms -> 400ms (var(--duration-slow))",
+      "usage": "panel reveal backdrop open",
+      "from": "150ms",
+      "to": "400ms (var(--duration-slow))",
+      "related": []
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/sheet.tsx",
+      "line": 35,
+      "recipe": "panel-reveal",
+      "message": "panel reveal backdrop close: 150ms -> 350ms (var(--duration-medium))",
+      "usage": "panel reveal backdrop close",
+      "from": "150ms",
+      "to": "350ms (var(--duration-medium))",
+      "related": []
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/sheet.tsx",
+      "line": 59,
+      "recipe": "panel-reveal",
+      "message": "panel reveal open: 150ms -> 400ms (var(--duration-slow))",
+      "usage": "panel reveal open",
+      "from": "150ms",
+      "to": "400ms (var(--duration-slow))",
+      "related": []
+    },
+    {
+      "rule": "off-scale",
+      "severity": "minor",
+      "path": "src/primitives/sheet.tsx",
+      "line": 59,
+      "recipe": "panel-reveal",
+      "message": "panel reveal close: 150ms -> 350ms (var(--duration-medium))",
+      "usage": "panel reveal close",
+      "from": "150ms",
+      "to": "350ms (var(--duration-medium))",
+      "related": []
+    },
+    {
+      "rule": "untransitioned-overlay",
+      "severity": "major",
+      "path": "src/primitives/command.tsx",
+      "line": 44,
+      "message": "<Dialog> appears and disappears with no enter or exit transition. It pops instead of animating.",
+      "recipe": "modal"
+    }
+  ],
+  "components": [
+    {
+      "recipe": "modal",
+      "name": "Modal backdrop",
+      "tier": "free",
+      "url": "transitions.dev/transitions/modal-open-close",
+      "path": "src/primitives/alert-dialog.tsx",
+      "line": 36,
+      "selector": ".cn(",
+      "status": "matches",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.96,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "modal",
+      "name": "Modal backdrop",
+      "tier": "free",
+      "url": "transitions.dev/transitions/modal-open-close",
+      "path": "src/primitives/dialog.tsx",
+      "line": 37,
+      "selector": ".cn(",
+      "status": "matches",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.96,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "panel-reveal",
+      "name": "Panel reveal backdrop",
+      "tier": "free",
+      "url": "transitions.dev/transitions/panel-reveal",
+      "path": "src/primitives/drawer.tsx",
+      "line": 34,
+      "selector": ".cn(",
+      "status": "off",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": ["open 150ms", "close 150ms"],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 400,
+        "close": 350,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "menu-dropdown",
+      "name": "Dropdown menu",
+      "tier": "free",
+      "url": "transitions.dev/transitions/menu-dropdown",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 76,
+      "selector": ".relative",
+      "status": "mismatch",
+      "usesRecipe": false,
+      "issues": ["appears and disappears with no transition"],
+      "offScale": [],
+      "motion": {
+        "open": null,
+        "close": null,
+        "ease": null,
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.97,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "menu-dropdown",
+      "name": "Dropdown menu",
+      "tier": "free",
+      "url": "transitions.dev/transitions/menu-dropdown",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 89,
+      "selector": ".cn(",
+      "status": "mismatch",
+      "usesRecipe": false,
+      "issues": ["grows from its center, not from its trigger"],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": 0.95,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.97,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "menu-dropdown",
+      "name": "Dropdown menu",
+      "tier": "free",
+      "url": "transitions.dev/transitions/menu-dropdown",
+      "path": "src/primitives/navigation-menu.tsx",
+      "line": 144,
+      "selector": ".cn(",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.97,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "panel-reveal",
+      "name": "Panel reveal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/panel-reveal",
+      "path": "src/primitives/sheet.tsx",
+      "line": 59,
+      "selector": ".cn(",
+      "status": "off",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": ["open 150ms", "close 150ms"],
+      "motion": {
+        "open": 150,
+        "close": 150,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 400,
+        "close": 350,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "modal",
+      "name": "Modal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/modal-open-close",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 83,
+      "selector": ".t-modal",
+      "status": "matches",
+      "usesRecipe": true,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 250,
+        "close": 150,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": 0.96,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.96,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "menu-dropdown",
+      "name": "Dropdown menu",
+      "tier": "free",
+      "url": "transitions.dev/transitions/menu-dropdown",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 83,
+      "selector": ".t-dropdown",
+      "status": "matches",
+      "usesRecipe": true,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 250,
+        "close": 150,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": 0.97,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.97,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "panel-reveal",
+      "name": "Panel reveal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/panel-reveal",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 83,
+      "selector": ".t-panel-slide",
+      "status": "matches",
+      "usesRecipe": true,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 400,
+        "close": 350,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 400,
+        "close": 350,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "accordion",
+      "name": "Accordion expand",
+      "tier": "free",
+      "url": "transitions.dev/transitions/accordion",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 106,
+      "selector": ".t-acc-panel",
+      "status": "matches",
+      "usesRecipe": true,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 250,
+        "close": 250,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 250,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "panel-reveal",
+      "name": "Panel reveal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/panel-reveal",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 185,
+      "selector": "sheet-content",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 400,
+        "close": 350,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 400,
+        "close": 350,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "tooltip",
+      "name": "Tooltip",
+      "tier": "free",
+      "url": "transitions.dev/transitions/tooltip-open-close",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 205,
+      "selector": "tooltip-content",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": 50,
+        "ease": "ease-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 150,
+        "close": 50,
+        "scale": 0.98,
+        "ease": "ease-out"
+      }
+    },
+    {
+      "recipe": "accordion",
+      "name": "Accordion expand",
+      "tier": "free",
+      "url": "transitions.dev/transitions/accordion",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 212,
+      "selector": "accordion-content",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 250,
+        "close": 250,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 250,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "accordion",
+      "name": "Accordion expand",
+      "tier": "free",
+      "url": "transitions.dev/transitions/accordion",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 221,
+      "selector": "collapsible-content",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 250,
+        "close": 250,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 250,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "tabs-sliding",
+      "name": "Tabs sliding",
+      "tier": "free",
+      "url": "transitions.dev/transitions/tabs-sliding",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 227,
+      "selector": "tabs-content",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 250,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "checkbox-check",
+      "name": "Checkbox check",
+      "tier": "free",
+      "url": "transitions.dev/transitions/checkbox-check",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 231,
+      "selector": "checkbox",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 150,
+        "close": 150,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "checkbox-check",
+      "name": "Checkbox check",
+      "tier": "free",
+      "url": "transitions.dev/transitions/checkbox-check",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 235,
+      "selector": "checkbox-indicator",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 150,
+        "close": 150,
+        "scale": null,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "recipe": "toggle",
+      "name": "Toggle",
+      "tier": "free",
+      "url": "transitions.dev/transitions/toggle",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 240,
+      "selector": "switch-thumb",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 350,
+        "close": null,
+        "ease": "cubic-bezier(0.34, 1.35, 0.64, 1)",
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 350,
+        "close": null,
+        "scale": null,
+        "ease": "cubic-bezier(0.34, 1.35, 0.64, 1)"
+      }
+    },
+    {
+      "recipe": "skeleton-reveal",
+      "name": "Skeleton loader and reveal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/skeleton-loader-and-reveal",
+      "path": "src/styles/shadcn-motion.css",
+      "line": 244,
+      "selector": "skeleton",
+      "status": "available",
+      "usesRecipe": false,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": null,
+        "close": null,
+        "ease": null,
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": null,
+        "close": null,
+        "scale": null,
+        "ease": null
+      }
+    },
+    {
+      "recipe": "text-states-swap",
+      "name": "Text states swap",
+      "tier": "free",
+      "url": "transitions.dev/transitions/text-states-swap",
+      "path": "src/styles/transitions.css",
+      "line": 14,
+      "selector": ".t-text-swap",
+      "status": "matches",
+      "usesRecipe": true,
+      "issues": [],
+      "offScale": [],
+      "motion": {
+        "open": 150,
+        "close": null,
+        "ease": "ease-in-out",
+        "scale": null,
+        "exit": true,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 150,
+        "close": 150,
+        "scale": null,
+        "ease": "ease-in-out"
+      }
+    },
+    {
+      "recipe": "modal",
+      "name": "Modal",
+      "tier": "free",
+      "url": "transitions.dev/transitions/modal-open-close",
+      "path": "src/primitives/command.tsx",
+      "line": 44,
+      "selector": null,
+      "status": "mismatch",
+      "usesRecipe": false,
+      "issues": ["appears and disappears with no transition"],
+      "offScale": [],
+      "motion": {
+        "open": null,
+        "close": null,
+        "ease": null,
+        "scale": null,
+        "exit": false,
+        "layout": []
+      },
+      "recipeSpec": {
+        "open": 250,
+        "close": 150,
+        "scale": 0.96,
+        "ease": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    }
+  ],
+  "counts": {
+    "recipe-available": 10,
+    "off-scale": 6,
+    "recipe-mismatch": 2,
+    "untransitioned-overlay": 1
+  },
+  "severities": {
+    "info": 10,
+    "minor": 6,
+    "major": 2,
+    "warn": 1
+  }
+}

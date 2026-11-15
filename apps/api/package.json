@@ -48,7 +48,7 @@
     "lint": "eslint . --max-warnings 0",
     "dev": "tsx watch --include \"src/**/*.ts\" --ignore \"dist/**\" --ignore \".build/**\" --ignore \"**/architecture-negative.ts\" scripts/start-development.mjs",
     "start": "node dist/main.js",
-    "db:generate": "prisma generate",
+    "db:generate": "prisma generate --no-hints",
     "db:validate": "prisma validate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy"

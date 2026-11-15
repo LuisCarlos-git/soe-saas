@@ -1,0 +1,399 @@
+/* Transitions.dev tokens, mapped to shadcn data-slot/data-state below. */
+/* 05-menu-dropdown.md */
+:root {
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 06-modal.md */
+:root {
+  --modal-open-dur: 250ms;
+  --modal-close-dur: 150ms;
+  --modal-scale: 0.96;
+  --modal-scale-close: 0.96;
+  --modal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 07-panel-reveal.md */
+:root {
+  --panel-open-dur: 400ms;
+  --panel-close-dur: 350ms;
+  --panel-translate-y: 100px;
+  --panel-blur: 2px;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 17-tooltip.md */
+:root {
+  --tt-in-dur: 150ms;
+  --tt-out-dur: 50ms;
+  --tt-scale: 0.98;
+  --tt-delay: 80ms;
+  --tt-in-ease: ease-out;
+  --tt-out-ease: ease-out;
+  --tt-move-dur: 160ms;
+  --tt-move-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tt-bg: #ffffff;
+  --tt-fg: var(--color-ink);
+}
+/* 21-accordion.md */
+:root {
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-chevron: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 22-toast.md */
+:root {
+  --toast-open: 350ms;
+  --toast-close: 250ms;
+  --toast-distance: 16px;
+  --toast-blur: 2px;
+  --toast-scale: 0.97;
+  --toast-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 25-checkbox-check.md */
+:root {
+  --check-box: 150ms;
+  --check-draw: 350ms;
+  --check-delay: 0ms;
+  --check-uncheck: 150ms;
+  --check-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 27-toggle.md */
+:root {
+  --toggle-dur: 350ms;
+  --toggle-travel: 14.66px;
+  --toggle-ov1: 1px;
+  --toggle-ov2: 0px;
+  --toggle-track: 0ms;
+  --toggle-ease: cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+/* 14-skeleton-reveal.md */
+:root {
+  --pulse-dur: 1000ms;
+  --pulse-count: 1;
+  --pulse-min: 0.5;
+  --reveal-dur: 400ms;
+  --reveal-blur: 2px;
+  --reveal-ease: ease-in-out;
+}
+
+/* Bridge only state/position: the original recipes remain in surface-recipes.css. */
+.t-modal[data-state="open"],
+.t-dropdown[data-state="open"],
+.t-dropdown[data-open],
+.t-panel-slide[data-state="open"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  filter: blur(0);
+}
+.t-dropdown {
+  transform-origin: var(
+    --radix-popper-transform-origin,
+    var(--transform-origin, top left)
+  );
+}
+.t-dropdown[data-open] {
+  animation: soe-dropdown-enter var(--dropdown-open-dur) var(--dropdown-ease)
+    both;
+}
+.t-dropdown[data-closed] {
+  animation: soe-dropdown-exit var(--dropdown-close-dur) var(--dropdown-ease)
+    both;
+}
+.t-acc[data-state="open"] > .t-acc-panel,
+.t-acc[data-state="open"] > .t-acc-panel > .t-acc-panel-inner {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  filter: blur(0);
+}
+.t-acc[data-state="open"] .t-acc-chevron {
+  transform: scaleY(-1);
+}
+.t-acc-chevron {
+  transition: transform var(--acc-chevron) var(--acc-ease);
+}
+/* Radix owns data-state and presence. These recipe adapters keep its focus,
+   keyboard and exit lifecycle; all distances/easing come from the source tokens. */
+[data-slot]:not([data-slot="field-error"]) {
+  transition-property:
+    color, background-color, border-color, box-shadow, opacity, transform,
+    translate;
+  transition-duration: var(--soe-motion-quick);
+  transition-timing-function: var(--soe-motion-ease);
+}
+:is(
+  [data-slot="dialog-content"],
+  [data-slot="alert-dialog-content"]
+)[data-state="open"] {
+  animation: soe-modal-enter var(--modal-open-dur) var(--modal-ease) both;
+}
+:is(
+  [data-slot="dialog-content"],
+  [data-slot="alert-dialog-content"]
+)[data-state="closed"] {
+  animation: soe-modal-exit var(--modal-close-dur) var(--modal-ease) both;
+}
+:is(
+  [data-slot="dialog-overlay"],
+  [data-slot="alert-dialog-overlay"],
+  [data-slot="sheet-overlay"]
+)[data-state="open"] {
+  animation: soe-overlay-enter var(--modal-open-dur) var(--modal-ease) both;
+}
+:is(
+  [data-slot="dialog-overlay"],
+  [data-slot="alert-dialog-overlay"],
+  [data-slot="sheet-overlay"]
+)[data-state="closed"] {
+  animation: soe-overlay-exit var(--modal-close-dur) var(--modal-ease) both;
+}
+:is(
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"],
+  [data-slot="navigation-menu-content"],
+  [data-slot="navigation-menu-viewport"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"],
+  [data-slot="hover-card-content"]
+)[data-state="open"] {
+  animation: soe-dropdown-enter var(--dropdown-open-dur) var(--dropdown-ease)
+    both;
+}
+:is(
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"],
+  [data-slot="navigation-menu-content"],
+  [data-slot="navigation-menu-viewport"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"],
+  [data-slot="hover-card-content"]
+)[data-state="closed"] {
+  animation: soe-dropdown-exit var(--dropdown-close-dur) var(--dropdown-ease)
+    both;
+}
+[data-slot="sheet-content"] {
+  --soe-panel-direction: 1;
+}
+[data-slot="sheet-content"][data-side="left"] {
+  --soe-panel-direction: -1;
+}
+[data-slot="sheet-content"][data-state="open"] {
+  animation: soe-panel-enter var(--panel-open-dur) var(--panel-ease) both;
+}
+[data-slot="sheet-content"][data-state="closed"] {
+  animation: soe-panel-exit var(--panel-close-dur) var(--panel-ease) both;
+}
+:is([data-slot="sheet-content"])[data-side="top"],
+:is([data-slot="sheet-content"])[data-side="bottom"] {
+  animation-name: soe-overlay-enter;
+}
+:is([data-slot="sheet-content"])[data-side="top"][data-state="closed"],
+:is([data-slot="sheet-content"])[data-side="bottom"][data-state="closed"] {
+  animation-name: soe-overlay-exit;
+}
+[data-slot="tooltip-content"][data-state="delayed-open"],
+[data-slot="tooltip-content"][data-state="instant-open"] {
+  animation: soe-tooltip-enter var(--tt-in-dur) var(--tt-in-ease) both;
+}
+[data-slot="tooltip-content"][data-state="closed"] {
+  animation: soe-dropdown-exit var(--tt-out-dur) var(--tt-out-ease) both;
+}
+[data-slot="accordion-content"][data-state="open"] {
+  animation: soe-accordion-enter var(--acc-expand) var(--acc-ease) both;
+}
+[data-slot="accordion-content"][data-state="closed"] {
+  animation: soe-accordion-exit var(--acc-collapse) var(--acc-ease) both;
+}
+[data-slot="accordion-trigger"] > svg {
+  transition: rotate var(--acc-chevron) var(--acc-ease);
+}
+[data-slot="collapsible-content"][data-state="open"] {
+  animation: soe-collapsible-enter var(--acc-expand) var(--acc-ease) both;
+}
+[data-slot="collapsible-content"][data-state="closed"] {
+  animation: soe-collapsible-exit var(--acc-collapse) var(--acc-ease) both;
+}
+[data-slot="tabs-content"][data-state="active"] {
+  animation: soe-overlay-enter var(--text-swap-dur)
+    var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+[data-slot="checkbox"] {
+  transition-duration: var(--check-box);
+  transition-timing-function: var(--check-ease);
+}
+[data-slot="checkbox-indicator"][data-state="checked"],
+[data-slot="radio-group-indicator"] {
+  animation: soe-overlay-enter var(--duration-quick, 150ms) var(--check-ease)
+    both;
+}
+[data-slot="switch-thumb"] {
+  transition-duration: var(--toggle-dur);
+  transition-timing-function: var(--toggle-ease);
+}
+[data-slot="skeleton"] {
+  animation: soe-skeleton-pulse var(--pulse-dur) var(--reveal-ease) infinite;
+}
+.toaster [data-sonner-toast] {
+  transition-duration: var(--toast-open);
+  transition-timing-function: var(--toast-ease);
+}
+.toaster [data-sonner-toast][data-removed="true"] {
+  transition-duration: var(--toast-close);
+}
+
+@keyframes soe-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(var(--modal-scale));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes soe-modal-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(var(--modal-scale-close));
+  }
+}
+@keyframes soe-dropdown-enter {
+  from {
+    opacity: 0;
+    transform: scale(var(--dropdown-pre-scale));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes soe-dropdown-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(var(--dropdown-closing-scale));
+  }
+}
+@keyframes soe-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateX(
+      calc(var(--panel-translate-y) * var(--soe-panel-direction))
+    );
+    filter: blur(var(--panel-blur));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+@keyframes soe-panel-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(
+      calc(var(--panel-translate-y) * var(--soe-panel-direction))
+    );
+    filter: blur(var(--panel-blur));
+  }
+}
+@keyframes soe-overlay-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes soe-overlay-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes soe-tooltip-enter {
+  from {
+    opacity: 0;
+    transform: scale(var(--tt-scale));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes soe-accordion-enter {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+@keyframes soe-accordion-exit {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+@keyframes soe-collapsible-enter {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+@keyframes soe-collapsible-exit {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+@keyframes soe-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: var(--pulse-min);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot],
+  [data-slot]::before,
+  [data-slot]::after,
+  .toaster [data-sonner-toast] {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -66,7 +66,10 @@ module.exports = {
       from: { path: "^(apps|packages)/", pathNot: `^packages/${name}/` },
       to: {
         path: `^packages/${name}/(src|dist)/`,
-        pathNot: `^packages/${name}/(src|dist)/index[.]`,
+        pathNot:
+          name === "ui"
+            ? "^packages/ui/(src|dist)/(index[.]|(primitives|components|hooks|lib)/|illustrations/book/book-runtime[.])"
+            : `^packages/${name}/(src|dist)/index[.]`,
       },
     })),
     {

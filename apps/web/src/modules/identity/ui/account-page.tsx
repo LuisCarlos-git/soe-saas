@@ -33,8 +33,8 @@ export function AccountPage({ api }: { api: ApiClient }) {
             aria-label="Identificação"
           >
             <p className="text-lg font-medium">{data.name}</p>
-            <p className="mt-2 break-all text-muted">{data.email}</p>
-            <p className="my-6 text-muted">
+            <p className="mt-2 break-all text-muted-foreground">{data.email}</p>
+            <p className="my-6 text-muted-foreground">
               O acesso às escolas será disponibilizado nas próximas etapas.
             </p>
             <Button
@@ -43,7 +43,7 @@ export function AccountPage({ api }: { api: ApiClient }) {
                 void logout();
               }}
             >
-              {pending ? "Saindo…" : "Sair"}
+              Sair
             </Button>
           </section>
         ) : (

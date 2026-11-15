@@ -1,4 +1,4 @@
-import { BookIllustration } from "../illustrations/book/book-illustration.js";
+import { BookIllustration } from "../illustrations/book/book-illustration";
 
 export function PageLoading({ visible }: { visible: boolean }) {
   if (!visible) return null;

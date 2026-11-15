@@ -8,6 +8,8 @@ import {
 import type { QueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Toaster } from "@soe/ui";
+import { TooltipProvider } from "@soe/ui/primitives/tooltip";
+import { QueryDevtools } from "../app/query-devtools";
 import { PageNavigation } from "../app/page-navigation";
 import stylesheet from "../styles/app.css?url";
 
@@ -47,8 +49,9 @@ function Document({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
         <Toaster />
+        <QueryDevtools />
         <Scripts />
       </body>
     </html>

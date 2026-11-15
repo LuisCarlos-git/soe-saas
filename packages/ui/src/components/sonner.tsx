@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
-import { Toaster as Sonner, toast } from "sonner";
+import { toast } from "sonner";
+import { Toaster as Sonner } from "../primitives/sonner";
 
 const semanticColors: CSSProperties & Record<`--${string}`, string> = {
   "--error-bg": "var(--color-negative-surface)",

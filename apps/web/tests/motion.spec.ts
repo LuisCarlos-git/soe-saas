@@ -31,7 +31,7 @@ test("spinners e livro acompanham a operação real, respeitando movimento reduz
   await page.getByLabel("E-mail", { exact: true }).fill("ana@example.test");
   await page.getByLabel("Senha", { exact: true }).fill("12345678");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
-  const entering = page.getByRole("button", { name: "Entrando…", exact: true });
+  const entering = page.getByRole("button", { name: "Entrar", exact: true });
   await expect(entering).toBeDisabled();
   await expect(entering).toHaveAttribute("aria-busy", "true");
   await expect(entering.locator("[data-loading-spinner]")).toBeVisible();
@@ -75,7 +75,7 @@ test("spinners e livro acompanham a operação real, respeitando movimento reduz
   await expect(page.getByText("Ana Teste", { exact: true })).toBeVisible();
   await expect(loading).toHaveCount(0);
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  const leaving = page.getByRole("button", { name: "Saindo…", exact: true });
+  const leaving = page.getByRole("button", { name: "Sair", exact: true });
   await expect(leaving.locator("[data-loading-spinner]")).toBeVisible();
   await expect(leaving).toBeDisabled();
   logout.release();

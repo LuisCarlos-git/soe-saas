@@ -13,7 +13,9 @@ export const Route = createFileRoute("/account")({
       <h1 className="text-2xl font-semibold">
         Não foi possível verificar sua sessão
       </h1>
-      <p className="my-4 text-muted">Confira a conexão e tente novamente.</p>
+      <p className="my-4 text-muted-foreground">
+        Confira a conexão e tente novamente.
+      </p>
       <button
         type="button"
         className="min-h-11 rounded-lg bg-primary px-4 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"

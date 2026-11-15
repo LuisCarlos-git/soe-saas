@@ -19,3 +19,8 @@ await writeFile(
   here("../dist/illustrations/book/book-runtime.js"),
   `/*!\n${license}*/\n${kernel}\nlet specification;\nfunction hairline(value) { specification = value; }\n${figure}\n${adapter}`,
 );
+
+await writeFile(
+  here("../dist/illustrations/book/book-runtime.d.ts"),
+  await readFile(here("../src/illustrations/book/book-runtime.d.ts"), "utf8"),
+);
