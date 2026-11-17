@@ -14,7 +14,7 @@ Checks executados nesta revisão:
 - Jornadas web: 12 aprovadas em desktop e celular. Como os servidores de desenvolvimento ocupavam 43120/43121, um harness temporário em `/private/tmp/soe-packages-e2e-1794748293009` executou os mesmos testes e bundles reais em 45120/45121, com PostgreSQL descartável e encaminhamento interno ajustado somente no processo de teste. O harness é local e não integra o repositório; o CI usa a configuração padrão.
 - `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format:check`, `pnpm architecture:check` e `pnpm bundle:check`: aprovados.
 
-Não há lacuna funcional identificada no recorte da issue #3. Permanecem pendentes o CI remoto, a revisão e o merge do PR; estes resultados locais não comprovam execução remota. Implantação pública e dados reais continuam fora desta entrega.
+O primeiro CI remoto identificou uma fixture negativa que dependia do build de `@soe/ui`, ausente nessa etapa do checkout limpo. A fixture passou a importar diretamente o fonte proibido; os imports públicos continuam cobertos pelas fixtures ESLint. Não há lacuna funcional identificada no recorte da issue #3. Permanecem pendentes a repetição do CI remoto, a revisão e o merge do PR. Implantação pública e dados reais continuam fora desta entrega.
 
 Base de revisão confirmada: `d5e1645`. Recorte aprovado: e-mail/senha, erros seguros, identificação mínima e saída. Cadastro público e recuperação de senha ficam fora desta fatia; MFA é #4 e escola ativa é #5.
 

@@ -64,7 +64,7 @@ const fixtures = [
   {
     path: "apps/web/src/architecture-negative.ts",
     source:
-      "import { Checkbox } from '@soe/ui/primitives/checkbox'; console.log(Checkbox);",
+      "import { Checkbox } from '../../../packages/ui/src/primitives/checkbox'; console.log(Checkbox);",
     rule: "web-form-controls-from-package",
   },
 ];
