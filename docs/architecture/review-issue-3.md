@@ -1,5 +1,21 @@
 # Entrega da issue #3 — Entrar e encerrar sessão
 
+## Verificação final — 17/11/2026
+
+Os sete critérios da issue #3 foram confrontados com a implementação atual e as evidências abaixo. A compatibilidade e a autoridade da sessão estão em ADR 0002; persistência, cookies, CSRF, revogação, respostas seguras, auditoria transacional e rate limiting compartilhado são exercitados por HTTP real em `apps/api/tests/identity.test.mjs`. A jornada `apps/web/tests/identity.spec.ts` verifica entrada, duas sessões SSR independentes e saída. As fronteiras seguem ADR 0003.
+
+O login agora consome `@soe/form`: schemas e composição pertencem ao módulo identity; conexão de campos, validação acessível e envio assíncrono são verificados pela interface pública do pacote. O cliente HTTP normaliza JSON inválido, corpo vazio e respostas incompatíveis em `ApiError` seguro com uma única notificação, preservando cancelamentos.
+
+Checks executados nesta revisão:
+
+- `pnpm test:unit`: 24 testes aprovados.
+- `pnpm test:integration`: 14 testes aprovados com PostgreSQL temporário e migrations reais. A primeira execução falhou ao resolver `dist/app.js`; a repetição integral passou. A causa da indisponibilidade transitória do artefato não foi confirmada.
+- `pnpm --filter @soe/form test:browser`: 14 testes aprovados; `pnpm --filter @soe/ui test:browser`: 4 aprovados.
+- Jornadas web: 12 aprovadas em desktop e celular. Como os servidores de desenvolvimento ocupavam 43120/43121, um harness temporário em `/private/tmp/soe-packages-e2e-1794748293009` executou os mesmos testes e bundles reais em 45120/45121, com PostgreSQL descartável e encaminhamento interno ajustado somente no processo de teste. O harness é local e não integra o repositório; o CI usa a configuração padrão.
+- `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format:check`, `pnpm architecture:check` e `pnpm bundle:check`: aprovados.
+
+Não há lacuna funcional identificada no recorte da issue #3. Permanecem pendentes o CI remoto, a revisão e o merge do PR; estes resultados locais não comprovam execução remota. Implantação pública e dados reais continuam fora desta entrega.
+
 Base de revisão confirmada: `d5e1645`. Recorte aprovado: e-mail/senha, erros seguros, identificação mínima e saída. Cadastro público e recuperação de senha ficam fora desta fatia; MFA é #4 e escola ativa é #5.
 
 ## Decisões visuais e referências

@@ -28,6 +28,15 @@ export function createApiClient(
     onError?.(error);
     throw error;
   }
+  function rejectInvalidResponse(status: number): never {
+    return reject(
+      new ApiError(
+        "Não foi possível concluir a solicitação. Tente novamente.",
+        status,
+        "INVALID_RESPONSE",
+      ),
+    );
+  }
   async function send(url: string, options: RequestInit) {
     try {
       return await fetcher(url, {
@@ -48,19 +57,28 @@ export function createApiClient(
   }
   async function check(response: Response) {
     if (response.ok) return;
-    const body: unknown = await response.json().catch(() => null);
+    const body: unknown = await response.json().catch((error: unknown) => {
+      if (error instanceof Error && error.name === "AbortError") throw error;
+      return null;
+    });
     const parsed = errorSchema.safeParse(body);
     if (parsed.success)
       return reject(
         new ApiError(parsed.data.message, response.status, parsed.data.code),
       );
-    return reject(
-      new ApiError(
-        "Não foi possível concluir a solicitação. Tente novamente.",
-        response.status,
-        "INVALID_RESPONSE",
-      ),
-    );
+    return rejectInvalidResponse(response.status);
+  }
+  async function readResponse<T>(
+    response: Response,
+    schema: { parse: (body: unknown) => T },
+  ): Promise<T> {
+    await check(response);
+    try {
+      return schema.parse(await response.json());
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") throw error;
+      return rejectInvalidResponse(response.status);
+    }
   }
   async function identity(signal?: AbortSignal) {
     const headers = new Headers();
@@ -71,8 +89,7 @@ export function createApiClient(
     });
     // Missing session is a normal authentication state, not an error notification.
     if (response.status === 401) return null;
-    await check(response);
-    return identitySchema.parse(await response.json());
+    return readResponse(response, identitySchema);
   }
   async function access(path: string, body: unknown) {
     const response = await send(
@@ -95,8 +112,7 @@ export function createApiClient(
         headers: { Accept: "application/json" },
         ...(signal && { signal }),
       });
-      await check(response);
-      return environmentSchema.parse(await response.json());
+      return readResponse(response, environmentSchema);
     },
   };
 }

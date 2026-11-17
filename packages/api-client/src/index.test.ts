@@ -70,3 +70,85 @@ test("resposta inesperada e falha de rede não refletem conteúdo técnico", asy
     "PRIVATE_",
   );
 });
+
+for (const method of ["identity", "environment"] as const) {
+  test.each([
+    { name: "JSON inválido", body: "PRIVATE_INVALID_JSON" },
+    {
+      name: "schema inválido",
+      body: JSON.stringify({ private: "PRIVATE_DATA" }),
+    },
+    { name: "corpo ausente", body: null },
+  ])(
+    `${method}: HTTP 200 com $name produz um único erro seguro`,
+    async ({ body }) => {
+      const notices: ApiError[] = [];
+      const client = createApiClient(
+        "/api/v1",
+        async () => new Response(body, { status: 200 }),
+        undefined,
+        (error) => notices.push(error),
+      );
+
+      await expect(client[method]()).rejects.toBeInstanceOf(ApiError);
+      expect(notices).toHaveLength(1);
+      expect(notices[0]).toMatchObject({
+        name: "ApiError",
+        status: 200,
+        code: "INVALID_RESPONSE",
+        message: "Não foi possível concluir a solicitação. Tente novamente.",
+      });
+      expect(JSON.stringify(notices)).not.toContain("PRIVATE_");
+    },
+  );
+
+  test.each([200, 503])(
+    `${method}: cancelamento ao ler HTTP %i não notifica`,
+    async (status) => {
+      const notices: ApiError[] = [];
+      const aborted = new DOMException("Leitura cancelada", "AbortError");
+      const client = createApiClient(
+        "/api/v1",
+        async () =>
+          new Response(
+            new ReadableStream({
+              start(controller) {
+                controller.error(aborted);
+              },
+            }),
+            { status },
+          ),
+        undefined,
+        (error) => notices.push(error),
+      );
+
+      await expect(client[method]()).rejects.toBe(aborted);
+      expect(notices).toEqual([]);
+    },
+  );
+}
+
+test.each([
+  {
+    method: "identity" as const,
+    body: { id: "synthetic", name: "Ana Teste", email: "ana@example.test" },
+  },
+  {
+    method: "environment" as const,
+    body: { status: "ok", sample: "Ambiente sintético" },
+  },
+])(
+  "$method retorna a resposta válida sem notificar",
+  async ({ method, body }) => {
+    const notices: ApiError[] = [];
+    const client = createApiClient(
+      "/api/v1",
+      async () => Response.json(body),
+      undefined,
+      (error) => notices.push(error),
+    );
+
+    await expect(client[method]()).resolves.toEqual(body);
+    expect(notices).toEqual([]);
+  },
+);

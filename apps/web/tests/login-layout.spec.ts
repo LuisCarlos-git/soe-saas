@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import type { Route } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test("login preserva formulário responsivo e mostra a cena realista", async ({
@@ -85,4 +86,43 @@ test("validação local aparece sob os campos e falha da API permanece no toast"
     page.locator("[data-sonner-toast][data-type=error][data-rich-colors=true]"),
   ).toBeVisible();
   expect(requests).toBe(1);
+});
+
+test("login aguarda a resposta de autenticação e apresenta sua falha no toast", async ({
+  page,
+}) => {
+  let pendingRoute: Route | undefined;
+  let requests = 0;
+  await page.route("**/api/auth/sign-in/email", (route) => {
+    requests++;
+    pendingRoute = route;
+  });
+  await page.goto("/login");
+  const submit = page.getByRole("button", { name: "Entrar", exact: true });
+  await expect(submit).toBeEnabled();
+  await page.getByLabel("E-mail", { exact: true }).fill("ana@example.test");
+  await page.getByLabel("Senha", { exact: true }).fill("12345678");
+  const submitted = page.waitForRequest("**/api/auth/sign-in/email");
+  await submit.click();
+  await submitted;
+  await expect(submit).toBeDisabled();
+  await expect(submit).toHaveAttribute("aria-busy", "true");
+  await expect(submit.locator("[data-loading-spinner]")).toBeVisible();
+  expect(requests).toBe(1);
+  if (!pendingRoute)
+    throw new Error("A requisição de login não foi interceptada.");
+  await pendingRoute.fulfill({
+    status: 401,
+    contentType: "application/json",
+    body: JSON.stringify({
+      code: "INVALID_CREDENTIALS",
+      message: "E-mail ou senha inválidos",
+      correlationId: "00000000-0000-4000-8000-000000000001",
+    }),
+  });
+  await expect(submit).toBeEnabled();
+  await expect(submit).toHaveAttribute("aria-busy", "false");
+  await expect(
+    page.locator("[data-sonner-toast][data-type=error][data-rich-colors=true]"),
+  ).toBeVisible();
 });

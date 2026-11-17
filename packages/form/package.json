@@ -1,0 +1,44 @@
+{
+  "name": "@soe/form",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@soe/ui": "workspace:*",
+    "@tanstack/react-form": "1.33.5",
+    "react": "19.2.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.0",
+    "@soe/typescript-config": "workspace:*",
+    "@tailwindcss/vite": "4.3.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "esbuild": "0.28.2",
+    "eslint": "10.14.0",
+    "react-dom": "19.2.8",
+    "tailwindcss": "4.3.5",
+    "typescript": "6.0.3",
+    "vite": "8.3.8",
+    "vitest": "5.1.0",
+    "zod": "4.6.7"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./context": {
+      "types": "./dist/context.d.ts",
+      "import": "./dist/context.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && esbuild src/index.ts src/context.ts --outdir=dist --bundle --splitting --format=esm --platform=browser --packages=external --target=es2022 --sourcemap",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test:browser": "playwright test --config playwright.config.ts"
+  }
+}

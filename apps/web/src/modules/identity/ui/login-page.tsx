@@ -1,19 +1,16 @@
-import { useForm } from "@tanstack/react-form";
+import { useAppForm } from "@soe/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useHydrated } from "@tanstack/react-router";
-import { Button, InputField } from "@soe/ui";
 import type { ApiClient } from "@soe/api-client";
-import {
-  validateLoginEmail,
-  validateLoginPassword,
-} from "../model/login-validation";
+import { loginFormOptions } from "../model/login-form-options";
+import { LoginFields } from "./login-fields";
 
 export function LoginPage({ api }: { api: ApiClient }) {
   const hydrated = useHydrated();
   const client = useQueryClient();
   const router = useRouter();
-  const form = useForm({
-    defaultValues: { email: "", password: "" },
+  const form = useAppForm({
+    ...loginFormOptions,
     onSubmit: async ({ value }) => {
       try {
         await api.login(value);
@@ -97,89 +94,22 @@ export function LoginPage({ api }: { api: ApiClient }) {
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Use o acesso fornecido pela equipe responsável.
             </p>
-            <form
-              noValidate
-              method="post"
-              className="mt-8 space-y-6"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void form.handleSubmit();
-              }}
-            >
-              <form.Field
-                name="email"
-                validators={{
-                  onBlur: ({ value }) => validateLoginEmail(value),
-                  onSubmit: ({ value }) => validateLoginEmail(value),
-                  onChange: ({ value, fieldApi }) => {
-                    if (fieldApi.state.meta.errors.length)
-                      return validateLoginEmail(value);
-                    return undefined;
-                  },
+            <form.AppForm>
+              <form
+                noValidate
+                method="post"
+                className="mt-8 space-y-6"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void form.handleSubmit();
                 }}
               >
-                {(field) => (
-                  <InputField
-                    id="email"
-                    name="email"
-                    label="E-mail"
-                    type="email"
-                    autoComplete="username"
-                    required
-                    maxLength={254}
-                    value={field.state.value}
-                    error={Array.from(new Set(field.state.meta.errors)).join(
-                      " ",
-                    )}
-                    onBlur={field.handleBlur}
-                    onChange={(event) => field.handleChange(event.target.value)}
-                  />
-                )}
-              </form.Field>
-              <form.Field
-                name="password"
-                validators={{
-                  onBlur: ({ value }) => validateLoginPassword(value),
-                  onSubmit: ({ value }) => validateLoginPassword(value),
-                  onChange: ({ value, fieldApi }) => {
-                    if (fieldApi.state.meta.errors.length)
-                      return validateLoginPassword(value);
-                    return undefined;
-                  },
-                }}
-              >
-                {(field) => (
-                  <InputField
-                    id="password"
-                    name="password"
-                    label="Senha"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    maxLength={128}
-                    value={field.state.value}
-                    error={Array.from(new Set(field.state.meta.errors)).join(
-                      " ",
-                    )}
-                    onBlur={field.handleBlur}
-                    onChange={(event) => field.handleChange(event.target.value)}
-                  />
-                )}
-              </form.Field>
-
-              <form.Subscribe selector={(state) => state.isSubmitting}>
-                {(pending) => (
-                  <Button
-                    type="submit"
-                    disabled={!hydrated}
-                    loading={pending}
-                    className="w-full"
-                  >
-                    Entrar
-                  </Button>
-                )}
-              </form.Subscribe>
-            </form>
+                <LoginFields form={form} />
+                <form.SubmitButton disabled={!hydrated} className="w-full">
+                  Entrar
+                </form.SubmitButton>
+              </form>
+            </form.AppForm>
             <div className="mt-8 border-t border-rule pt-6">
               <p className="text-sm font-medium text-ink">Precisa de acesso?</p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">

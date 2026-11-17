@@ -16,12 +16,46 @@ import { Dialog, DialogContent, DialogTitle } from "@soe/ui/primitives/dialog";
 import { Card, CardContent } from "@soe/ui/primitives/card";
 ```
 
+Esses imports de controles são internos à implementação do design system e dos
+adapters. Nas telas, todos os componentes de formulário vêm de `@soe/form`,
+incluindo checkbox, textarea, seleção e envio; as regras do guia de form são
+verificadas por lint e dependency-cruiser.
+
 `Button` e `Input` da raiz compõem os respectivos componentes shadcn e preservam
 a identidade SOE. `InputField` reúne Label, Input, ajuda e FieldMessage; este usa
 FieldError do shadcn. O Sonner global compõe a base shadcn com richColors, mensagens
 pt-BR e cores semânticas. TooltipProvider é composto no documento raiz do web.
 Para composição Slot/asChild, a API integral do botão base está disponível em
 `@soe/ui/primitives/button`; o Button com loading da raiz representa ação nativa.
+
+### Validação de formulários
+
+O web declara Zod 4.6.7 diretamente, na mesma versão de `@soe/contracts`.
+Schemas de apresentação ficam em `modules/<feature>/model`, derivados dos
+contratos compartilhados. No login, `loginFormSchema` preserva as restrições do
+contrato e personaliza apenas mensagens pt-BR por clones locais, sem configurar
+estado global do Zod ou alterar a senha digitada.
+
+TanStack Form consome o schema completo diretamente por Standard Schema em
+`validators.onChange`, com `validationLogic: validateOnChangeAndBlur` de
+`@soe/form`. A estratégia revalida no change, no blur e no submit,
+usando um único canal de erros para não manter mensagens antigas após correção.
+Exiba a mensagem quando `field.state.meta.isTouched` for verdadeiro: digitação e
+blur tocam o campo; a tentativa de envio toca todos os campos. Evite ler o estado
+global do formulário dentro de um Field sem uma assinatura reativa correspondente.
+O pacote form conecta TextField ao InputField e SubmitButton ao Button, usando
+`createFormHook`, contextos únicos e assinaturas `useSelector`. O login usa
+`useAppForm`, `AppField`, `AppForm`, `formOptions` e um bloco extraído com `withForm`.
+O formatter aceita strings e issues desconhecidos, removendo mensagens duplicadas.
+Não envie formulários inválidos. Inputs e FieldMessage recebem o resultado;
+o pacote UI não conhece regras dos formulários nem importa form. A validação no
+servidor continua obrigatória, e erros seguros da API permanecem no Sonner global
+com richColors. API, exports, fronteiras e exemplo no
+[guia de @soe/form](../../packages/form/README.md).
+
+Referências: [TanStack Form — validação com schemas](https://tanstack.com/form/latest/docs/framework/react/guides/validation#validation-through-schema-libraries),
+[Zod — clone](https://zod.dev/packages/zod) e
+[personalização de erros](https://zod.dev/error-customization).
 
 As APIs adicionais são exports explícitos de `primitives/*`, `components/*`,
 `hooks/*` e `lib/*`. Não acesse src/dist de outro pacote. O fonte usa imports sem

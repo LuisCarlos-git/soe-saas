@@ -25,6 +25,14 @@ Componentes genéricos partem do shadcn/ui em `@soe/ui`. Nesse pacote, use `cn()
 para classes condicionais e imports sem extensão; consulte
 `docs/architecture/ui-components.md` antes de ampliar o catálogo ou suas transições.
 
+## Formulários
+
+Todos os componentes consumidos pelos formulários vêm de `@soe/form`, incluindo
+checkbox, textarea, seleção e envio. Antes de criar ou alterar campos, leia
+[`packages/form/README.md`](packages/form/README.md): use AppField/AppForm e adicione
+novos adapters ao pacote antes do uso. As primitivas shadcn de `@soe/ui` são a base
+interna; lint e checagens arquiteturais verificam a origem dos controles no web.
+
 ## Agent skills
 
 ### Issue tracker

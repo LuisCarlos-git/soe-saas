@@ -134,11 +134,17 @@ compartilhadas ficam em `packages/ui/src/styles/motion.css` e `packages/ui/src/m
 
 ## Base de componentes e classes
 
-Todos os componentes genéricos partem do **shadcn/ui** e ficam em `@soe/ui`.
+As primitivas visuais partem do **shadcn/ui** e ficam em `@soe/ui`.
 O catálogo oficial está em `packages/ui/src/primitives`; especializações genéricas
 como Button com loading, InputField e FieldMessage ficam em `src/components`,
 compostas sobre essa base. Formulários escolares permanecem nos módulos do web,
 com TanStack Form; regras de negócio não pertencem ao pacote UI.
+
+Todos os controles consumidos por formulários vêm de `@soe/form`, inclusive
+checkbox, textarea, seleção e envio. Sua composição conectada ao TanStack usa
+useAppForm, AppField, AppForm e withForm, reutilizando as primitivas de `@soe/ui`.
+Os schemas e as ações específicas ficam nos módulos do web. Consulte
+[o guia do pacote](packages/form/README.md) para reatividade, validação e extensão.
 
 No fonte de `@soe/ui`, use **cn() de #lib/utils** para classes condicionais e
 combinação com className recebido. Template literals, concatenação e ternários

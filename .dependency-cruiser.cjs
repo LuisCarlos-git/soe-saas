@@ -1,10 +1,19 @@
 const { readdirSync } = require("node:fs");
+const formControls = require("./scripts/form-control-boundaries.cjs");
 const webModules = readdirSync("apps/web/src/modules", { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name);
 
 module.exports = {
   forbidden: [
+    {
+      name: "web-form-controls-from-package",
+      severity: "error",
+      from: { path: "^apps/web/src/" },
+      to: {
+        path: `^packages/ui/(src|dist)/(primitives/(${formControls.primitives.join("|")})|components/(${formControls.components.join("|")}))[.]`,
+      },
+    },
     {
       name: "no-cycles",
       severity: "error",
@@ -49,7 +58,15 @@ module.exports = {
       severity: "error",
       from: { path: "^packages/ui/" },
       to: {
-        path: "^@soe/(backend|database|contracts|api-client)$|^apps/|^packages/(backend|database|contracts|api-client)/",
+        path: "^@soe/(backend|database|contracts|api-client|form)(?:/|$)|^apps/|^packages/(backend|database|contracts|api-client|form)/",
+      },
+    },
+    {
+      name: "neutral-form",
+      severity: "error",
+      from: { path: "^packages/form/" },
+      to: {
+        path: "^apps/|^@soe/(backend|database|contracts|api-client)(?:/|$)|^packages/(backend|database|contracts|api-client)/|/(@nestjs|@prisma|prisma|pg|better-auth)/",
       },
     },
     {
@@ -57,10 +74,10 @@ module.exports = {
       severity: "error",
       from: { path: "^packages/(contracts|api-client)/" },
       to: {
-        path: "^@soe/(backend|database|ui)$|^apps/|^packages/(backend|database|ui)/|/(@nestjs|@prisma|prisma|react|pg)/",
+        path: "^@soe/(backend|database|ui|form)(?:/|$)|^apps/|^packages/(backend|database|ui|form)/|/(@nestjs|@prisma|prisma|react|pg)/",
       },
     },
-    ...["contracts", "api-client", "ui"].map((name) => ({
+    ...["contracts", "api-client", "ui", "form"].map((name) => ({
       name: `no-${name}-internals`,
       severity: "error",
       from: { path: "^(apps|packages)/", pathNot: `^packages/${name}/` },
@@ -69,7 +86,9 @@ module.exports = {
         pathNot:
           name === "ui"
             ? "^packages/ui/(src|dist)/(index[.]|(primitives|components|hooks|lib)/|illustrations/book/book-runtime[.])"
-            : `^packages/${name}/(src|dist)/index[.]`,
+            : name === "form"
+              ? "^packages/form/(src|dist)/(index|context)[.]"
+              : `^packages/${name}/(src|dist)/index[.]`,
       },
     })),
     {

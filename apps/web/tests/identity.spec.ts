@@ -53,7 +53,7 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
     await expect(second.getByText("Bia Teste", { exact: true })).toBeVisible();
     const [firstHtml, secondHtml] = await Promise.all([
       page.context().request.get("/account"),
-      other.request.get("http://127.0.0.1:43120/account"),
+      other.request.get(new URL("/account", second.url()).href),
     ]);
     const ana = await firstHtml.text();
     const bia = await secondHtml.text();

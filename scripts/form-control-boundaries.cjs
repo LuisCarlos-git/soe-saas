@@ -1,0 +1,23 @@
+module.exports = {
+  primitives: [
+    "input",
+    "textarea",
+    "checkbox",
+    "switch",
+    "select",
+    "native-select",
+    "radio-group",
+    "slider",
+    "input-otp",
+    "combobox",
+    "calendar",
+    "form",
+    "field",
+    "label",
+    "input-group",
+    "toggle",
+    "toggle-group",
+  ],
+  components: ["input", "input-field", "field-message"],
+  namedExports: ["Input", "InputField", "FieldMessage"],
+};
