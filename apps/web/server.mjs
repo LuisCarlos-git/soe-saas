@@ -14,13 +14,30 @@ serve({
   ],
   async fetch(request) {
     const url = new URL(request.url);
-    if (url.pathname.startsWith("/api/v1/")) {
+    if (
+      url.pathname.startsWith("/api/v1/") ||
+      url.pathname.startsWith("/api/auth/")
+    ) {
       const upstream = new URL("http://127.0.0.1:43121");
       upstream.pathname = url.pathname;
       upstream.search = url.search;
+      const headers = new Headers({ Accept: "application/json" });
+      for (const name of [
+        "cookie",
+        "origin",
+        "content-type",
+        "sec-fetch-site",
+      ]) {
+        const value = request.headers.get(name);
+        if (value) headers.set(name, value);
+      }
       return fetch(upstream, {
         method: request.method,
-        headers: { Accept: "application/json" },
+        headers,
+        ...(request.method !== "GET" && request.method !== "HEAD"
+          ? { body: request.body, duplex: "half" }
+          : {}),
+        redirect: "manual",
         signal: request.signal,
       });
     }

@@ -12,7 +12,7 @@ export function migrateTestDatabase(url) {
       "Refusing to migrate a database outside the synthetic test fixture.",
     );
   }
-  execFileSync("pnpm", ["--filter", "@soe/database", "db:migrate:deploy"], {
+  execFileSync("pnpm", ["--filter", "@soe/api", "db:migrate:deploy"], {
     cwd: fileURLToPath(new URL("../", import.meta.url)),
     env: { ...process.env, DATABASE_URL: url, NODE_ENV: "test" },
     stdio: "pipe",

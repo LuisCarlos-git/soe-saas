@@ -6,10 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "@soe/database#build": {
-      "dependsOn": ["db:generate"],
-      "outputs": ["dist/**"]
-    },
     "db:generate": {
       "cache": false
     },
@@ -27,8 +23,33 @@
         "API_PORT",
         "API_HOST",
         "LOG_LEVEL",
-        "NODE_ENV"
-      ]
+        "NODE_ENV",
+        "AUTH_SECRET",
+        "AUTH_ORIGIN",
+        "AUTH_RATE_MAX",
+        "AUTH_RATE_WINDOW"
+      ],
+      "dependsOn": ["^build"]
+    },
+    "@soe/api#build": {
+      "dependsOn": ["^build", "db:generate"],
+      "outputs": ["dist/**"]
+    },
+    "@soe/api#dev": {
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": [
+        "DATABASE_URL",
+        "API_PORT",
+        "API_HOST",
+        "LOG_LEVEL",
+        "NODE_ENV",
+        "AUTH_SECRET",
+        "AUTH_ORIGIN",
+        "AUTH_RATE_MAX",
+        "AUTH_RATE_WINDOW"
+      ],
+      "dependsOn": ["^build", "db:generate"]
     }
   }
 }

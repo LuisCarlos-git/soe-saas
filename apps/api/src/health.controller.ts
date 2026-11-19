@@ -8,13 +8,13 @@ import {
 import { HealthCheckService } from "@nestjs/terminus";
 import { ApiServiceUnavailableResponse } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
-import { HealthResponse, SafeErrorResponse } from "./transport.dto.js";
-import { ENVIRONMENT_PROBE, type EnvironmentProbe } from "@soe/backend";
+import { HealthResponse, SafeErrorResponse } from "./common/dto/transport.dto";
+import { CheckReadiness } from "./modules/environment/use-cases/check-readiness.use-case";
 
 @Controller("health")
 export class HealthController {
   constructor(
-    @Inject(ENVIRONMENT_PROBE) private readonly probe: EnvironmentProbe,
+    @Inject(CheckReadiness) private readonly readiness: CheckReadiness,
     @Inject(HealthCheckService) private readonly health: HealthCheckService,
   ) {}
 
@@ -33,7 +33,7 @@ export class HealthController {
     try {
       await this.health.check([
         async () => {
-          if (!(await this.probe.ready()))
+          if (!(await this.readiness.execute()))
             throw new ServiceUnavailableException();
           return { database: { status: "up" } };
         },

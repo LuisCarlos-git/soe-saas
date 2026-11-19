@@ -1,10 +1,19 @@
 const { readdirSync } = require("node:fs");
+const formControls = require("./scripts/form-control-boundaries.cjs");
 const webModules = readdirSync("apps/web/src/modules", { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name);
 
 module.exports = {
   forbidden: [
+    {
+      name: "web-form-controls-from-package",
+      severity: "error",
+      from: { path: "^apps/web/src/" },
+      to: {
+        path: `^packages/ui/(src|dist)/(primitives/(${formControls.primitives.join("|")})|components/(${formControls.components.join("|")}))[.]`,
+      },
+    },
     {
       name: "no-cycles",
       severity: "error",
@@ -16,7 +25,7 @@ module.exports = {
       severity: "error",
       from: { path: "^apps/web/src/" },
       to: {
-        path: "^@soe/(backend|database)$|packages/(backend|database)/|/(@nestjs|@prisma|prisma|pg|pino)/",
+        path: "^apps/api/|^@soe/api(?:/|$)|^@soe/(backend|database)$|/(@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
       },
     },
     {
@@ -26,27 +35,38 @@ module.exports = {
       to: { path: "^apps/" },
     },
     {
-      name: "api-no-database",
-      severity: "error",
-      from: { path: "^apps/api/src/" },
-      to: { path: "^@soe/database$|packages/database/|/(@prisma|prisma|pg)/" },
-    },
-    {
       name: "pure-business",
       severity: "error",
       from: {
-        path: "^packages/backend/src/(modules/[^/]+/(domain|application)|shared/(domain|application))/",
+        path: "^apps/api/src/modules/[^/]+/(domain|repositories|use-cases)/",
       },
       to: {
-        path: "(node_modules/|packages/(database|contracts)/|/(infrastructure|composition)/)",
+        path: "node_modules/|^@|packages/contracts/|/(infrastructure|factories|controllers|http|shared)/|[.]module[.]",
       },
+    },
+    {
+      name: "orm-only-infrastructure",
+      severity: "error",
+      from: {
+        path: "^apps/api/src/",
+        pathNot: "/(infrastructure|factories|cli)/|[.]module[.]ts$",
+      },
+      to: { path: "(@prisma|prisma|/pg/)|/infrastructure/database/" },
     },
     {
       name: "neutral-ui",
       severity: "error",
       from: { path: "^packages/ui/" },
       to: {
-        path: "^@soe/(backend|database|contracts|api-client)$|^apps/|^packages/(backend|database|contracts|api-client)/",
+        path: "^@soe/(backend|database|contracts|api-client|form)(?:/|$)|^apps/|^packages/(backend|database|contracts|api-client|form)/",
+      },
+    },
+    {
+      name: "neutral-form",
+      severity: "error",
+      from: { path: "^packages/form/" },
+      to: {
+        path: "^apps/|^@soe/(backend|database|contracts|api-client)(?:/|$)|^packages/(backend|database|contracts|api-client)/|/(@nestjs|@prisma|prisma|pg|better-auth)/",
       },
     },
     {
@@ -54,23 +74,21 @@ module.exports = {
       severity: "error",
       from: { path: "^packages/(contracts|api-client)/" },
       to: {
-        path: "^@soe/(backend|database|ui)$|^apps/|^packages/(backend|database|ui)/|/(@nestjs|@prisma|prisma|react|pg)/",
+        path: "^@soe/(backend|database|ui|form)(?:/|$)|^apps/|^packages/(backend|database|ui|form)/|/(@nestjs|@prisma|prisma|react|pg)/",
       },
     },
-    ...[
-      "backend",
-      "database",
-      "contracts",
-      "api-client",
-      "ui",
-      "test-utils",
-    ].map((name) => ({
+    ...["contracts", "api-client", "ui", "form"].map((name) => ({
       name: `no-${name}-internals`,
       severity: "error",
       from: { path: "^(apps|packages)/", pathNot: `^packages/${name}/` },
       to: {
         path: `^packages/${name}/(src|dist)/`,
-        pathNot: `^packages/${name}/(src|dist)/index[.]`,
+        pathNot:
+          name === "ui"
+            ? "^packages/ui/(src|dist)/(index[.]|(primitives|components|hooks|lib)/|illustrations/book/book-runtime[.])"
+            : name === "form"
+              ? "^packages/form/(src|dist)/(index|context)[.]"
+              : `^packages/${name}/(src|dist)/index[.]`,
       },
     })),
     {
@@ -104,7 +122,9 @@ module.exports = {
     },
   ],
   options: {
-    exclude: { path: "packages/database/src/generated/|/routeTree.gen.ts$" },
+    exclude: {
+      path: "apps/api/src/infrastructure/database/generated/|/routeTree.gen.ts$",
+    },
     doNotFollow: { path: "node_modules|/dist/" },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: "tsconfig.json" },

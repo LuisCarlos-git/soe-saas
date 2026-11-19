@@ -1,5 +1,7 @@
 # Bootstrap da primeira fatia
 
+> Registro histórico da issue #2. A arquitetura atual é definida pela [ADR 0003](../adr/0003-api-local-backend.md) e pela [estrutura da API](api-structure.md); os caminhos de pacotes backend abaixo não são mais vigentes.
+
 Escopo: issue #2, primeiro percurso Start → NestJS → PostgreSQL. Não há dados
 escolares, autenticação, organizações ou worker nesta entrega. A tabela de probe
 é técnica, global, com uma única linha sintética e constraints que impedem

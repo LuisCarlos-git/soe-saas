@@ -4,11 +4,12 @@ import { QueryClient } from "@tanstack/react-query";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { createApiClient } from "@soe/api-client";
 import { createServerApi } from "./server/api";
+import { notifyApiError } from "./shared/api-errors";
 import { routeTree } from "./routeTree.gen";
 
 const createClient = createIsomorphicFn()
   .server(() => createServerApi())
-  .client(() => createApiClient("/api/v1"));
+  .client(() => createApiClient("/api/v1", fetch, undefined, notifyApiError));
 
 export function getRouter() {
   const queryClient = new QueryClient({
@@ -18,6 +19,7 @@ export function getRouter() {
     routeTree,
     context: { queryClient, api: createClient() },
     scrollRestoration: true,
+    defaultViewTransition: true,
   });
   setupRouterSsrQueryIntegration({ router, queryClient });
   return router;

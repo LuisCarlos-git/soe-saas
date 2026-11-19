@@ -2,7 +2,15 @@
   "extends": "@soe/typescript-config/react.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "emitDeclarationOnly": true,
+    "paths": {
+      "@soe/ui/primitives/*": ["./src/primitives/*"],
+      "@soe/ui/*": ["./src/*"],
+      "@soe/ui/book-runtime": ["./src/illustrations/book/book-runtime.d.ts"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["dist", "node_modules"]

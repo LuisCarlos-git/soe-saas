@@ -16,6 +16,23 @@ ou interface do SOE, leia `docs/PRD.md` (PRD 1.3). As seções 6 e 7 contêm
 regras obrigatórias; a seção 16 orienta a implementação das ferramentas backend.
 Preserve a distinção entre decisões confirmadas, propostas e perguntas abertas.
 
+## Design aprovado
+
+Antes de criar, alterar ou revisar interfaces, leia `DESIGN.md`: é a base visual
+aprovada do SOE, com tokens, componentes, estados e referência do login. Aplique
+a identidade às novas telas e adapte a composição à tarefa de cada superfície.
+Componentes genéricos partem do shadcn/ui em `@soe/ui`. Nesse pacote, use `cn()`
+para classes condicionais e imports sem extensão; consulte
+`docs/architecture/ui-components.md` antes de ampliar o catálogo ou suas transições.
+
+## Formulários
+
+Todos os componentes consumidos pelos formulários vêm de `@soe/form`, incluindo
+checkbox, textarea, seleção e envio. Antes de criar ou alterar campos, leia
+[`packages/form/README.md`](packages/form/README.md): use AppField/AppForm e adicione
+novos adapters ao pacote antes do uso. As primitivas shadcn de `@soe/ui` são a base
+interna; lint e checagens arquiteturais verificam a origem dos controles no web.
+
 ## Agent skills
 
 ### Issue tracker
@@ -32,3 +49,11 @@ Antes de classificar tickets, leia `docs/agents/triage-labels.md`.
 
 Layout single-context. Antes de explorar o domínio,
 leia `docs/agents/domain.md`.
+
+## Arquitetura atual
+
+Antes de alterar backend, testes, persistência ou fronteiras, leia
+`docs/adr/0003-api-local-backend.md`. A decisão aprovada substitui os mapas
+antigos do PRD: backend exclusivo em `apps/api`; packages apenas independentes
+ou compartilháveis. Domain/repositories/use-cases são puros; factories compõem
+adapters. Para erros da API no web, usar o Toaster Sonner global com richColors.

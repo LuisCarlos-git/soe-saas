@@ -38,9 +38,13 @@ yarn-error.log*
 *.pem
 
 # Generated clients and browser evidence
-packages/database/src/generated/
+apps/api/src/infrastructure/database/generated/
 apps/web/.tanstack/
 playwright-report/
 test-results/
 .taste-skill/
 .impeccable/
+
+.pnpm-store/
+
+**/.build/

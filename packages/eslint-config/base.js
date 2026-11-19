@@ -6,9 +6,11 @@ export const config = tseslint.config(
   {
     ignores: [
       "**/dist/**",
+      "**/.build/**",
       "**/.next/**",
       "**/.output/**",
       "**/generated/**",
+      "**/vendor/hairline/**",
       "**/routeTree.gen.ts",
       "**/node_modules/**",
       "**/playwright-report/**",

@@ -1,3 +1,5 @@
+> Atualização arquitetural aprovada em 14/11/2026: os mapas antigos de pacotes backend/database/test-utils foram substituídos pela [ADR 0003](../adr/0003-api-local-backend.md). Todo backend exclusivo pertence a apps/api. Packages ficam restritos a código independente/compartilhável. Erros de API usam Sonner global com richColors. Esta decisão prevalece sobre os caminhos antigos abaixo, preservando requisitos funcionais e de segurança.
+
 ## Problem Statement
 
 A equipe escolar precisa dar continuidade ao cuidado com estudantes, mas registros dispersos entre planilhas, anotações e conversas não deixam claro quem assumiu uma providência, quando haverá retorno nem qual resultado foi documentado. Essa é uma hipótese de problema a validar com escolas, e não uma conclusão de pesquisa de campo já realizada.
