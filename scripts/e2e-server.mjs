@@ -2,6 +2,8 @@ import { spawn } from "node:child_process";
 import { startTestPostgres } from "../apps/api/tests/support/postgres.mjs";
 import { migrateTestDatabase } from "./migrate-test-database.mjs";
 
+const webPort = "43220";
+const apiPort = "43221";
 const database = await startTestPostgres();
 try {
   migrateTestDatabase(database.url);
@@ -21,11 +23,13 @@ const api = spawn(process.execPath, ["apps/api/dist/main.js"], {
     LOG_LEVEL: "silent",
     AUTH_RATE_MAX: "100",
     API_HOST: "127.0.0.1",
-    API_PORT: "43121",
+    API_PORT: apiPort,
+    AUTH_ORIGIN: `http://127.0.0.1:${webPort}`,
   },
 });
 const web = spawn(process.execPath, ["server.mjs"], {
   cwd: "apps/web",
+  env: { ...process.env, SOE_WEB_PORT: webPort, SOE_API_PORT: apiPort },
   stdio: "inherit",
 });
 let stopping = false;

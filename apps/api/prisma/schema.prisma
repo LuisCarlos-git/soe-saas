@@ -23,6 +23,8 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  twoFactorEnabled Boolean @default(false)
+  twoFactors TwoFactor[]
   sessions      Session[]
   accounts      Account[]
 
@@ -30,7 +32,22 @@ model User {
   @@map("user")
 }
 
+model TwoFactor {
+  id String @id
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  secret String
+  backupCodes String
+  verified Boolean @default(true)
+  failedVerificationCount Int @default(0)
+  lockedUntil DateTime?
+  @@index([userId])
+  @@index([secret])
+  @@map("twoFactor")
+}
+
 model Session {
+  mfaVerified Boolean @default(false)
   id        String   @id
   expiresAt DateTime
   token     String

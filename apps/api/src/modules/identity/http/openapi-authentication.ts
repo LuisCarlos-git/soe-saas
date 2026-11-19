@@ -61,5 +61,66 @@ export function documentAuthentication(document: OpenAPIObject) {
     }
     document.paths[`/api/auth/${path}`] = { post: operation };
   }
+  const challenge = document.paths["/api/auth/sign-in/email"]?.post;
+  if (challenge)
+    challenge.responses["200"] = {
+      description: "Desafio MFA pendente; nenhuma sessão autenticada",
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/MfaChallengeResponse" },
+        },
+      },
+    };
+  for (const [path, input, output] of [
+    ["enable", "MfaEnrollmentRequest", "MfaSetupResponse"],
+    ["verify-totp", "MfaVerificationRequest", null],
+  ] as const) {
+    document.paths[`/api/auth/two-factor/${path}`] = {
+      post: {
+        operationId: path === "enable" ? "enrollMfa" : "verifyMfa",
+        summary:
+          path === "enable"
+            ? "Inscrever aplicativo autenticador"
+            : "Verificar código TOTP",
+        parameters: [
+          {
+            in: "header",
+            name: "Origin",
+            required: true,
+            schema: { type: "string", format: "uri" },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: `#/components/schemas/${input}` },
+            },
+          },
+        },
+        responses: {
+          [output ? "200" : "204"]: output
+            ? {
+                description: "Chave de inscrição; não armazenar em cache",
+                content: {
+                  "application/json": {
+                    schema: { $ref: `#/components/schemas/${output}` },
+                  },
+                },
+              }
+            : { description: "Sessão MFA verificada; corpo vazio" },
+          "400": error,
+          "401": error,
+          "403": error,
+          "413": error,
+          "429": {
+            ...error,
+            headers: { "Retry-After": { schema: { type: "integer" } } },
+          },
+          "503": error,
+        },
+      },
+    };
+  }
   return document;
 }

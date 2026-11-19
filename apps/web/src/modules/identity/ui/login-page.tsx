@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { MfaVerification } from "./mfa-verification";
 import { useAppForm } from "@soe/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useHydrated } from "@tanstack/react-router";
@@ -6,6 +8,7 @@ import { loginFormOptions } from "../model/login-form-options";
 import { LoginFields } from "./login-fields";
 
 export function LoginPage({ api }: { api: ApiClient }) {
+  const [challenge, setChallenge] = useState(false);
   const hydrated = useHydrated();
   const client = useQueryClient();
   const router = useRouter();
@@ -13,7 +16,12 @@ export function LoginPage({ api }: { api: ApiClient }) {
     ...loginFormOptions,
     onSubmit: async ({ value }) => {
       try {
-        await api.login(value);
+        const result = await api.login(value);
+        form.reset();
+        if (result.twoFactorRedirect) {
+          setChallenge(true);
+          return;
+        }
         await client.cancelQueries();
         client.clear();
         await router.navigate({ to: "/account" });
@@ -89,27 +97,41 @@ export function LoginPage({ api }: { api: ApiClient }) {
               tabIndex={-1}
               className="text-2xl sm:text-3xl font-semibold tracking-tight"
             >
-              Entrar na plataforma
+              {challenge ? "Verifique seu acesso" : "Entrar na plataforma"}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Use o acesso fornecido pela equipe responsável.
+              {challenge
+                ? "Confirme sua identidade para continuar."
+                : "Use o acesso fornecido pela equipe responsável."}
             </p>
-            <form.AppForm>
-              <form
-                noValidate
-                method="post"
-                className="mt-8 space-y-6"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  void form.handleSubmit();
+            {challenge ? (
+              <MfaVerification
+                api={api}
+                onVerified={async () => {
+                  await client.cancelQueries();
+                  client.clear();
+                  await router.navigate({ to: "/account" });
                 }}
-              >
-                <LoginFields form={form} />
-                <form.SubmitButton disabled={!hydrated} className="w-full">
-                  Entrar
-                </form.SubmitButton>
-              </form>
-            </form.AppForm>
+                onCancel={() => setChallenge(false)}
+              />
+            ) : (
+              <form.AppForm>
+                <form
+                  noValidate
+                  method="post"
+                  className="mt-8 space-y-6"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void form.handleSubmit();
+                  }}
+                >
+                  <LoginFields form={form} />
+                  <form.SubmitButton disabled={!hydrated} className="w-full">
+                    Entrar
+                  </form.SubmitButton>
+                </form>
+              </form.AppForm>
+            )}
             <div className="mt-8 border-t border-rule pt-6">
               <p className="text-sm font-medium text-ink">Precisa de acesso?</p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">

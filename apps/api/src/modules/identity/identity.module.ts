@@ -5,7 +5,8 @@ import type { Database } from "../../infrastructure/database/database.factory";
 import { createAuthentication } from "./factories/authentication.factory";
 import { CurrentIdentity } from "./use-cases/current-identity.use-case";
 import { IdentityController } from "./controllers/identity.controller";
-export const AUTHENTICATION = Symbol("AUTHENTICATION");
+import { AUTHENTICATION } from "./authentication.token";
+export { AUTHENTICATION } from "./authentication.token";
 @Module({})
 export class IdentityModule {
   static forRoot(config: ReturnType<typeof parseConfiguration>): DynamicModule {

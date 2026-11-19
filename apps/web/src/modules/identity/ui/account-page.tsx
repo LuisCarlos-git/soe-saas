@@ -1,3 +1,4 @@
+import { MfaSettings } from "./mfa-settings";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
@@ -45,6 +46,7 @@ export function AccountPage({ api }: { api: ApiClient }) {
             >
               Sair
             </Button>
+            <MfaSettings api={api} />
           </section>
         ) : (
           <p role="alert" className="mt-6">

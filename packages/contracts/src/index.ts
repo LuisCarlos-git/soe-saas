@@ -1,4 +1,5 @@
 import { z } from "zod";
+export * from "./mfa.js";
 
 export const environmentQuerySchema = z.strictObject({
   probe: z.literal("bootstrap").default("bootstrap"),
@@ -20,6 +21,8 @@ export const errorSchema = z.strictObject({
     "INVALID_CREDENTIALS",
     "FORBIDDEN",
     "TOO_MANY_REQUESTS",
+    "MFA_REQUIRED",
+    "INVALID_MFA",
   ]),
   message: z.string(),
   correlationId: z.string().uuid(),
