@@ -16,7 +16,7 @@ export function createAuthentication(
       provider: "postgresql",
       transaction: true,
     }),
-    plugins: [twoFactor({ issuer: "SOE" })],
+    plugins: [twoFactor({ issuer: "SOe" })],
     secret: config.AUTH_SECRET,
     baseURL: config.AUTH_ORIGIN,
     trustedOrigins: [config.AUTH_ORIGIN],

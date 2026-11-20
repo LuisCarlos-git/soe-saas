@@ -1,17 +1,34 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppForm, validateOnChangeAndBlur } from "@soe/form";
+import { Button } from "@soe/ui";
+import { useStepFlow } from "@soe/ui/hooks/use-step-flow";
+import { StepFlowContent } from "@soe/ui/components/step-flow-content";
+import { QRCodeSVG } from "qrcode.react";
 import { mfaEnrollmentFormSchema } from "../model/mfa-validation";
 import type { ApiClient } from "@soe/api-client";
 import { MfaVerification } from "./mfa-verification";
-export function MfaSettings({ api }: { api: ApiClient }) {
-  const client = useQueryClient();
+import { MfaDialog } from "./mfa-dialog";
+
+type EnrollmentStep = "password" | "scan" | "verify";
+const enrollmentFlow = {
+  password: { next: ["scan"] },
+  scan: { next: ["verify"] },
+  verify: { next: [] },
+} as const;
+
+function MfaEnrollment({
+  api,
+  onVerified,
+}: {
+  api: ApiClient;
+  onVerified: () => Promise<void>;
+}) {
+  // Enrollment material belongs only to this mounted dialog, never a query cache.
   const [uri, setUri] = useState<string | null>(null);
-  const state = useQuery({
-    queryKey: ["identity", "mfa"],
-    queryFn: () => api.mfaStatus(),
-    retry: false,
-    staleTime: 0,
+  const navigation = useStepFlow<EnrollmentStep>({
+    flow: enrollmentFlow,
+    initialStep: "password",
   });
   const form = useAppForm({
     defaultValues: { password: "" },
@@ -22,11 +39,116 @@ export function MfaSettings({ api }: { api: ApiClient }) {
         const data = await api.enrollMfa(value);
         form.reset();
         setUri(data.totpURI);
+        navigation.goTo("scan");
       } catch {
         form.reset();
       }
     },
   });
+  return (
+    <StepFlowContent navigation={navigation}>
+      {navigation.currentStep === "verify" ? (
+        <MfaVerification
+          api={api}
+          onVerified={onVerified}
+          onCancel={() => {
+            navigation.back();
+          }}
+          cancelLabel="Voltar ao QR code"
+        />
+      ) : navigation.currentStep === "scan" && uri ? (
+        <div className="space-y-4">
+          <div>
+            <h3
+              data-step-focus
+              tabIndex={-1}
+              className="text-lg font-medium outline-none"
+            >
+              Conecte seu aplicativo
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Escaneie o QR code no aplicativo autenticador. A conta aparecerá
+              como SOe.
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <QRCodeSVG
+              value={uri}
+              size={208}
+              marginSize={4}
+              level="M"
+              title="QR code para configurar SOe no aplicativo autenticador"
+              className="max-w-full"
+            />
+          </div>
+          <details className="rounded-lg border border-rule p-3 text-sm">
+            <summary className="cursor-pointer rounded-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+              Não consegue escanear?
+            </summary>
+            <p className="mt-3 text-muted-foreground">
+              Adicione uma conta chamada SOe, escolha códigos baseados em tempo
+              e use esta chave:
+            </p>
+            <code className="mt-3 block select-all break-all rounded-lg bg-canvas p-3">
+              {new URL(uri).searchParams.get("secret")}
+            </code>
+          </details>
+          <Button
+            className="w-full"
+            onClick={() => {
+              navigation.next();
+            }}
+          >
+            Já adicionei ao aplicativo
+          </Button>
+        </div>
+      ) : (
+        <form.AppForm>
+          <form
+            noValidate
+            method="post"
+            className="space-y-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void form.handleSubmit();
+            }}
+          >
+            <form.AppField name="password">
+              {(field) => (
+                <field.TextField
+                  label="Confirme sua senha"
+                  type="password"
+                  autoComplete="current-password"
+                  maxLength={128}
+                  required
+                />
+              )}
+            </form.AppField>
+            <form.SubmitButton className="w-full">Continuar</form.SubmitButton>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              A proteção só será ativada depois que você confirmar o primeiro
+              código do aplicativo.
+            </p>
+          </form>
+        </form.AppForm>
+      )}
+    </StepFlowContent>
+  );
+}
+
+export function MfaSettings({ api }: { api: ApiClient }) {
+  const client = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const state = useQuery({
+    queryKey: ["identity", "mfa"],
+    queryFn: () => api.mfaStatus(),
+    retry: false,
+    staleTime: 0,
+  });
+  async function complete() {
+    setOpen(false);
+    await client.invalidateQueries({ queryKey: ["identity"] });
+  }
   return (
     <section
       className="mt-8 border-t border-rule pt-8"
@@ -52,69 +174,43 @@ export function MfaSettings({ api }: { api: ApiClient }) {
         <p role="status" className="mt-4 font-medium text-primary">
           Proteção ativa nesta sessão.
         </p>
-      ) : state.data.enabled ? (
-        <>
-          <p className="mt-4">Esta sessão ainda não foi verificada.</p>
-          <MfaVerification
-            api={api}
-            onVerified={async () => {
-              await client.invalidateQueries({ queryKey: ["identity"] });
-            }}
-            onCancel={() => {
-              window.location.assign("/login");
-            }}
-          />
-        </>
-      ) : uri ? (
-        <div className="mt-6 space-y-4">
-          <h3 className="text-lg font-medium">Conecte seu aplicativo</h3>
-          <p className="text-muted-foreground">
-            No aplicativo autenticador, adicione uma conta com chave de
-            configuração e escolha códigos baseados em tempo. Digite a chave
-            abaixo e confirme o primeiro código.
-          </p>
-          <p className="text-sm font-medium">Chave de configuração</p>
-          <code className="block break-all rounded-lg border border-rule bg-surface p-4 select-all">
-            {new URL(uri).searchParams.get("secret")}
-          </code>
-          <p className="text-sm text-muted-foreground">
-            Guarde a chave somente no aplicativo. Ela desaparece ao sair desta
-            tela. A proteção só será ativada após verificar o código.
-          </p>
-          <MfaVerification
-            api={api}
-            onVerified={async () => {
-              setUri(null);
-              await client.invalidateQueries({ queryKey: ["identity"] });
-            }}
-            onCancel={() => setUri(null)}
-          />
-        </div>
       ) : (
-        <form.AppForm>
-          <form
-            noValidate
-            method="post"
-            className="mt-6 max-w-md space-y-4"
-            onSubmit={(event) => {
-              event.preventDefault();
-              void form.handleSubmit();
-            }}
+        <>
+          {state.data.enabled && (
+            <p className="mt-4">Esta sessão ainda não foi verificada.</p>
+          )}
+          <MfaDialog
+            open={open}
+            onOpenChange={setOpen}
+            title={
+              state.data.enabled
+                ? "Verifique seu acesso"
+                : "Configurar proteção em duas etapas"
+            }
+            description={
+              state.data.enabled
+                ? "Confirme sua identidade com o aplicativo autenticador."
+                : "Conecte um aplicativo autenticador para proteger seu acesso ao SOe."
+            }
+            trigger={
+              <Button className="mt-6">
+                {state.data.enabled
+                  ? "Verificar acesso"
+                  : "Configurar aplicativo"}
+              </Button>
+            }
           >
-            <form.AppField name="password">
-              {(field) => (
-                <field.TextField
-                  label="Confirme sua senha"
-                  type="password"
-                  autoComplete="current-password"
-                  maxLength={128}
-                  required
-                />
-              )}
-            </form.AppField>
-            <form.SubmitButton>Configurar aplicativo</form.SubmitButton>
-          </form>
-        </form.AppForm>
+            {state.data.enabled ? (
+              <MfaVerification
+                api={api}
+                onVerified={complete}
+                onCancel={() => setOpen(false)}
+              />
+            ) : (
+              <MfaEnrollment api={api} onVerified={complete} />
+            )}
+          </MfaDialog>
+        </>
       )}
     </section>
   );

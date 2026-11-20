@@ -3,7 +3,7 @@ import { twoFactor } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 export const auth = betterAuth({
-  plugins: [twoFactor({ issuer: "SOE" })],
+  plugins: [twoFactor({ issuer: "SOe" })],
   baseURL: "http://127.0.0.1:43120",
   database: prismaAdapter({}, { provider: "postgresql" }),
   emailAndPassword: { enabled: true, disableSignUp: true },

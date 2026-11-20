@@ -23,11 +23,21 @@ no web. O segredo TOTP e os códigos de recuperação ficam cifrados pelo proved
 com AUTH_SECRET; proteger a chave e os backups é requisito operacional. Rotação
 desse segredo requer procedimento validado antes do piloto.
 
-Na página `/account`, confirmar a senha em “Configurar aplicativo”, adicionar a
-chave a um aplicativo autenticador com códigos baseados em tempo e verificar o
-primeiro código. A chave só permanece em memória da tela de inscrição; não entra
+Na página `/account`, “Configurar aplicativo” abre uma modal com confirmação da
+senha, QR code e verificação do primeiro código. Escanear o QR code no aplicativo
+autenticador e avançar em “Já adicionei ao aplicativo” para informar o primeiro
+código. “Voltar ao QR code” retorna à etapa anterior dentro da modal. A conta é
+identificada pelo emissor **SOe** e pelo e-mail do
+profissional. “Não consegue escanear?” revela a chave para configuração manual com
+códigos baseados em tempo. SOe é o nome da conta, não uma chave secreta fixa.
+O QR code é gerado localmente por qrcode.react 4.2.0, sem enviar a URI a serviços
+externos. [Documentação da biblioteca](https://github.com/zpao/qrcode.react).
+A chave só permanece em memória enquanto a modal está aberta; não entra
 no QueryClient, armazenamento do navegador, SSR, logs ou artefatos de build.
-A inscrição pendente não concede MFA. Ao recarregar antes de confirmar, iniciar
+Fechar a modal remove o QR code, a chave e os campos. O foco retorna ao botão
+que abriu a configuração; no login, retorna ao e-mail. Escape e “Fechar” não
+autenticam a sessão. A inscrição pendente não concede MFA. Ao fechar ou recarregar
+antes de confirmar, iniciar
 a configuração novamente. A sessão é rotacionada pelo provedor na ativação.
 
 Endpoints públicos, sempre no-store e sob o Origin permitido:

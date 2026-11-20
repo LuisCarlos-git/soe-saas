@@ -11,3 +11,12 @@ export { Toaster, toast } from "./components/sonner";
 
 export { BookIllustration } from "./illustrations/book/book-illustration";
 export { PageLoading } from "./motion/page-loading";
+
+export { useStepFlow } from "./hooks/use-step-flow";
+export type {
+  StepFlowNavigation,
+  StepFlowStep,
+  UseStepFlowParams,
+  UseStepFlowReturnType,
+} from "./hooks/use-step-flow";
+export { StepFlowContent } from "./components/step-flow-content";

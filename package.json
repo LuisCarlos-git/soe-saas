@@ -26,7 +26,8 @@
     "@types/node": "26.6.6",
     "@soe/eslint-config": "workspace:*",
     "@soe/contracts": "workspace:*",
-    "@jest/globals": "30.5.2"
+    "@jest/globals": "30.5.2",
+    "jsqr": "1.4.0"
   },
   "scripts": {
     "dev": "turbo run dev",

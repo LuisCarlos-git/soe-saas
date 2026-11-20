@@ -7,10 +7,12 @@ export function MfaVerification({
   api,
   onVerified,
   onCancel,
+  cancelLabel = "Cancelar",
 }: {
   api: ApiClient;
   onVerified: () => Promise<void>;
   onCancel: () => void;
+  cancelLabel?: string;
 }) {
   const section = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -62,7 +64,7 @@ export function MfaVerification({
         </form>
       </form.AppForm>
       <Button variant="outline" onClick={onCancel}>
-        Voltar
+        {cancelLabel}
       </Button>
       <p className="text-sm text-muted-foreground">
         Sem acesso ao aplicativo? Procure o responsável pelo piloto. A

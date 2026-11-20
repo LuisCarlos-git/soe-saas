@@ -116,3 +116,75 @@ test("componentes shadcn preservam teclado, foco e presença durante entrada e s
   await expect(page.getByRole("dialog")).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+test("fluxo respeita ramificações, histórico, reset e navegações no mesmo evento", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const flow = page.getByRole("region", { name: "Fluxo de etapas" });
+  const history = flow.getByLabel("Histórico de etapas");
+  await expect(
+    flow.getByText("Escolha o caminho", { exact: true }),
+  ).toBeVisible();
+  await flow.getByRole("button", { name: "Voltar etapa", exact: true }).click();
+  await expect(history).toHaveText("choose");
+  await flow.getByRole("button", { name: "Ir ao fim", exact: true }).click();
+  await expect(flow.getByRole("status")).toHaveText(
+    "Transição negada: choose para done",
+  );
+  await expect(history).toHaveText("choose");
+  await flow
+    .getByRole("button", { name: "Avançar etapa", exact: true })
+    .click();
+  await expect(flow.getByRole("status")).toHaveText(
+    "Escolha um caminho para avançar",
+  );
+  await expect(history).toHaveText("choose");
+  await flow
+    .getByRole("button", { name: "Caminho longo", exact: true })
+    .click();
+  await expect(flow.getByText("Detalhes do caminho longo")).toBeVisible();
+  await expect(
+    flow.getByRole("heading", { name: "Detalhes do caminho longo" }),
+  ).toBeFocused();
+  await flow
+    .getByRole("button", { name: "Avançar etapa", exact: true })
+    .click();
+  await expect(flow.getByText("Resumo da etapa short")).toBeVisible();
+  await expect(flow.getByLabel("Revisão do resumo")).toBeFocused();
+  await expect(history).toHaveText("choose → long → short");
+  await flow
+    .getByRole("button", { name: "Avançar etapa", exact: true })
+    .click();
+  await expect(flow.getByText("Fluxo concluído")).toBeVisible();
+  await expect(flow.getByLabel("Estado do fluxo")).toHaveText(
+    "Etapa final; Pode voltar",
+  );
+  await flow.getByRole("button", { name: "Voltar etapa", exact: true }).click();
+  await expect(history).toHaveText("choose → long → short");
+  const animated = flow.locator("[data-slot=step-flow-content]");
+  await expect(animated).toHaveAttribute("data-direction", "back");
+  const reduced = await page.evaluate(
+    () => matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  await expect(animated).toHaveCSS(
+    "animation-name",
+    reduced ? "none" : "soe-step-back",
+  );
+  await flow
+    .getByRole("button", { name: "Reiniciar fluxo", exact: true })
+    .click();
+  await expect(history).toHaveText("choose");
+  await flow
+    .getByRole("button", { name: "Sequência rápida", exact: true })
+    .click();
+  await expect(flow.getByText("Fluxo concluído")).toBeVisible();
+  await expect(history).toHaveText("choose → short → done");
+  await flow
+    .getByRole("button", { name: "Reiniciar no resumo", exact: true })
+    .click();
+  await expect(history).toHaveText("short");
+  await expect(flow.getByLabel("Estado do fluxo")).toHaveText(
+    "Há próximas etapas; Início do fluxo",
+  );
+});

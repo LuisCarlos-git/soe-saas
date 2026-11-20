@@ -225,3 +225,55 @@ incluindo abertura, interação e saída via Escape; o diálogo composto de coma
 usa a mesma animação do Dialog base. Variantes de Button preservam suas cores
 shadcn (outline normal e hover verificados). A regra cn() foi verificada com um
 caso negativo; o lint rejeitou classes condicionais diretas e aceitou cn().
+
+## Fluxos de etapas em modais
+
+`useStepFlow` e `StepFlowContent` são exports públicos de `@soe/ui`, também disponíveis
+em `@soe/ui/hooks/use-step-flow` e `@soe/ui/components/step-flow-content`.
+O hook não conhece modais, formulários ou MFA: recebe um grafo tipado de etapas e
+controla a navegação. A primeira aplicação real é a inscrição MFA: senha → QR → código.
+
+```tsx
+const navigation = useStepFlow<"password" | "scan" | "verify">({
+  initialStep: "password",
+  flow: {
+    password: { next: ["scan"] },
+    scan: { next: ["verify"] },
+    verify: {},
+  },
+});
+
+<StepFlowContent navigation={navigation}>
+  {/* Conteúdo da etapa navigation.currentStep */}
+</StepFlowContent>;
+```
+
+- `goTo(target)` só aceita destinos declarados em `next` da etapa atual. Falha
+  retorna `false`, não muda o histórico e chama `onInvalidTransition(from,to)`.
+- `next()` avança somente quando há exatamente um destino; ramificações exigem
+  escolha explícita. Etapas sem destinos são finais (`isFinalStep`).
+- `back()` retorna pelo histórico; no início retorna `false`. `reset(target?)`
+  começa um novo histórico de uma etapa declarada (a inicial por padrão).
+- Comandos retornam boolean e resolvem a partir da última navegação aceita,
+  inclusive em várias chamadas no mesmo evento ou callbacks assíncronos retidos.
+  `history`/`nextSteps` são snapshots somente para leitura.
+- `initialStep` inicializa o hook. Mantenha os nomes do grafo estáveis enquanto
+  montado; trocar o fluxo completo exige remontar o consumidor. Destinos não
+  declarados são recusados em runtime; remover a etapa ativa é erro de configuração.
+- Cada etapa pode fornecer `component`, que recebe `{navigation}`; `StepComponent`
+  e `renderStep()` permitem renderizá-lo. Sem component, `renderStep()` retorna null,
+  e o consumidor pode compor conteúdo e dados de domínio diretamente.
+
+`StepFlowContent` recebe a navegação e aplica a receita Page side-by-side de
+Transitions.dev aos conteúdos novos: deslocamento de 8px, duração e curva dos
+tokens de página do SOE, sentido invertido ao voltar. Reset/início não anima.
+Reduced-motion desabilita a animação. O conteúdo anterior é desmontado imediatamente,
+sem clones ou campos secretos ocultos mantidos para executar saída. Use
+`data-step-focus` em um título focável com `tabIndex={-1}` para orientar a leitura;
+caso contrário, o primeiro campo/controle recebe foco após mudar de etapa.
+Não persistir senhas ou material de inscrição no histórico. Para zerar dados ao
+fechar uma modal, desmonte o consumidor junto com o conteúdo.
+
+A prévia pública testa ramificações, transições recusadas, avanço único, histórico,
+reset em outro início, retorno e duas navegações no mesmo evento. A jornada MFA
+verifica esse mesmo módulo com API real, QR e animação/reduced-motion.

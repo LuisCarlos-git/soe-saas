@@ -73,6 +73,9 @@ test("MFA por HTTP exige inscrição verificada e não aceita sessões antigas o
   expect(enrollment.body).toEqual({
     totpURI: expect.stringMatching(/^otpauth:\/\//),
   });
+  expect(new URL(enrollment.body.totpURI).searchParams.get("issuer")).toBe(
+    "SOe",
+  );
   const code = totp(enrollment.body.totpURI);
   const invalid = code === "000000" ? "000001" : "000000";
   await agent

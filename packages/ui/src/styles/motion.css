@@ -82,3 +82,39 @@
     animation: none;
   }
 }
+
+/* Transitions.dev page-side-by-side: direction-aware entry adapter for keyed
+ * wizard steps. Outgoing content unmounts immediately; no inactive secrets.
+ * Reuses the existing SOE page distance, duration and easing.
+ */
+.soe-step-flow-content[data-direction="forward"] {
+  animation: soe-step-forward var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+.soe-step-flow-content[data-direction="back"] {
+  animation: soe-step-back var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+@keyframes soe-step-forward {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes soe-step-back {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soe-step-flow-content {
+    animation: none !important;
+  }
+}

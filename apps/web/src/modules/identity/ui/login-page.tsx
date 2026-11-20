@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MfaDialog } from "./mfa-dialog";
 import { MfaVerification } from "./mfa-verification";
 import { useAppForm } from "@soe/form";
 import { useQueryClient } from "@tanstack/react-query";
@@ -97,41 +98,46 @@ export function LoginPage({ api }: { api: ApiClient }) {
               tabIndex={-1}
               className="text-2xl sm:text-3xl font-semibold tracking-tight"
             >
-              {challenge ? "Verifique seu acesso" : "Entrar na plataforma"}
+              Entrar na plataforma
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {challenge
-                ? "Confirme sua identidade para continuar."
-                : "Use o acesso fornecido pela equipe responsável."}
+              Use o acesso fornecido pela equipe responsável.
             </p>
-            {challenge ? (
+            <form.AppForm>
+              <form
+                noValidate
+                method="post"
+                className="mt-8 space-y-6"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void form.handleSubmit();
+                }}
+              >
+                <LoginFields form={form} />
+                <form.SubmitButton disabled={!hydrated} className="w-full">
+                  Entrar
+                </form.SubmitButton>
+              </form>
+            </form.AppForm>
+
+            <MfaDialog
+              open={challenge}
+              onOpenChange={setChallenge}
+              title="Verifique seu acesso"
+              description="Confirme sua identidade com o aplicativo autenticador."
+              onCloseFocus={() => document.getElementById("email")?.focus()}
+            >
               <MfaVerification
                 api={api}
                 onVerified={async () => {
+                  setChallenge(false);
                   await client.cancelQueries();
                   client.clear();
                   await router.navigate({ to: "/account" });
                 }}
                 onCancel={() => setChallenge(false)}
               />
-            ) : (
-              <form.AppForm>
-                <form
-                  noValidate
-                  method="post"
-                  className="mt-8 space-y-6"
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    void form.handleSubmit();
-                  }}
-                >
-                  <LoginFields form={form} />
-                  <form.SubmitButton disabled={!hydrated} className="w-full">
-                    Entrar
-                  </form.SubmitButton>
-                </form>
-              </form.AppForm>
-            )}
+            </MfaDialog>
             <div className="mt-8 border-t border-rule pt-6">
               <p className="text-sm font-medium text-ink">Precisa de acesso?</p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
