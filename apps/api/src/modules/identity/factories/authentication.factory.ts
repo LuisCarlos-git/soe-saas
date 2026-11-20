@@ -1,3 +1,5 @@
+import { SessionSecurity } from "../use-cases/session-security.use-case";
+import { twoFactor } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import type { Database } from "../../../infrastructure/database/database.factory";
@@ -14,6 +16,7 @@ export function createAuthentication(
       provider: "postgresql",
       transaction: true,
     }),
+    plugins: [twoFactor({ issuer: "SOe" })],
     secret: config.AUTH_SECRET,
     baseURL: config.AUTH_ORIGIN,
     trustedOrigins: [config.AUTH_ORIGIN],
@@ -35,6 +38,10 @@ export function createAuthentication(
       window: config.AUTH_RATE_WINDOW,
       max: config.AUTH_RATE_MAX,
       customRules: {
+        "/two-factor/*": {
+          window: config.AUTH_RATE_WINDOW,
+          max: config.AUTH_RATE_MAX,
+        },
         "/sign-in/email": {
           window: config.AUTH_RATE_WINDOW,
           max: config.AUTH_RATE_MAX,
@@ -44,7 +51,47 @@ export function createAuthentication(
     logger: { disabled: true },
   });
   return {
-    handler: (request: Request) => auth.handler(request),
+    handler: async (request: Request) => {
+      const response = await auth.handler(request);
+      if (
+        new URL(request.url).pathname.endsWith("/two-factor/verify-totp") &&
+        response.ok
+      ) {
+        // Mark only the exact session authenticated by the provider. Old sessions remain unverified.
+        const cookies = response.headers.getSetCookie();
+        const fresh = cookies.find((c) =>
+          /^(?:__Secure-)?soe\.session_token=/.test(c),
+        );
+        const credential =
+          fresh?.split(";")[0] ?? request.headers.get("cookie") ?? "";
+        const session = await auth.api.getSession({
+          headers: new Headers({ cookie: credential }),
+        });
+        if (!session?.user.twoFactorEnabled)
+          throw new Error("MFA verification unavailable");
+        await database.session.update({
+          where: { id: session.session.id },
+          data: { mfaVerified: true },
+        });
+      }
+      return response;
+    },
+    security: new SessionSecurity({
+      findByCredential: async (credential: string) => {
+        const session = await auth.api.getSession({
+          headers: new Headers({ cookie: credential }),
+        });
+        if (!session) return null;
+        const persisted = await database.session.findUnique({
+          where: { id: session.session.id },
+          select: { mfaVerified: true },
+        });
+        return {
+          enabled: !!session.user.twoFactorEnabled,
+          verified: !!session.user.twoFactorEnabled && !!persisted?.mfaVerified,
+        };
+      },
+    }),
     current: new CurrentIdentity(
       new BetterAuthSessionRepository(async (credential) => {
         const result = await auth.api.getSession({

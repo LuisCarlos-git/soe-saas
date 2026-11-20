@@ -5,7 +5,7 @@ import start from "./dist/server/server.js";
 
 serve({
   hostname: "127.0.0.1",
-  port: 43120,
+  port: Number(process.env.SOE_WEB_PORT ?? 43120),
   gracefulShutdown: true,
   middleware: [
     staticMiddleware({
@@ -18,7 +18,9 @@ serve({
       url.pathname.startsWith("/api/v1/") ||
       url.pathname.startsWith("/api/auth/")
     ) {
-      const upstream = new URL("http://127.0.0.1:43121");
+      const upstream = new URL(
+        `http://127.0.0.1:${Number(process.env.SOE_API_PORT ?? 43121)}`,
+      );
       upstream.pathname = url.pathname;
       upstream.search = url.search;
       const headers = new Headers({ Accept: "application/json" });

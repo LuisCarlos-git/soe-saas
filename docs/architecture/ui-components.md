@@ -225,3 +225,103 @@ incluindo abertura, interação e saída via Escape; o diálogo composto de coma
 usa a mesma animação do Dialog base. Variantes de Button preservam suas cores
 shadcn (outline normal e hover verificados). A regra cn() foi verificada com um
 caso negativo; o lint rejeitou classes condicionais diretas e aceitou cn().
+
+## Fluxos de etapas em modais
+
+`useStepFlow` e `StepFlowContent` são exports públicos de `@soe/ui`, também disponíveis
+em `@soe/ui/hooks/use-step-flow` e `@soe/ui/components/step-flow-content`.
+O hook não conhece modais, formulários ou MFA: recebe um grafo tipado de etapas e
+controla a navegação. A primeira aplicação real é a inscrição MFA: senha → QR → código.
+
+```tsx
+const navigation = useStepFlow<"password" | "scan" | "verify">({
+  initialStep: "password",
+  flow: {
+    password: { next: ["scan"] },
+    scan: { next: ["verify"] },
+    verify: {},
+  },
+});
+
+<StepFlowContent navigation={navigation}>
+  {/* Conteúdo da etapa navigation.currentStep */}
+</StepFlowContent>;
+```
+
+- `goTo(target)` só aceita destinos declarados em `next` da etapa atual. Falha
+  retorna `false`, não muda o histórico e chama `onInvalidTransition(from,to)`.
+- `next()` avança somente quando há exatamente um destino; ramificações exigem
+  escolha explícita. Etapas sem destinos são finais (`isFinalStep`).
+- `back()` retorna pelo histórico; no início retorna `false`. `reset(target?)`
+  começa um novo histórico de uma etapa declarada (a inicial por padrão).
+- Comandos retornam boolean e resolvem a partir da última navegação aceita,
+  inclusive em várias chamadas no mesmo evento ou callbacks assíncronos retidos.
+  `history`/`nextSteps` são snapshots somente para leitura.
+- `initialStep` inicializa o hook. Mantenha os nomes do grafo estáveis enquanto
+  montado; trocar o fluxo completo exige remontar o consumidor. Destinos não
+  declarados são recusados em runtime; remover a etapa ativa é erro de configuração.
+- Cada etapa pode fornecer `component`, que recebe `{navigation}`; `StepComponent`
+  e `renderStep()` permitem renderizá-lo. Sem component, `renderStep()` retorna null,
+  e o consumidor pode compor conteúdo e dados de domínio diretamente.
+
+`StepFlowContent` recebe a navegação e aplica a receita Page side-by-side de
+Transitions.dev aos conteúdos novos: deslocamento de 8px, duração e curva dos
+tokens de página do SOE, sentido invertido ao voltar. Reset/início não anima.
+Reduced-motion desabilita a animação. O conteúdo anterior é desmontado imediatamente,
+sem clones ou campos secretos ocultos mantidos para executar saída. Use
+`data-step-focus` em um título focável com `tabIndex={-1}` para orientar a leitura;
+caso contrário, o primeiro campo/controle recebe foco após mudar de etapa.
+Não persistir senhas ou material de inscrição no histórico. Para zerar dados ao
+fechar uma modal, desmonte o consumidor junto com o conteúdo.
+
+A prévia pública testa ramificações, transições recusadas, avanço único, histórico,
+reset em outro início, retorno e duas navegações no mesmo evento. A jornada MFA
+verifica esse mesmo módulo com API real, QR e animação/reduced-motion.
+
+## Navegação autenticada e configurações
+
+A sidebar usa a primitiva shadcn existente, com superfície canvas, borda rule e
+seleção primary. Em desktop ocupa 16rem; em telas menores que 768px, o menu abre
+em Sheet com título em português, retorno de foco e fechamento por Escape.
+O rodapé agrupa Configurações, identificação da conta e Sair. Somente áreas
+implementadas aparecem como destinos.
+
+O layout pathless `_authenticated` verifica a sessão antes de mostrar páginas
+internas e mantém a mesma moldura entre elas. `/account` permanece como visão
+geral. Configurações usa abas Perfil e Segurança, com URLs
+`/settings/profile` e `/settings/security`; `/settings` redireciona para Perfil.
+A lista de seções concentra rótulo, caminho e ícone de cada aba para expansão.
+Radix mantém semântica tablist/tab/tabpanel e teclado; a ativação é manual.
+
+O perfil apresenta a identificação atual, sem prometer edição ainda indisponível.
+MFA fica exclusivamente em Segurança e mantém a modal, QR local e controles da
+API. Adicionar novas telas escolares não concede permissões implicitamente.
+
+Referências consultadas em 20/11/2026:
+
+- [Linear: organização de acesso em configurações](https://linear.app/docs/login-methods):
+  referência para separar configurações pessoais e segurança.
+- [Vercel: navegação de conta e configurações](https://vercel.com/changelog/improved-user-experience-for-account-settings):
+  referência para distinguir visão geral e opções da conta.
+- [Vercel: autenticação em duas etapas](https://vercel.com/docs/two-factor-authentication):
+  referência de localização da configuração do autenticador.
+
+A adaptação preserva os tokens e a tipografia de DESIGN.md, sem importar a marca,
+os planos comerciais ou a política de acesso das referências.
+
+`SidebarSelection` envolve Header/Content/Footer dentro de Sidebar e recebe
+`activeKey` (no SOE, o pathname). Ele preserva um marcador de seleção único entre
+os menus, movendo apenas esse fundo. As trocas de abas não remontam a sidebar.
+Primeiro posicionamento, resize e scroll não animam; reduced-motion desativa o
+movimento. O foco do Sheet móvel retorna ao SidebarTrigger por uma ref do provider.
+Os rótulos do menu móvel e dos controles são em português brasileiro.
+
+Validação desta extensão (20/11/2026): build web/SSR, typecheck, lint, fronteiras,
+formatação e bundle aprovados; 24 testes unitários e 36 testes da suíte completa
+E2E aprovados (6 UI, 14 form, 16 web). Os testes de configurações e MFA foram
+reexecutados após normalizar caminhos com barra final. Cobrem URLs diretas,
+reload/histórico, teclado, mesmo indicador lateral/posição da moldura, animação
+só no painel, reduced-motion, menu móvel e logout após falha de rede. Axe cobriu
+as superfícies novas. Revisões de Standards/Spec sem pendências; revisão visual
+independente aprovou as sete capturas de Perfil, Segurança, menu móvel e modal MFA.
+Backend não foi alterado nesta extensão.

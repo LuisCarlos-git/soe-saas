@@ -9,7 +9,7 @@ export async function provisionTestIdentities(
 ) {
   if (environment !== "test" || new URL(url).pathname !== "/soe_test")
     throw new Error("Synthetic identities require an isolated test database");
-  await provision(url);
+  await provision(url, true);
 }
 
 export async function provisionDevelopmentIdentities(
@@ -36,12 +36,18 @@ export async function provisionDevelopmentIdentities(
   }
 }
 
-async function provision(url: string) {
+async function provision(url: string, mfaFixtures = false) {
   const database = createDatabase(url);
   try {
     for (const [name, email] of [
       ["Ana Teste", "ana@example.test"],
       ["Bia Teste", "bia@example.test"],
+      ...(mfaFixtures
+        ? [
+            ["MFA Ana", "mfa-ana@example.test"],
+            ["MFA Bia", "mfa-bia@example.test"],
+          ]
+        : []),
     ]) {
       if (!name || !email) continue;
       const password = await hashPassword("12345678");

@@ -1,3 +1,4 @@
+import { StepFlowPreview } from "./step-flow-preview";
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Button, InputField, Toaster, toast } from "@soe/ui";
@@ -112,6 +113,7 @@ function Preview() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <StepFlowPreview />
         <h2 className="text-xl font-semibold">Interações</h2>
         <Accordion type="single" collapsible>
           <AccordionItem value="item">

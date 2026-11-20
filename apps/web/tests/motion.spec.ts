@@ -74,6 +74,8 @@ test("spinners e livro acompanham a operação real, respeitando movimento reduz
   identity.release();
   await expect(page.getByText("Ana Teste", { exact: true })).toBeVisible();
   await expect(loading).toHaveCount(0);
+  if (test.info().project.name === "mobile")
+    await page.getByRole("button", { name: "Abrir menu de navegação" }).click();
   await page.getByRole("button", { name: "Sair", exact: true }).click();
   const leaving = page.getByRole("button", { name: "Sair", exact: true });
   await expect(leaving.locator("[data-loading-spinner]")).toBeVisible();

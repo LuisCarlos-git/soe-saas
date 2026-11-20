@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { MfaDialog } from "./mfa-dialog";
+import { MfaVerification } from "./mfa-verification";
 import { useAppForm } from "@soe/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useHydrated } from "@tanstack/react-router";
@@ -6,6 +9,7 @@ import { loginFormOptions } from "../model/login-form-options";
 import { LoginFields } from "./login-fields";
 
 export function LoginPage({ api }: { api: ApiClient }) {
+  const [challenge, setChallenge] = useState(false);
   const hydrated = useHydrated();
   const client = useQueryClient();
   const router = useRouter();
@@ -13,7 +17,12 @@ export function LoginPage({ api }: { api: ApiClient }) {
     ...loginFormOptions,
     onSubmit: async ({ value }) => {
       try {
-        await api.login(value);
+        const result = await api.login(value);
+        form.reset();
+        if (result.twoFactorRedirect) {
+          setChallenge(true);
+          return;
+        }
         await client.cancelQueries();
         client.clear();
         await router.navigate({ to: "/account" });
@@ -110,6 +119,25 @@ export function LoginPage({ api }: { api: ApiClient }) {
                 </form.SubmitButton>
               </form>
             </form.AppForm>
+
+            <MfaDialog
+              open={challenge}
+              onOpenChange={setChallenge}
+              title="Verifique seu acesso"
+              description="Confirme sua identidade com o aplicativo autenticador."
+              onCloseFocus={() => document.getElementById("email")?.focus()}
+            >
+              <MfaVerification
+                api={api}
+                onVerified={async () => {
+                  setChallenge(false);
+                  await client.cancelQueries();
+                  client.clear();
+                  await router.navigate({ to: "/account" });
+                }}
+                onCancel={() => setChallenge(false)}
+              />
+            </MfaDialog>
             <div className="mt-8 border-t border-rule pt-6">
               <p className="text-sm font-medium text-ink">Precisa de acesso?</p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">

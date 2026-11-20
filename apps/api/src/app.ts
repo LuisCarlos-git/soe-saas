@@ -11,12 +11,20 @@ import {
   cleanupOpenApiDoc,
 } from "nestjs-zod";
 import helmet from "helmet";
+import { mfaBoundary } from "./modules/identity/http/mfa-boundary";
 import express from "express";
 import { authenticationHandler } from "./modules/identity/http/authentication-handler";
 import type { DestinationStream } from "pino";
 import { AppModule } from "./app.module";
 import { documentAuthentication } from "./modules/identity/http/openapi-authentication";
-import { LoginRequest, SafeErrorResponse } from "./common/dto/transport.dto";
+import {
+  MfaEnrollmentRequest,
+  MfaVerificationRequest,
+  MfaSetupResponse,
+  MfaChallengeResponse,
+  LoginRequest,
+  SafeErrorResponse,
+} from "./common/dto/transport.dto";
 import { SafeErrorFilter } from "./common/filters/safe-error.filter";
 
 export async function createApi(
@@ -39,6 +47,11 @@ export async function createApi(
       (event) => app.get(Logger).log(event),
     ),
   );
+  app.use(
+    mfaBoundary(
+      app.get<ReturnType<typeof createAuthentication>>(AUTHENTICATION),
+    ),
+  );
   app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalInterceptors(new ZodSerializerInterceptor(app.get(Reflector)));
   app.useGlobalFilters(new SafeErrorFilter());
@@ -56,7 +69,16 @@ export function createOpenApi(app: Awaited<ReturnType<typeof createApi>>) {
           .setVersion("1")
           .addCookieAuth("soe.session_token")
           .build(),
-        { extraModels: [LoginRequest, SafeErrorResponse] },
+        {
+          extraModels: [
+            LoginRequest,
+            SafeErrorResponse,
+            MfaEnrollmentRequest,
+            MfaVerificationRequest,
+            MfaSetupResponse,
+            MfaChallengeResponse,
+          ],
+        },
       ),
     ),
   );

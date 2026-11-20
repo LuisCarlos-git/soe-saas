@@ -4,7 +4,13 @@ import type {
   NextFunction,
 } from "express";
 import { randomUUID } from "node:crypto";
-import { loginSchema } from "@soe/contracts";
+import {
+  mfaEnrollmentSchema,
+  mfaVerificationSchema,
+  mfaSetupSchema,
+  mfaChallengeSchema,
+  loginSchema,
+} from "@soe/contracts";
 import type { createAuthentication } from "../factories/authentication.factory";
 import type { parseConfiguration } from "../../../shared/config";
 
@@ -21,6 +27,8 @@ export function authenticationHandler(
   const operations: Record<string, string> = {
     "/api/auth/sign-in/email": "session.start",
     "/api/auth/sign-out": "session.end",
+    "/api/auth/two-factor/enable": "mfa.enroll",
+    "/api/auth/two-factor/verify-totp": "mfa.verify",
   };
   return async (req: ExpressRequest, res: Response, next: NextFunction) => {
     if (!req.path.startsWith("/api/auth/")) return next();
@@ -36,10 +44,7 @@ export function authenticationHandler(
     );
     const fail = (status: number, code: string, message: string) =>
       res.status(status).json({ code, message, correlationId });
-    if (
-      req.method !== "POST" ||
-      !["/api/auth/sign-in/email", "/api/auth/sign-out"].includes(req.path)
-    )
+    if (req.method !== "POST" || !Object.hasOwn(operations, req.path))
       return fail(404, "NOT_FOUND", "Recurso não encontrado.");
     if (
       req.headers.origin !== config.AUTH_ORIGIN ||
@@ -47,11 +52,21 @@ export function authenticationHandler(
     )
       return fail(403, "FORBIDDEN", "Origem da solicitação não permitida.");
     const signingIn = req.path.endsWith("sign-in/email");
+    const enrolling = req.path.endsWith("/two-factor/enable");
+    const verifying = req.path.endsWith("/two-factor/verify-totp");
     let body: unknown = {};
     if (signingIn) {
       const input = loginSchema.safeParse(req.body);
       if (!input.success)
         return fail(400, "INVALID_INPUT", "Informe e-mail e senha válidos.");
+      body = input.data;
+    }
+    if (enrolling || verifying) {
+      const input = (
+        enrolling ? mfaEnrollmentSchema : mfaVerificationSchema
+      ).safeParse(req.body);
+      if (!input.success)
+        return fail(400, "INVALID_INPUT", "Confira os dados informados.");
       body = input.data;
     }
     try {
@@ -84,10 +99,30 @@ export function authenticationHandler(
       if (response.status >= 500)
         return fail(503, "UNAVAILABLE", "Acesso temporariamente indisponível.");
       if (!response.ok)
-        return fail(401, "INVALID_CREDENTIALS", "E-mail ou senha inválidos.");
+        return fail(
+          401,
+          verifying ? "INVALID_MFA" : "INVALID_CREDENTIALS",
+          verifying
+            ? "Código inválido ou expirado. Confira o aplicativo ou entre novamente."
+            : enrolling
+              ? "Não foi possível iniciar a proteção. Confira sua senha e sessão."
+              : "E-mail ou senha inválidos.",
+        );
       for (const cookie of response.headers.getSetCookie())
         res.append("Set-Cookie", cookie);
-      // The provider response includes a token: deliberately discard the entire body.
+      // Allowlist public response fields; tokens and recovery material never leave this adapter.
+      if (enrolling) {
+        const data = await response.json();
+        return res.status(200).json(mfaSetupSchema.strip().parse(data));
+      }
+      if (signingIn) {
+        const data = await response.json();
+        if (mfaChallengeSchema.strip().safeParse(data).success)
+          return res
+            .status(200)
+            .json(mfaChallengeSchema.parse({ twoFactorRedirect: true }));
+      }
+      // All provider session tokens are discarded.
       return res.status(204).end();
     } catch {
       return fail(503, "UNAVAILABLE", "Acesso temporariamente indisponível.");

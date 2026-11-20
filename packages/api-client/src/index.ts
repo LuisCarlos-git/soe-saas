@@ -1,4 +1,9 @@
 import {
+  mfaEnrollmentSchema,
+  mfaVerificationSchema,
+  mfaSetupSchema,
+  mfaStatusSchema,
+  mfaChallengeSchema,
   environmentSchema,
   errorSchema,
   identitySchema,
@@ -101,11 +106,24 @@ export function createApiClient(
       },
     );
     await check(response);
+    return response;
   }
   return {
     identity,
-    login: (input: unknown) =>
-      access("sign-in/email", loginSchema.parse(input)),
+    login: async (input: unknown) => {
+      const response = await access("sign-in/email", loginSchema.parse(input));
+      if (response.status === 204) return { twoFactorRedirect: false };
+      return readResponse(response, mfaChallengeSchema);
+    },
+    enrollMfa: async (input: unknown) =>
+      readResponse(
+        await access("two-factor/enable", mfaEnrollmentSchema.parse(input)),
+        mfaSetupSchema,
+      ),
+    verifyMfa: (input: unknown) =>
+      access("two-factor/verify-totp", mfaVerificationSchema.parse(input)),
+    mfaStatus: async () =>
+      readResponse(await send(`${baseUrl}/identity/mfa`, {}), mfaStatusSchema),
     logout: () => access("sign-out", {}),
     async environment(signal?: AbortSignal) {
       const response = await send(`${baseUrl}/environment`, {

@@ -9,5 +9,9 @@ export const createServerApi = createServerOnlyFn(() => {
     .map((value) => value.trim())
     .filter((value) => /^(?:__Secure-)?soe\.session_token=/.test(value))
     .join("; ");
-  return createApiClient("http://127.0.0.1:43121/api/v1", fetch, cookie);
+  return createApiClient(
+    `http://127.0.0.1:${Number(process.env.SOE_API_PORT ?? 43121)}/api/v1`,
+    fetch,
+    cookie,
+  );
 });

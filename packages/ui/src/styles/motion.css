@@ -82,3 +82,69 @@
     animation: none;
   }
 }
+
+/* Transitions.dev page-side-by-side: direction-aware entry adapter for keyed
+ * wizard steps. Outgoing content unmounts immediately; no inactive secrets.
+ * Reuses the existing SOE page distance, duration and easing.
+ */
+.soe-step-flow-content[data-direction="forward"] {
+  animation: soe-step-forward var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+.soe-step-flow-content[data-direction="back"] {
+  animation: soe-step-back var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+@keyframes soe-step-forward {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes soe-step-back {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soe-step-flow-content {
+    animation: none !important;
+  }
+}
+
+/* Content-only route entry and a vertical adapter of Transitions.dev tabs-sliding.
+ * Keep the application frame mounted; only the active marker changes position.
+ */
+/* Radix suppresses a TabsContent's mount animation with inline duration: 0s.
+ * Keep that semantic panel still and animate its keyed inner content instead. */
+[data-slot="tabs-content"].soe-route-panel {
+  animation: none;
+}
+.soe-route-content {
+  animation: soe-page-in var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+.soe-sidebar-selection > :not([data-slot="sidebar-selection-indicator"]) {
+  position: relative;
+  z-index: 1;
+}
+.soe-sidebar-selection [data-sidebar="menu-button"][data-active="true"] {
+  background: transparent;
+}
+[data-slot="sidebar-selection-indicator"][data-animate="true"] {
+  transition: transform var(--soe-motion-page) var(--soe-motion-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .soe-route-content {
+    animation: none;
+  }
+  [data-slot="sidebar-selection-indicator"] {
+    transition: none !important;
+  }
+}

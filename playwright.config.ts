@@ -8,11 +8,11 @@ export default defineConfig({
   retries: 0,
   webServer: {
     command: "node scripts/e2e-server.mjs",
-    url: "http://127.0.0.1:43120",
+    url: "http://127.0.0.1:43220",
     timeout: 120_000,
     reuseExistingServer: false,
   },
-  use: { baseURL: "http://127.0.0.1:43120", trace: "retain-on-failure" },
+  use: { baseURL: "http://127.0.0.1:43220", trace: "retain-on-failure" },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     {

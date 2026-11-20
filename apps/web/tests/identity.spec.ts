@@ -81,6 +81,10 @@ test("entrar, SSR de duas sessões independentes e sair sem persistir credenciai
       ),
     ).toBe(true);
     await page.context().setOffline(true);
+    if (test.info().project.name === "mobile")
+      await page
+        .getByRole("button", { name: "Abrir menu de navegação" })
+        .click();
     await page.getByRole("button", { name: "Sair", exact: true }).click();
     await expect(
       page

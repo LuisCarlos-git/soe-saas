@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<{
   }),
   component: () => (
     <Document>
-      <div className="soe-page-transition">
+      <div>
         <Outlet />
       </div>
       <PageNavigation />
