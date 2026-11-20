@@ -9,14 +9,17 @@ import {
   SidebarTrigger,
 } from "@soe/ui/primitives/sidebar";
 import type { ApiClient } from "@soe/api-client";
+import type { SchoolAccess } from "@soe/contracts";
 import { ApplicationSidebar, type ShellIdentity } from "./application-sidebar";
 export function AuthenticatedShell({
   api,
   identity,
+  schoolAccess,
   children,
 }: {
   api: ApiClient;
   identity: ShellIdentity;
+  schoolAccess: SchoolAccess;
   children: ReactNode;
 }) {
   const pathname = useRouterState({
@@ -26,6 +29,8 @@ export function AuthenticatedShell({
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const settings = pathname.startsWith("/settings");
+  const school = pathname === "/schools" || pathname.startsWith("/schools/");
+  const administration = pathname.startsWith("/administration/");
   async function logout() {
     setPending(true);
     try {
@@ -49,6 +54,7 @@ export function AuthenticatedShell({
       </a>
       <ApplicationSidebar
         identity={identity}
+        schoolAccess={schoolAccess}
         onLogout={() => {
           void logout();
         }}
@@ -64,7 +70,13 @@ export function AuthenticatedShell({
             <nav aria-label="Localização">
               <ol className="flex items-center gap-2 text-sm">
                 <li className="text-muted-foreground">
-                  {settings ? "Configurações" : "Visão geral"}
+                  {settings
+                    ? "Configurações"
+                    : school
+                      ? "Escola"
+                      : administration
+                        ? "Administração"
+                        : "Visão geral"}
                 </li>
                 {settings && (
                   <>
@@ -76,6 +88,20 @@ export function AuthenticatedShell({
                     </li>
                   </>
                 )}
+                {(school || administration) && (
+                  <>
+                    <li aria-hidden="true">
+                      <ChevronRight className="size-4 text-muted-foreground" />
+                    </li>
+                    <li aria-current="page" className="font-medium">
+                      {administration
+                        ? "Escolas piloto"
+                        : pathname === "/schools"
+                          ? "Minhas escolas"
+                          : "Configurações da escola"}
+                    </li>
+                  </>
+                )}
               </ol>
             </nav>
           </div>
@@ -83,7 +109,7 @@ export function AuthenticatedShell({
         <div
           id="main-content"
           tabIndex={-1}
-          className="mx-auto w-full max-w-5xl px-4 py-8 outline-none sm:px-8 sm:py-10 lg:px-12"
+          className="mx-auto w-full max-w-6xl px-4 py-8 outline-none sm:px-8 sm:py-10 lg:px-12"
         >
           {children}
         </div>

@@ -8,6 +8,11 @@ import {
   errorSchema,
   identitySchema,
   loginSchema,
+  schoolAccessSchema,
+  schoolListSchema,
+  schoolSchema,
+  provisionSchoolSchema,
+  updateSchoolSchema,
 } from "@soe/contracts";
 
 export class ApiError extends Error {
@@ -108,8 +113,56 @@ export function createApiClient(
     await check(response);
     return response;
   }
+  async function read<T>(
+    path: string,
+    schema: { parse: (body: unknown) => T },
+    signal?: AbortSignal,
+  ) {
+    const headers = new Headers({ Accept: "application/json" });
+    if (credential) headers.set("cookie", credential);
+    return readResponse(
+      await send(`${baseUrl}/${path}`, { headers, ...(signal && { signal }) }),
+      schema,
+    );
+  }
+  async function saveSchool(
+    path: string,
+    method: "POST" | "PATCH",
+    body: unknown,
+  ) {
+    return readResponse(
+      await send(`${baseUrl}/${path}`, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }),
+      schoolSchema,
+    );
+  }
   return {
     identity,
+    schoolAccess: (signal?: AbortSignal) =>
+      read("identity/school-access", schoolAccessSchema, signal),
+    schools: (offset = 0, signal?: AbortSignal) =>
+      read(`administration/schools?offset=${offset}`, schoolListSchema, signal),
+    schoolSettings: (id: string, signal?: AbortSignal) =>
+      read(
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(id))}/settings`,
+        schoolSchema,
+        signal,
+      ),
+    provisionSchool: (input: unknown) =>
+      saveSchool(
+        "administration/schools",
+        "POST",
+        provisionSchoolSchema.parse(input),
+      ),
+    updateSchool: (id: string, input: unknown) =>
+      saveSchool(
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(id))}/settings`,
+        "PATCH",
+        updateSchoolSchema.parse(input),
+      ),
     login: async (input: unknown) => {
       const response = await access("sign-in/email", loginSchema.parse(input));
       if (response.status === 204) return { twoFactorRedirect: false };

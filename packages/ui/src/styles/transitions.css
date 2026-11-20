@@ -53,3 +53,18 @@
     opacity var(--revert-dur, 280ms) ease-out,
     visibility 0s linear 0s;
 }
+
+/* Compact field errors use the grid reveal from Transitions.dev's accordion recipe. */
+.t-input-wrap[data-compact="true"] {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--revert-dur, 280ms) ease-out;
+}
+.t-input-wrap[data-compact="true"].is-error {
+  grid-template-rows: 1fr;
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-input-wrap[data-compact="true"] {
+    transition: none;
+  }
+}

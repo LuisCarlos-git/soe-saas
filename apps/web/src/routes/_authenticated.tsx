@@ -2,13 +2,17 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { Button } from "@soe/ui";
 import { sessionQuery } from "../modules/identity";
 import { AuthenticatedShell } from "../app/authenticated-shell";
+import { schoolAccessQuery } from "../modules/schools";
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context }) => {
     const identity = await context.queryClient.fetchQuery(
       sessionQuery(context.api),
     );
     if (!identity) throw redirect({ to: "/login" });
-    return { identity };
+    const schoolAccess = await context.queryClient.fetchQuery(
+      schoolAccessQuery(context.api, identity.id),
+    );
+    return { identity, schoolAccess };
   },
   errorComponent: ({ reset }) => (
     <main className="min-h-screen bg-canvas p-6 text-ink">
@@ -22,9 +26,13 @@ export const Route = createFileRoute("/_authenticated")({
     </main>
   ),
   component: function AuthenticatedLayout() {
-    const { api, identity } = Route.useRouteContext();
+    const { api, identity, schoolAccess } = Route.useRouteContext();
     return (
-      <AuthenticatedShell api={api} identity={identity}>
+      <AuthenticatedShell
+        api={api}
+        identity={identity}
+        schoolAccess={schoolAccess}
+      >
         <Outlet />
       </AuthenticatedShell>
     );

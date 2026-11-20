@@ -22,6 +22,7 @@ export type NativeSelectFieldProps = FieldContentProps &
   > & {
     options: readonly ChoiceOption[];
     placeholder?: string;
+    reserveErrorSpace?: boolean;
   };
 
 export function NativeSelectField({
@@ -31,11 +32,12 @@ export function NativeSelectField({
   options,
   placeholder = "Selecione",
   className,
+  reserveErrorSpace = true,
   ...props
 }: NativeSelectFieldProps) {
   const control = useFieldControl<string>({ id, label, description });
   return (
-    <FieldFrame {...control.frameProps}>
+    <FieldFrame {...control.frameProps} reserveErrorSpace={reserveErrorSpace}>
       <div className="[&>[data-slot=native-select-wrapper]]:w-full">
         <NativeSelect
           {...props}

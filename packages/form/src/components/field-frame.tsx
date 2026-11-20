@@ -7,6 +7,7 @@ interface FieldFrameProps {
   label: string;
   description?: ReactNode;
   error: string;
+  reserveErrorSpace?: boolean;
   inline?: boolean;
   group?: boolean;
   children: ReactNode;
@@ -17,6 +18,7 @@ export function FieldFrame({
   label,
   description,
   error,
+  reserveErrorSpace = true,
   inline = false,
   group = false,
   children,
@@ -54,7 +56,11 @@ export function FieldFrame({
           {description}
         </p>
       )}
-      <FieldMessage id={`${id}-error`} message={error} />
+      <FieldMessage
+        id={`${id}-error`}
+        message={error}
+        reserveSpace={reserveErrorSpace}
+      />
     </div>
   );
 }

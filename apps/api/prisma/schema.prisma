@@ -27,9 +27,63 @@ model User {
   twoFactors TwoFactor[]
   sessions      Session[]
   accounts      Account[]
+  schoolMemberships SchoolMembership[]
+  saasOperator SaasOperator?
+  initialSchools Organization[]
 
   @@unique([email])
   @@map("user")
+}
+
+// Platform authority never implies school membership or content access.
+model SaasOperator {
+  userId String @id
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  enabled Boolean @default(true)
+  @@map("saas_operator")
+}
+
+model Organization {
+  id String @id @default(uuid())
+  name String
+  timeZone String
+  academicYear Int
+  supportTeamLabel String
+  studentLabel String
+  classLabel String
+  initialAdministratorId String
+  initialAdministratorName String
+  initialAdministrator User @relation(fields: [initialAdministratorId], references: [id], onDelete: Restrict)
+  pilotStatus String @default("SYNTHETIC_ONLY")
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  memberships SchoolMembership[]
+  audits SchoolAudit[]
+  @@map("organization")
+}
+
+model SchoolMembership {
+  organizationId String
+  userId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  role String
+  active Boolean @default(true)
+  @@id([organizationId, userId])
+  @@index([userId, active])
+  @@map("school_membership")
+}
+
+model SchoolAudit {
+  id String @id @default(uuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actorId String
+  action String
+  details Json
+  occurredAt DateTime @default(now())
+  @@index([organizationId, occurredAt])
+  @@map("school_audit")
 }
 
 model TwoFactor {

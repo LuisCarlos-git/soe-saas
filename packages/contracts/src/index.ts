@@ -1,5 +1,6 @@
 import { z } from "zod";
 export * from "./mfa.js";
+export * from "./schools.js";
 
 export const environmentQuerySchema = z.strictObject({
   probe: z.literal("bootstrap").default("bootstrap"),
@@ -23,6 +24,7 @@ export const errorSchema = z.strictObject({
     "TOO_MANY_REQUESTS",
     "MFA_REQUIRED",
     "INVALID_MFA",
+    "CONFLICT",
   ]),
   message: z.string(),
   correlationId: z.string().uuid(),

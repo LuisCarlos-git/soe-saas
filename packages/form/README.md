@@ -166,3 +166,13 @@ decide autorização. Não persista relatos ou senhas em armazenamento do navega
 As skills de UI e a base `DESIGN.md` orientam a apresentação. Este pacote reutiliza
 os componentes e as transições existentes; não introduz outra identidade visual
 nem um motor de animação.
+
+### Espaço para erros em formulários compactos
+
+`TextField`, `NumberField` e `NativeSelectField` aceitam
+`reserveErrorSpace={false}` para recolher o espaço das mensagens quando não há
+erro. O padrão preserva a reserva existente. O formulário escolar usa essa opção,
+com labels e alvos de 44 px mantidos. `FieldMessage` conserva a mensagem durante
+a saída; o recolhimento usa a receita grid de Transitions.dev e respeita
+`prefers-reduced-motion`. A opção equivalente na primitiva UI é
+`FieldMessage reserveSpace={false}`.

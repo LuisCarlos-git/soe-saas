@@ -7,7 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@soe/ui/primitives/tabs";
-const sections = [
+const accountSections = [
   {
     value: "profile",
     label: "Perfil",
@@ -22,12 +22,16 @@ const sections = [
   },
 ] as const;
 export function SettingsLayout() {
+  const sections = accountSections;
   const pathname = useRouterState({
     select: (state) => normalizeNavigationPath(state.location.pathname),
   });
   const navigate = useNavigate();
   const active =
-    sections.find((section) => section.path === pathname)?.value ?? "profile";
+    sections.find(
+      (section) =>
+        section.path === pathname || pathname.startsWith(`${section.path}/`),
+    )?.value ?? "profile";
   return (
     <>
       <header className="mb-8">
@@ -48,7 +52,7 @@ export function SettingsLayout() {
         <div className="overflow-x-auto border-b border-rule">
           <TabsList
             variant="line"
-            aria-label="Configurações da conta"
+            aria-label="Seções de configurações"
             className="gap-6 rounded-none p-0 group-data-[orientation=horizontal]/tabs:h-12"
           >
             {sections.map((section) => (
@@ -64,7 +68,7 @@ export function SettingsLayout() {
           </TabsList>
         </div>
         <TabsContent value={active} className="soe-route-panel pt-8">
-          <div key={active} className="soe-route-content">
+          <div key={pathname} className="soe-route-content">
             <Outlet />
           </div>
         </TabsContent>
