@@ -53,15 +53,17 @@ function Settings({
     );
   const school = query.data;
   return (
-    <section className="max-w-2xl space-y-6">
+    <section className="soe-route-content max-w-2xl space-y-6">
       <Link
-        to="/settings/schools"
+        to="/schools"
         className="inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-4"
       >
         Voltar às escolas
       </Link>
       <header>
-        <h2 className="text-xl font-semibold">Configurações da escola</h2>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          Configurações da escola
+        </h1>
         <p className="mt-2 break-words text-muted-foreground">{school.name}</p>
       </header>
       <p className="rounded-lg bg-primary/5 p-4 text-sm leading-relaxed">
@@ -79,6 +81,7 @@ function Settings({
             studentLabel: school.studentLabel,
             classLabel: school.classLabel,
             initialAdministratorEmail: school.initialAdministrator.email,
+            initialAdministratorName: school.initialAdministrator.name,
           }}
           submit={async (value) => {
             const settings = schoolSettingsSchema.strip().parse(value);

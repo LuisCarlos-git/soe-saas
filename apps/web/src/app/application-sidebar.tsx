@@ -1,12 +1,23 @@
 import { normalizeNavigationPath } from "../shared/navigation-path";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, Settings, X } from "lucide-react";
+import {
+  Building2,
+  School,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  X,
+} from "lucide-react";
+import type { SchoolAccess } from "@soe/contracts";
 import { Button } from "@soe/ui";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarSelection,
   SidebarMenu,
   SidebarMenuButton,
@@ -16,10 +27,12 @@ import {
 export type ShellIdentity = { name: string; email: string };
 export function ApplicationSidebar({
   identity,
+  schoolAccess,
   onLogout,
   pending,
 }: {
   identity: ShellIdentity;
+  schoolAccess: SchoolAccess;
   onLogout: () => void;
   pending: boolean;
 }) {
@@ -86,6 +99,78 @@ export function ApplicationSidebar({
               </SidebarMenuItem>
             </SidebarMenu>
           </nav>
+          {schoolAccess.schools.length > 0 && (
+            <SidebarGroup className="mt-4 p-0">
+              <SidebarGroupLabel className="px-3 text-xs font-medium text-muted-foreground">
+                Escola
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <nav aria-label="Escola">
+                  <SidebarMenu>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={
+                          pathname === "/schools" ||
+                          pathname.startsWith("/schools/")
+                        }
+                        className="h-11 px-3"
+                      >
+                        <Link
+                          to="/schools"
+                          onClick={close}
+                          aria-current={
+                            pathname === "/schools" ||
+                            pathname.startsWith("/schools/")
+                              ? "page"
+                              : undefined
+                          }
+                        >
+                          <School aria-hidden="true" />
+                          <span>Minhas escolas</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </nav>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
+          {schoolAccess.canProvisionSchools && (
+            <SidebarGroup className="mt-4 p-0">
+              <SidebarGroupLabel className="px-3 text-xs font-medium text-muted-foreground">
+                Administração
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <nav aria-label="Administração">
+                  <SidebarMenu>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname.startsWith(
+                          "/administration/schools",
+                        )}
+                        className="h-11 px-3"
+                      >
+                        <Link
+                          to="/administration/schools"
+                          onClick={close}
+                          aria-current={
+                            pathname.startsWith("/administration/schools")
+                              ? "page"
+                              : undefined
+                          }
+                        >
+                          <Building2 aria-hidden="true" />
+                          <span>Escolas piloto</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </nav>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
         </SidebarContent>
         <SidebarFooter className="gap-4 p-3 pb-5">
           <nav aria-label="Conta e preferências">

@@ -19,15 +19,29 @@ const select = {
   studentLabel: true,
   classLabel: true,
   version: true,
-  initialAdministrator: { select: { name: true, email: true } },
+  initialAdministratorName: true,
+  initialAdministrator: { select: { email: true } },
 } as const;
 const membership = (actorId: string) => ({
   memberships: {
     some: { userId: actorId, active: true, role: "SCHOOL_ADMIN" },
   },
 });
-function project(row: Omit<School, "pilotStatus">): School {
-  return { ...row, pilotStatus: "SYNTHETIC_ONLY" };
+function project(
+  row: Omit<School, "pilotStatus" | "initialAdministrator"> & {
+    initialAdministratorName: string;
+    initialAdministrator: { email: string };
+  },
+): School {
+  const { initialAdministratorName, initialAdministrator, ...school } = row;
+  return {
+    ...school,
+    initialAdministrator: {
+      name: initialAdministratorName,
+      email: initialAdministrator.email,
+    },
+    pilotStatus: "SYNTHETIC_ONLY",
+  };
 }
 
 export class PrismaSchoolUnitOfWork implements SchoolUnitOfWork {
@@ -45,12 +59,13 @@ export class PrismaSchoolUnitOfWork implements SchoolUnitOfWork {
               })),
             findAdministrator: (email) =>
               tx.user.findUnique({ where: { email }, select: { id: true } }),
-            create: async (settings, administratorId) =>
+            create: async (settings, administratorId, administratorName) =>
               project(
                 await tx.organization.create({
                   data: {
                     ...settings,
                     initialAdministratorId: administratorId,
+                    initialAdministratorName: administratorName,
                     memberships: {
                       create: { userId: administratorId, role: "SCHOOL_ADMIN" },
                     },

@@ -1,6 +1,6 @@
 import { normalizeNavigationPath } from "../../../shared/navigation-path";
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { ShieldCheck, UserRound, School } from "lucide-react";
+import { ShieldCheck, UserRound } from "lucide-react";
 import {
   Tabs,
   TabsContent,
@@ -21,24 +21,8 @@ const accountSections = [
     icon: ShieldCheck,
   },
 ] as const;
-export function SettingsLayout({
-  showSchools = false,
-}: {
-  showSchools?: boolean;
-}) {
-  const sections = [
-    ...accountSections,
-    ...(showSchools
-      ? [
-          {
-            value: "schools",
-            label: "Escolas",
-            path: "/settings/schools",
-            icon: School,
-          } as const,
-        ]
-      : []),
-  ];
+export function SettingsLayout() {
+  const sections = accountSections;
   const pathname = useRouterState({
     select: (state) => normalizeNavigationPath(state.location.pathname),
   });
@@ -53,9 +37,7 @@ export function SettingsLayout({
       <header className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Configurações</h1>
         <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          {showSchools
-            ? "Gerencie sua conta, a segurança e as escolas sob sua administração."
-            : "Gerencie seus dados de acesso e a segurança da sua conta."}
+          Gerencie seus dados de acesso e a segurança da sua conta.
         </p>
       </header>
       <Tabs

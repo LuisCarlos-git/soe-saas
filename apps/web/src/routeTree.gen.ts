@@ -14,9 +14,12 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated.account'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
+import { Route as AuthenticatedAdministrationSchoolsRouteImport } from './routes/_authenticated.administration.schools'
+import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated.schools.index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated.settings.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated.settings.security'
+import { Route as AuthenticatedSchoolsOrganizationIdSettingsRouteImport } from './routes/_authenticated.schools.$organizationId.settings'
 import { Route as AuthenticatedSettingsSchoolsIndexRouteImport } from './routes/_authenticated.settings.schools.index'
 import { Route as AuthenticatedSettingsSchoolsOrganizationIdRouteImport } from './routes/_authenticated.settings.schools.$organizationId'
 
@@ -44,6 +47,18 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdministrationSchoolsRoute =
+  AuthenticatedAdministrationSchoolsRouteImport.update({
+    id: '/administration/schools',
+    path: '/administration/schools',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSchoolsIndexRoute =
+  AuthenticatedSchoolsIndexRouteImport.update({
+    id: '/schools/',
+    path: '/schools/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
@@ -61,6 +76,12 @@ const AuthenticatedSettingsSecurityRoute =
     id: '/security',
     path: '/security',
     getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSchoolsOrganizationIdSettingsRoute =
+  AuthenticatedSchoolsOrganizationIdSettingsRouteImport.update({
+    id: '/schools/$organizationId/settings',
+    path: '/schools/$organizationId/settings',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedSettingsSchoolsIndexRoute =
   AuthenticatedSettingsSchoolsIndexRouteImport.update({
@@ -80,9 +101,12 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/account': typeof AuthenticatedAccountRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/administration/schools': typeof AuthenticatedAdministrationSchoolsRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/schools/$organizationId/settings': typeof AuthenticatedSchoolsOrganizationIdSettingsRoute
   '/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
   '/settings/schools/': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
@@ -90,9 +114,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/administration/schools': typeof AuthenticatedAdministrationSchoolsRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/schools': typeof AuthenticatedSchoolsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/schools/$organizationId/settings': typeof AuthenticatedSchoolsOrganizationIdSettingsRoute
   '/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
   '/settings/schools': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
@@ -103,9 +130,12 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
+  '/_authenticated/administration/schools': typeof AuthenticatedAdministrationSchoolsRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
+  '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/schools/$organizationId/settings': typeof AuthenticatedSchoolsOrganizationIdSettingsRoute
   '/_authenticated/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
   '/_authenticated/settings/schools/': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
@@ -116,9 +146,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/account'
     | '/settings'
+    | '/administration/schools'
     | '/settings/profile'
     | '/settings/security'
+    | '/schools/'
     | '/settings/'
+    | '/schools/$organizationId/settings'
     | '/settings/schools/$organizationId'
     | '/settings/schools/'
   fileRoutesByTo: FileRoutesByTo
@@ -126,9 +159,12 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/account'
+    | '/administration/schools'
     | '/settings/profile'
     | '/settings/security'
+    | '/schools'
     | '/settings'
+    | '/schools/$organizationId/settings'
     | '/settings/schools/$organizationId'
     | '/settings/schools'
   id:
@@ -138,9 +174,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/account'
     | '/_authenticated/settings'
+    | '/_authenticated/administration/schools'
     | '/_authenticated/settings/profile'
     | '/_authenticated/settings/security'
+    | '/_authenticated/schools/'
     | '/_authenticated/settings/'
+    | '/_authenticated/schools/$organizationId/settings'
     | '/_authenticated/settings/schools/$organizationId'
     | '/_authenticated/settings/schools/'
   fileRoutesById: FileRoutesById
@@ -188,6 +227,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/administration/schools': {
+      id: '/_authenticated/administration/schools'
+      path: '/administration/schools'
+      fullPath: '/administration/schools'
+      preLoaderRoute: typeof AuthenticatedAdministrationSchoolsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/schools/': {
+      id: '/_authenticated/schools/'
+      path: '/schools'
+      fullPath: '/schools/'
+      preLoaderRoute: typeof AuthenticatedSchoolsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -208,6 +261,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/security'
       preLoaderRoute: typeof AuthenticatedSettingsSecurityRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/schools/$organizationId/settings': {
+      id: '/_authenticated/schools/$organizationId/settings'
+      path: '/schools/$organizationId/settings'
+      fullPath: '/schools/$organizationId/settings'
+      preLoaderRoute: typeof AuthenticatedSchoolsOrganizationIdSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/settings/schools/': {
       id: '/_authenticated/settings/schools/'
@@ -252,11 +312,19 @@ const AuthenticatedSettingsRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
+  AuthenticatedAdministrationSchoolsRoute: typeof AuthenticatedAdministrationSchoolsRoute
+  AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
+  AuthenticatedSchoolsOrganizationIdSettingsRoute: typeof AuthenticatedSchoolsOrganizationIdSettingsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
+  AuthenticatedAdministrationSchoolsRoute:
+    AuthenticatedAdministrationSchoolsRoute,
+  AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
+  AuthenticatedSchoolsOrganizationIdSettingsRoute:
+    AuthenticatedSchoolsOrganizationIdSettingsRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

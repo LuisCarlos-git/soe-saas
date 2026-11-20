@@ -26,6 +26,45 @@ async function login(page: Page, email: string) {
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page).toHaveURL(/\/account$/);
 }
+async function openMenu(page: Page) {
+  const trigger = page.getByRole("button", { name: "Abrir menu de navegação" });
+  if (await trigger.isVisible()) await trigger.click();
+}
+test("pessoa sem permissão não vê menus escolares e não abre suas rotas", async ({
+  page,
+}) => {
+  await login(page, "bia@example.test");
+  await openMenu(page);
+  await expect(
+    page.getByRole("navigation", { name: "Escola", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("navigation", { name: "Administração", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: "Configurações", exact: true }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: `test-results/school-sidebar-unprivileged-${test.info().project.name}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
+  for (const path of [
+    "/schools",
+    "/administration/schools",
+    "/settings/schools",
+    "/schools/00000000-0000-4000-8000-000000000001/settings",
+  ]) {
+    await page.goto(path);
+    await expect(
+      page.getByRole("heading", { name: "Página não encontrada" }),
+    ).toBeVisible();
+    await expect(page.getByRole("button", { name: "Nova escola" })).toHaveCount(
+      0,
+    );
+    await expect(page.getByLabel("Nome da escola")).toHaveCount(0);
+  }
+});
 test("operador provisiona escola e responsável administra configurações isoladas", async ({
   page,
 }) => {
@@ -34,7 +73,21 @@ test("operador provisiona escola e responsável administra configurações isola
   const email = `school-${viewport}@example.test`;
   await login(page, `operator-${viewport}@example.test`);
   await page.goto("/settings/profile");
-  await page.getByRole("tab", { name: "Escolas", exact: true }).click();
+  await expect(page.getByRole("tab")).toHaveCount(2);
+  await openMenu(page);
+  await expect(
+    page.getByRole("navigation", { name: "Escola", exact: true }),
+  ).toHaveCount(0);
+  await page.screenshot({
+    path: `test-results/school-sidebar-operator-${viewport}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page
+    .getByRole("navigation", { name: "Administração", exact: true })
+    .getByRole("link", { name: "Escolas piloto" })
+    .click();
+  await expect(page).toHaveURL(/\/administration\/schools$/);
   await expect(
     page.getByRole("heading", {
       name: "Confirme sua identidade para continuar",
@@ -46,7 +99,7 @@ test("operador provisiona escola e responsável administra configurações isola
   await enroll(page);
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Escolas", exact: true }),
+    page.getByRole("heading", { name: "Escolas piloto", exact: true }),
   ).toBeVisible();
   const trigger = page.getByRole("button", { name: "Nova escola" });
   await trigger.click();
@@ -57,7 +110,34 @@ test("operador provisiona escola e responsável administra configurações isola
   await modal.getByLabel("Nome da escola").fill(name);
   await modal.getByLabel("Fuso horário").selectOption("America/Manaus");
   await modal.getByLabel("Ano letivo").fill("2027");
+  await modal
+    .getByLabel("Nome do responsável")
+    .fill(`Responsável da escola ${viewport}`);
   await modal.getByLabel("E-mail do responsável").fill(email);
+  await modal.evaluate((node) =>
+    Promise.all(
+      node
+        .getAnimations({ subtree: true })
+        .filter((animation) => {
+          const end = animation.effect?.getComputedTiming().endTime;
+          return typeof end === "number" && Number.isFinite(end);
+        })
+        .map((animation) => animation.finished.catch(() => {})),
+    ),
+  );
+  const nameBox = await modal.getByLabel("Nome da escola").boundingBox();
+  const nextLabelBox = await modal
+    .getByText("Fuso horário", { exact: true })
+    .boundingBox();
+  expect(nameBox).not.toBeNull();
+  expect(nextLabelBox).not.toBeNull();
+  const fieldGap = nextLabelBox!.y - (nameBox!.y + nameBox!.height);
+  expect(fieldGap).toBeGreaterThanOrEqual(8);
+  expect(fieldGap).toBeLessThanOrEqual(16);
+  await test.info().attach("school-form-spacing", {
+    body: JSON.stringify({ viewport, fieldGap }),
+    contentType: "application/json",
+  });
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(
     await page.evaluate(
@@ -69,6 +149,17 @@ test("operador provisiona escola e responsável administra configurações isola
   });
   await page.screenshot({
     path: `test-results/school-create-${viewport}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
+  await modal
+    .getByRole("button", { name: "Criar escola piloto" })
+    .scrollIntoViewIfNeeded();
+  await expect(modal.getByLabel("Nome do responsável")).toBeInViewport({
+    ratio: 1,
+  });
+  await page.screenshot({
+    path: `test-results/school-create-actions-${viewport}.png`,
     fullPage: true,
     animations: "disabled",
   });
@@ -111,7 +202,20 @@ test("operador provisiona escola e responsável administra configurações isola
   ).toBe(204);
   await login(page, email);
   await enroll(page);
-  await page.goto("/settings/schools");
+  await openMenu(page);
+  await expect(
+    page.getByRole("navigation", { name: "Administração", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("navigation", { name: "Escola", exact: true }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: `test-results/school-sidebar-admin-${viewport}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.getByRole("link", { name: "Minhas escolas", exact: true }).click();
+  await expect(page).toHaveURL(/\/schools\/?$/);
   await expect(page.getByRole("button", { name: "Nova escola" })).toHaveCount(
     0,
   );
@@ -123,12 +227,13 @@ test("operador provisiona escola e responsável administra configurações isola
   page.once("dialog", (dialog) => {
     void dialog.dismiss();
   });
-  await page.getByRole("tab", { name: "Perfil", exact: true }).click();
+  await openMenu(page);
+  await page.getByRole("link", { name: "Configurações", exact: true }).click();
   await expect(page.getByLabel("Equipe de acompanhamento")).toHaveValue(
     "Apoio ao estudante",
   );
   // Another successful writer advances the version without refreshing this form.
-  const settingsPath = `/api/v1/schools/${page.url().split("/").at(-1)}/settings`;
+  const settingsPath = `/api/v1/schools/${new URL(page.url()).pathname.split("/")[2]}/settings`;
   const current = (await (
     await page.request.get(settingsPath)
   ).json()) as Record<string, unknown>;
@@ -185,9 +290,9 @@ test("operador provisiona escola e responsável administra configurações isola
     fullPage: true,
     animations: "disabled",
   });
-  await page.goto("/settings/schools/00000000-0000-4000-8000-000000000001");
+  await page.goto("/schools/00000000-0000-4000-8000-000000000001/settings");
   await expect(
-    page.getByText("Você não tem permissão para administrar escolas."),
+    page.getByRole("heading", { name: "Página não encontrada" }),
   ).toBeVisible();
   await expect(page.getByLabel("Nome da escola")).toHaveCount(0);
 });

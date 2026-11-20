@@ -9,6 +9,7 @@ export interface InputFieldProps extends InputProps {
   label: string;
   description?: ReactNode;
   error?: string;
+  reserveErrorSpace?: boolean;
 }
 
 export function InputField({
@@ -16,6 +17,7 @@ export function InputField({
   label,
   description,
   error = "",
+  reserveErrorSpace = true,
   "aria-describedby": describedBy,
   "aria-invalid": invalid,
   ...props
@@ -50,7 +52,11 @@ export function InputField({
           {description}
         </p>
       )}
-      <FieldMessage id={errorId} message={error} />
+      <FieldMessage
+        id={errorId}
+        message={error}
+        reserveSpace={reserveErrorSpace}
+      />
     </div>
   );
 }

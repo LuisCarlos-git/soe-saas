@@ -84,6 +84,7 @@ export function SchoolCreationDialog({
               studentLabel: "Estudante",
               classLabel: "Turma",
               initialAdministratorEmail: "",
+              initialAdministratorName: "",
             }}
             submit={async (value) => {
               setSaving(true);

@@ -2,7 +2,11 @@ import type { School, SchoolSettings } from "../domain/school";
 export interface SchoolTransaction {
   isOperator(actorId: string): Promise<boolean>;
   findAdministrator(email: string): Promise<{ id: string } | null>;
-  create(settings: SchoolSettings, administratorId: string): Promise<School>;
+  create(
+    settings: SchoolSettings,
+    administratorId: string,
+    administratorName: string,
+  ): Promise<School>;
   findForAdministrator(
     organizationId: string,
     actorId: string,

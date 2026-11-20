@@ -13,13 +13,14 @@ essa autoridade. O seed não remove MFA existente nem reativa operadores revogad
 Os entrypoints de seed recusam bancos de produção.
 
 1. Entre como operador e configure/verifique MFA em Configurações → Segurança.
-2. Abra Configurações → Escolas → Nova escola.
-3. Informe nome, fuso, ano letivo, nomenclaturas e e-mail de uma identidade já
+2. Abra Administração → Escolas piloto → Nova escola.
+3. Informe nome da escola, fuso, ano letivo, nomenclaturas, nome do responsável
+   e e-mail de uma identidade já
    cadastrada, por exemplo `ana@example.test`. O vínculo inicial é de administração
    cadastral, sem concessão de leitura restrita.
 4. Confirme “Criar escola piloto”. Não há pagamento ou contratação.
 5. Entre como responsável, configure/verifique seu próprio MFA e abra
-   Configurações → Escolas → Configurar. Altere e salve as configurações.
+   Escola → Minhas escolas → Configurar. Altere e salve as configurações.
 6. Para demonstrar isolamento, crie outra escola para `bia@example.test`.
    Ana não recebe vínculo nessa escola; o operador também não recebe vínculo
    automaticamente em nenhuma delas.
@@ -69,3 +70,23 @@ Todas as escolas desta entrega mantêm `pilotStatus = SYNTHETIC_ONLY`, protegido
 também por constraint no PostgreSQL. Criar a escola não cumpre aprovações de
 tratamento/retenção/suporte, matriz de acesso, restauração de backup, validação
 escolar ou qualquer outra condição para inserir dados reais.
+
+## Navegação e identificação do responsável
+
+A seção Escola e o item Minhas escolas aparecem somente para quem recebe
+vínculos administrativos ativos no retorno de `identity/school-access`.
+Administração → Escolas piloto depende exclusivamente da autoridade persistida
+do operador. Uma pessoa pode receber ambas explicitamente; uma autorização não
+implica a outra. Configurações pessoais conserva apenas Perfil e Segurança.
+
+As rotas `/schools`, `/schools/:organizationId/settings` e
+`/administration/schools` têm guards de navegação. As URLs antigas de
+`/settings/schools` redirecionam somente quando autorizadas. Sem permissão, o
+acesso direto retorna a superfície de página não encontrada; a API mantém suas
+verificações próprias de sessão, MFA, operador e vínculo por organização.
+
+O cadastro exige `initialAdministratorName`. Esse nome é guardado na própria
+escola e no evento de provisionamento, sem renomear a identidade global. A
+migration aditiva preenche escolas existentes com o nome da identidade que já
+estava vinculada. A edição das configurações escolares valida somente seus
+campos editáveis; não revalida nem altera os dados ocultos do responsável.

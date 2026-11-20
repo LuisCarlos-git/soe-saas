@@ -33,6 +33,11 @@ export const schoolSettingsSchema = z.strictObject({
   classLabel: label,
 });
 export const provisionSchoolSchema = schoolSettingsSchema.extend({
+  initialAdministratorName: z
+    .string()
+    .trim()
+    .min(2, "Informe o nome do responsável.")
+    .max(160, "Use até 160 caracteres."),
   initialAdministratorEmail: z
     .email("Informe um e-mail válido.")
     .max(254)
@@ -57,3 +62,4 @@ export const schoolListSchema = z.strictObject({
 });
 export type SchoolSettings = z.infer<typeof schoolSettingsSchema>;
 export type School = z.infer<typeof schoolSchema>;
+export type SchoolAccess = z.infer<typeof schoolAccessSchema>;

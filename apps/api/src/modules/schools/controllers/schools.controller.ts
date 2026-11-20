@@ -122,9 +122,15 @@ export class SchoolsController {
   ) {
     this.checkOrigin(origin);
     const actor = await this.actor(cookie);
-    const { initialAdministratorEmail, ...settings } = input;
+    const { initialAdministratorEmail, initialAdministratorName, ...settings } =
+      input;
     return this.run(() =>
-      this.provisionSchool.execute(actor, settings, initialAdministratorEmail),
+      this.provisionSchool.execute(
+        actor,
+        settings,
+        initialAdministratorEmail,
+        initialAdministratorName,
+      ),
     );
   }
   @Get("schools/:organizationId/settings")

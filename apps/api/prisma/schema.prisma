@@ -52,6 +52,7 @@ model Organization {
   studentLabel String
   classLabel String
   initialAdministratorId String
+  initialAdministratorName String
   initialAdministrator User @relation(fields: [initialAdministratorId], references: [id], onDelete: Restrict)
   pilotStatus String @default("SYNTHETIC_ONLY")
   version Int @default(1)

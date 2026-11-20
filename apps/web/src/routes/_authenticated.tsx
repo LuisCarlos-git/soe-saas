@@ -26,9 +26,13 @@ export const Route = createFileRoute("/_authenticated")({
     </main>
   ),
   component: function AuthenticatedLayout() {
-    const { api, identity } = Route.useRouteContext();
+    const { api, identity, schoolAccess } = Route.useRouteContext();
     return (
-      <AuthenticatedShell api={api} identity={identity}>
+      <AuthenticatedShell
+        api={api}
+        identity={identity}
+        schoolAccess={schoolAccess}
+      >
         <Outlet />
       </AuthenticatedShell>
     );

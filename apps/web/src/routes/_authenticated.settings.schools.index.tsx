@@ -1,11 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SchoolsPage } from "../modules/schools";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/_authenticated/settings/schools/")({
-  head: () => ({ meta: [{ title: "Escolas · Configurações · SOE" }] }),
-  component: function SchoolsRoute() {
-    const { api, identity, schoolAccess } = Route.useRouteContext();
-    return (
-      <SchoolsPage api={api} actorId={identity.id} access={schoolAccess} />
-    );
+  beforeLoad: ({ context }) => {
+    if (context.schoolAccess.canProvisionSchools)
+      throw redirect({ to: "/administration/schools", replace: true });
+    if (context.schoolAccess.schools.length)
+      throw redirect({ to: "/schools", replace: true });
+    throw notFound();
   },
 });

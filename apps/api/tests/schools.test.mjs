@@ -36,6 +36,7 @@ const school = {
   studentLabel: "Estudante",
   classLabel: "Turma",
   initialAdministratorEmail: "ana@example.test",
+  initialAdministratorName: "Ana Responsável",
 };
 test("operador com MFA provisiona escola gratuita com responsável explícito e sem vínculo automático", async () => {
   const agent = request.agent(app.getHttpServer());
@@ -59,6 +60,11 @@ test("operador com MFA provisiona escola gratuita com responsável explícito e 
     .set("Origin", origin)
     .send({ code: totp(enrollment.body.totpURI) })
     .expect(204);
+  await agent
+    .post("/api/v1/administration/schools")
+    .set("Origin", origin)
+    .send({ ...school, initialAdministratorName: "" })
+    .expect(400);
   const created = await agent
     .post("/api/v1/administration/schools")
     .set("Origin", origin)
@@ -72,7 +78,10 @@ test("operador com MFA provisiona escola gratuita com responsável explícito e 
     supportTeamLabel: school.supportTeamLabel,
     studentLabel: "Estudante",
     classLabel: "Turma",
-    initialAdministrator: { name: "Ana Teste", email: "ana@example.test" },
+    initialAdministrator: {
+      name: "Ana Responsável",
+      email: "ana@example.test",
+    },
     pilotStatus: "SYNTHETIC_ONLY",
     version: 1,
   });
@@ -86,6 +95,7 @@ test("operador com MFA provisiona escola gratuita com responsável explícito e 
       timeZone: "America/Manaus",
       academicYear: 2027,
       initialAdministratorEmail: "bia@example.test",
+      initialAdministratorName: "Bia Responsável",
     })
     .expect(201);
   const list = await agent.get("/api/v1/administration/schools").expect(200);
@@ -130,6 +140,9 @@ test("operador com MFA provisiona escola gratuita com responsável explícito e 
     .set("Origin", origin)
     .send({ code: totp(setup.body.totpURI) })
     .expect(204);
+  expect(
+    (await ana.get("/api/v1/identity/session").expect(200)).body.name,
+  ).toBe("Ana Teste");
   const firstPath = `/api/v1/schools/${created.body.id}/settings`;
   const secondPath = `/api/v1/schools/${second.body.id}/settings`;
   expect((await ana.get(firstPath).expect(200)).body).toEqual(created.body);
