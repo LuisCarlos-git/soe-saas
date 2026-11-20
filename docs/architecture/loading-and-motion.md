@@ -64,3 +64,19 @@ usa os tokens de duração/curva de página. Movimento reduzido remove a transi�
 A seleção semântica e as cores do texto continuam nos links, independentes da
 posição visual do marcador. O marcador não captura eventos nem entra na árvore
 acessível. Observadores/listeners são encerrados ao desmontar.
+
+### Correção da entrada visível do conteúdo
+
+O Radix TabsContent suprime a animação da primeira montagem com duração inline
+`0s`. Remontar esse próprio elemento por `key` fazia cada troca de aba receber
+novamente essa supressão: a regra CSS existia, mas o conteúdo aparecia já no
+estado final. O painel semântico agora fica estável com `soe-route-panel`;
+seu filho `soe-route-content`, identificado pela aba, executa a entrada de 220ms.
+A Visão geral mantém a mesma entrada, sem animar sidebar ou cabeçalho.
+
+`route-motion.spec.ts` amostra requestAnimationFrame e verifica quadros de
+opacidade intermediária do conteúdo final em Perfil → Segurança → Perfil →
+Visão geral. O cenário ficou vermelho com duração `0s` e passou após a correção.
+Movimento reduzido exige opacidade final, sem animação. A verificação local no
+servidor de desenvolvimento também observou os quadros de entrada nos três
+trajetos. Conferir apenas `animation-name` não é evidência de movimento visível.

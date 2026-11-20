@@ -73,10 +73,9 @@ test("configurações protegidas, abas com URL e navegação responsiva", async 
       .getByRole("heading", { name: "Configurações", exact: true })
       .evaluate((node, original) => node === original, settingsHeading),
   ).toBe(true);
-  await expect(page.getByRole("tabpanel")).toHaveCSS(
-    "animation-name",
-    desktop ? "soe-page-in" : "none",
-  );
+  await expect(
+    page.getByRole("tabpanel").locator(".soe-route-content"),
+  ).toHaveCSS("animation-name", desktop ? "soe-page-in" : "none");
   await page.reload();
   await expect(
     page.getByRole("tab", { name: "Segurança", exact: true }),

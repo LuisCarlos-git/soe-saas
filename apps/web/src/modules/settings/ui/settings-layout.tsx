@@ -63,12 +63,10 @@ export function SettingsLayout() {
             ))}
           </TabsList>
         </div>
-        <TabsContent
-          key={active}
-          value={active}
-          className="soe-route-content pt-8"
-        >
-          <Outlet />
+        <TabsContent value={active} className="soe-route-panel pt-8">
+          <div key={active} className="soe-route-content">
+            <Outlet />
+          </div>
         </TabsContent>
       </Tabs>
     </>
