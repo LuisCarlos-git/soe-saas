@@ -110,11 +110,11 @@ export function ApplicationSidebar({
               </SidebarMenuItem>
             </SidebarMenu>
           </nav>
-          <div className="border-t border-rule pt-4">
+          <div className="flex items-center gap-1 border-t border-rule pt-4">
             <Link
               to="/settings/profile"
               onClick={close}
-              className="flex min-h-11 items-center gap-3 rounded-lg px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="flex min-h-11 min-w-0 flex-1 items-center gap-3 rounded-lg px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                 {identity.name.trim().slice(0, 1).toUpperCase()}
@@ -128,16 +128,17 @@ export function ApplicationSidebar({
                 </span>
               </span>
             </Link>
+            <Button
+              variant="ghost"
+              loading={pending}
+              onClick={onLogout}
+              aria-label="Sair"
+              title="Sair"
+              className="size-11 shrink-0 p-0"
+            >
+              <LogOut className="size-4" aria-hidden="true" />
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            loading={pending}
-            onClick={onLogout}
-            className="w-full justify-start gap-2 px-3 text-sm font-medium"
-          >
-            <LogOut className="size-4" aria-hidden="true" />
-            Sair
-          </Button>
         </SidebarFooter>
       </SidebarSelection>
     </Sidebar>
