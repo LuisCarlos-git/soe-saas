@@ -42,10 +42,15 @@ async function provision(url: string, mfaFixtures = false) {
     for (const [name, email] of [
       ["Ana Teste", "ana@example.test"],
       ["Bia Teste", "bia@example.test"],
+      ["Operador Teste", "operator@example.test"],
       ...(mfaFixtures
         ? [
             ["MFA Ana", "mfa-ana@example.test"],
             ["MFA Bia", "mfa-bia@example.test"],
+            ["Operador Desktop", "operator-desktop@example.test"],
+            ["Operador Mobile", "operator-mobile@example.test"],
+            ["Responsável Desktop", "school-desktop@example.test"],
+            ["Responsável Mobile", "school-mobile@example.test"],
           ]
         : []),
     ]) {
@@ -57,6 +62,18 @@ async function provision(url: string, mfaFixtures = false) {
           update: {},
           create: { id: randomUUID(), name, email },
         });
+        if (
+          [
+            "operator@example.test",
+            "operator-desktop@example.test",
+            "operator-mobile@example.test",
+          ].includes(email)
+        )
+          await transaction.saasOperator.upsert({
+            where: { userId: user.id },
+            update: {},
+            create: { userId: user.id },
+          });
         const account = await transaction.account.findFirst({
           where: { userId: user.id, providerId: "credential" },
         });

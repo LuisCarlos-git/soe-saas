@@ -7,7 +7,7 @@ import { parseConfiguration } from "./shared/config";
 import { httpLoggerOptions } from "./shared/logging";
 import { DatabaseModule } from "./infrastructure/database/database.module";
 import { EnvironmentModule } from "./modules/environment/environment.module";
-import { IdentityModule } from "./modules/identity/identity.module";
+import { SchoolsModule } from "./modules/schools/schools.module";
 import { HealthController } from "./health.controller";
 @Module({})
 export class AppModule {
@@ -26,7 +26,7 @@ export class AppModule {
         ConfigModule.forRoot({ ignoreEnvFile: true, load: [() => config] }),
         DatabaseModule.forRoot(config.DATABASE_URL),
         EnvironmentModule,
-        IdentityModule.forRoot(config),
+        SchoolsModule.forRoot(config),
         TerminusModule.forRoot({ logger: false }),
         LoggerModule.forRoot({ pinoHttp }),
       ],

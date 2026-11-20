@@ -17,6 +17,8 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated.settings.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
 import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated.settings.security'
+import { Route as AuthenticatedSettingsSchoolsIndexRouteImport } from './routes/_authenticated.settings.schools.index'
+import { Route as AuthenticatedSettingsSchoolsOrganizationIdRouteImport } from './routes/_authenticated.settings.schools.$organizationId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -60,6 +62,18 @@ const AuthenticatedSettingsSecurityRoute =
     path: '/security',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
+const AuthenticatedSettingsSchoolsIndexRoute =
+  AuthenticatedSettingsSchoolsIndexRouteImport.update({
+    id: '/schools/',
+    path: '/schools/',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsSchoolsOrganizationIdRoute =
+  AuthenticatedSettingsSchoolsOrganizationIdRouteImport.update({
+    id: '/schools/$organizationId',
+    path: '/schools/$organizationId',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -69,6 +83,8 @@ export interface FileRoutesByFullPath {
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
+  '/settings/schools/': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,6 +93,8 @@ export interface FileRoutesByTo {
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
+  '/settings/schools': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,6 +106,8 @@ export interface FileRoutesById {
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/settings/schools/$organizationId': typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
+  '/_authenticated/settings/schools/': typeof AuthenticatedSettingsSchoolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/settings/security'
     | '/settings/'
+    | '/settings/schools/$organizationId'
+    | '/settings/schools/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,6 +129,8 @@ export interface FileRouteTypes {
     | '/settings/profile'
     | '/settings/security'
     | '/settings'
+    | '/settings/schools/$organizationId'
+    | '/settings/schools'
   id:
     | '__root__'
     | '/'
@@ -117,6 +141,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/profile'
     | '/_authenticated/settings/security'
     | '/_authenticated/settings/'
+    | '/_authenticated/settings/schools/$organizationId'
+    | '/_authenticated/settings/schools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +209,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsSecurityRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
+    '/_authenticated/settings/schools/': {
+      id: '/_authenticated/settings/schools/'
+      path: '/schools'
+      fullPath: '/settings/schools/'
+      preLoaderRoute: typeof AuthenticatedSettingsSchoolsIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/schools/$organizationId': {
+      id: '/_authenticated/settings/schools/$organizationId'
+      path: '/schools/$organizationId'
+      fullPath: '/settings/schools/$organizationId'
+      preLoaderRoute: typeof AuthenticatedSettingsSchoolsOrganizationIdRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
   }
 }
 
@@ -190,12 +230,18 @@ interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
   AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
+  AuthenticatedSettingsSchoolsOrganizationIdRoute: typeof AuthenticatedSettingsSchoolsOrganizationIdRoute
+  AuthenticatedSettingsSchoolsIndexRoute: typeof AuthenticatedSettingsSchoolsIndexRoute
 }
 
 const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
   AuthenticatedSettingsProfileRoute: AuthenticatedSettingsProfileRoute,
   AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
+  AuthenticatedSettingsSchoolsOrganizationIdRoute:
+    AuthenticatedSettingsSchoolsOrganizationIdRoute,
+  AuthenticatedSettingsSchoolsIndexRoute:
+    AuthenticatedSettingsSchoolsIndexRoute,
 }
 
 const AuthenticatedSettingsRouteWithChildren =

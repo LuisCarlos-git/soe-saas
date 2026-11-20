@@ -37,6 +37,11 @@ export class SafeErrorFilter implements ExceptionFilter {
       },
       403: { code: "FORBIDDEN", message: "Acesso não permitido." },
       404: { code: "NOT_FOUND", message: "Recurso não encontrado." },
+      409: {
+        code: "CONFLICT",
+        message:
+          "Não foi possível salvar. Confira o responsável informado ou recarregue as configurações antes de tentar novamente.",
+      },
       413: {
         code: "INVALID_INPUT",
         message: "Corpo da requisição excede o limite permitido.",

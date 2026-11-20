@@ -72,7 +72,11 @@ export function AuthenticatedShell({
                       <ChevronRight className="size-4 text-muted-foreground" />
                     </li>
                     <li aria-current="page" className="font-medium">
-                      {pathname.endsWith("security") ? "Segurança" : "Perfil"}
+                      {pathname.startsWith("/settings/schools")
+                        ? "Escolas"
+                        : pathname.endsWith("security")
+                          ? "Segurança"
+                          : "Perfil"}
                     </li>
                   </>
                 )}
