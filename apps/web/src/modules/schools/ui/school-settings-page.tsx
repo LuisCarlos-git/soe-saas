@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Button, toast } from "@soe/ui";
+import { buttonVariants } from "@soe/ui/primitives/button";
+import { ArrowLeft } from "lucide-react";
 import { schoolSettingsSchema } from "@soe/contracts";
 import { schoolSettingsQuery } from "../data/queries";
 import { SchoolForm } from "./school-form";
@@ -53,18 +55,28 @@ function Settings({
     );
   const school = query.data;
   return (
-    <section className="soe-route-content max-w-2xl space-y-6">
-      <Link
-        to="/schools"
-        className="inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-4"
-      >
-        Voltar às escolas
-      </Link>
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Configurações da escola
-        </h1>
-        <p className="mt-2 break-words text-muted-foreground">{school.name}</p>
+    <section className="soe-route-content mx-auto w-full max-w-4xl space-y-6">
+      <header className="flex items-start gap-3">
+        <Link
+          to="/schools"
+          aria-label="Voltar às escolas"
+          title="Voltar às escolas"
+          className={buttonVariants({
+            variant: "ghost",
+            size: "icon",
+            className: "size-11 text-muted-foreground hover:text-primary",
+          })}
+        >
+          <ArrowLeft className="size-5" aria-hidden="true" />
+        </Link>
+        <div className="min-w-0">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Configurações da escola
+          </h1>
+          <p className="mt-2 break-words text-muted-foreground">
+            {school.name}
+          </p>
+        </div>
       </header>
       <p className="rounded-lg bg-primary/5 p-4 text-sm leading-relaxed">
         Validação com dados sintéticos. A liberação para dados reais depende das
@@ -83,6 +95,16 @@ function Settings({
             initialAdministratorEmail: school.initialAdministrator.email,
             initialAdministratorName: school.initialAdministrator.name,
           }}
+          onReload={async () => {
+            if (
+              !window.confirm(
+                "Recarregar e descartar alterações ainda não salvas?",
+              )
+            )
+              return false;
+            const result = await query.refetch();
+            return result.isSuccess;
+          }}
           submit={async (value) => {
             const settings = schoolSettingsSchema.strip().parse(value);
             const saved = await api.updateSchool(organizationId, {
@@ -97,19 +119,6 @@ function Settings({
           }}
         />
       </div>
-      <Button
-        variant="outline"
-        onClick={() => {
-          if (
-            window.confirm(
-              "Recarregar e descartar alterações ainda não salvas?",
-            )
-          )
-            void query.refetch();
-        }}
-      >
-        Recarregar configurações
-      </Button>
     </section>
   );
 }

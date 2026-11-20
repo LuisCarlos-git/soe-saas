@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBlocker } from "@tanstack/react-router";
 import { useAppForm, validateOnChangeAndBlur } from "@soe/form";
 import {
@@ -37,13 +37,16 @@ export function SchoolForm({
   submit,
   onCancel,
   onDirtyChange,
+  onReload,
 }: {
   initial: Values;
   creation?: boolean;
   submit: (value: Values) => Promise<void>;
   onCancel?: (() => void) | undefined;
   onDirtyChange?: ((dirty: boolean) => void) | undefined;
+  onReload?: (() => Promise<boolean>) | undefined;
 }) {
+  const [reloading, setReloading] = useState(false);
   const form = useAppForm({
     defaultValues: initial,
     validationLogic: validateOnChangeAndBlur,
@@ -216,6 +219,31 @@ export function SchoolForm({
           </fieldset>
         )}
         <div className="flex flex-wrap items-center justify-end gap-3 border-t border-rule pt-4">
+          {onReload && (
+            <form.Subscribe selector={(state) => state.isSubmitting}>
+              {(pending) => (
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto"
+                  loading={reloading}
+                  disabled={pending}
+                  onClick={() => {
+                    setReloading(true);
+                    void onReload()
+                      .then((reset) => {
+                        if (reset) form.reset();
+                      })
+                      .catch(() => {
+                        /* The transport reports safe API errors. */
+                      })
+                      .finally(() => setReloading(false));
+                  }}
+                >
+                  Recarregar configurações
+                </Button>
+              )}
+            </form.Subscribe>
+          )}
           {onCancel && (
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(pending) => (
@@ -225,7 +253,10 @@ export function SchoolForm({
               )}
             </form.Subscribe>
           )}
-          <form.SubmitButton>
+          <form.SubmitButton
+            disabled={reloading}
+            className={creation ? "" : "w-full sm:w-auto"}
+          >
             {creation ? "Criar escola piloto" : "Salvar configurações"}
           </form.SubmitButton>
         </div>

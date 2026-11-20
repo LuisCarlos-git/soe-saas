@@ -232,6 +232,14 @@ test("operador provisiona escola e responsável administra configurações isola
   await expect(page.getByLabel("Equipe de acompanhamento")).toHaveValue(
     "Apoio ao estudante",
   );
+  page.once("dialog", (dialog) => {
+    void dialog.accept();
+  });
+  await page.getByRole("button", { name: "Recarregar configurações" }).click();
+  await expect(page.getByLabel("Equipe de acompanhamento")).toHaveValue(
+    "Orientação educacional",
+  );
+  await page.getByLabel("Equipe de acompanhamento").fill("Apoio ao estudante");
   // Another successful writer advances the version without refreshing this form.
   const settingsPath = `/api/v1/schools/${new URL(page.url()).pathname.split("/")[2]}/settings`;
   const current = (await (
@@ -290,6 +298,32 @@ test("operador provisiona escola e responsável administra configurações isola
     fullPage: true,
     animations: "disabled",
   });
+  const mainFrame = await page
+    .locator('[data-slot="sidebar-inset"]')
+    .boundingBox();
+  const contentFrame = await page.locator(".soe-route-content").boundingBox();
+  expect(mainFrame).not.toBeNull();
+  expect(contentFrame).not.toBeNull();
+  const leftSpace = contentFrame!.x - mainFrame!.x;
+  const rightSpace =
+    mainFrame!.x + mainFrame!.width - contentFrame!.x - contentFrame!.width;
+  expect(Math.abs(leftSpace - rightSpace)).toBeLessThanOrEqual(1);
+  if (viewport === "desktop") expect(contentFrame!.width).toBeGreaterThan(800);
+  const reloadFrame = await page
+    .getByRole("button", { name: "Recarregar configurações" })
+    .boundingBox();
+  const saveFrame = await page
+    .getByRole("button", { name: "Salvar configurações" })
+    .boundingBox();
+  expect(reloadFrame).not.toBeNull();
+  expect(saveFrame).not.toBeNull();
+  if (viewport === "desktop")
+    expect(Math.abs(reloadFrame!.y - saveFrame!.y)).toBeLessThanOrEqual(1);
+  else expect(saveFrame!.width).toBe(reloadFrame!.width);
+  await page
+    .getByRole("link", { name: "Voltar às escolas", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/schools\/?$/);
   await page.goto("/schools/00000000-0000-4000-8000-000000000001/settings");
   await expect(
     page.getByRole("heading", { name: "Página não encontrada" }),

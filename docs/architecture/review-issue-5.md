@@ -145,3 +145,11 @@ abertas pelo revisor independente. Nenhuma correção material foi solicitada.
 O agente geral substituiu o especialista nomeado indisponível e aplicou as
 instruções de finish-reviewer do Impeccable. Os arquivos de DESIGN.md foram
 preservados.
+
+Refinamento solicitado em seguida: retorno por seta acessível junto ao título,
+conteúdo escolar centralizado e mais largo, e recarregamento secundário no rodapé
+ao lado do salvamento (empilhados no celular). O recarregamento confirmado também
+restaura os campos quando a versão do servidor não mudou. Seis cenários de
+navegador de escolas/configurações passaram em desktop e celular; os testes
+verificam margens simétricas, largura útil, alinhamento das ações e retorno.
+Build, tipos, lint, formatação e inspeção das duas capturas finais passaram.
