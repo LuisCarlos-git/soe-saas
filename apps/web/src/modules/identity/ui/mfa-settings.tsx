@@ -94,7 +94,7 @@ function MfaEnrollment({
                 aria-hidden="true"
               />
             </summary>
-            <p className="mt-3 text-muted-foreground">
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Adicione uma conta chamada SOe, escolha códigos baseados em tempo
               e use esta chave:
             </p>
@@ -160,13 +160,13 @@ export function MfaSettings({ api }: { api: ApiClient }) {
   }
   return (
     <section
-      className="mt-8 border-t border-rule pt-8"
+      className="rounded-xl border border-rule bg-surface p-6 sm:p-8"
       aria-labelledby="mfa-title"
     >
-      <h2 id="mfa-title" className="text-2xl font-semibold">
+      <h2 id="mfa-title" className="text-xl font-semibold">
         Proteção em duas etapas
       </h2>
-      <p className="mt-3 text-muted-foreground">
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
         O aplicativo autenticador protege o acesso à administração e às
         informações restritas da escola.
       </p>

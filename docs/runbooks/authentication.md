@@ -23,7 +23,7 @@ no web. O segredo TOTP e os códigos de recuperação ficam cifrados pelo proved
 com AUTH_SECRET; proteger a chave e os backups é requisito operacional. Rotação
 desse segredo requer procedimento validado antes do piloto.
 
-Na página `/account`, “Configurar aplicativo” abre uma modal com confirmação da
+Em **Configurações → Segurança** (`/settings/security`), “Configurar aplicativo” abre uma modal com confirmação da
 senha, QR code e verificação do primeiro código. Escanear o QR code no aplicativo
 autenticador e avançar em “Já adicionei ao aplicativo” para informar o primeiro
 código. “Voltar ao QR code” retorna à etapa anterior dentro da modal. A conta é

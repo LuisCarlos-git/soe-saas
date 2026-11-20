@@ -46,3 +46,21 @@ A bancada oficial foi validada novamente: oito estados dentro do quadro, read-ou
 O E2E de motion agora observa a geometria em 12 amostras ao longo de mais de um ciclo, rejeitando as pausas do percurso antigo. Desktop e celular/reduced-motion passaram. Build web/SSR, lint, typecheck e bundle cliente aprovados.
 
 A prévia contínua foi verificada separadamente em Chromium: reprodução normal, controle Parar e modo estático sob reduced-motion, sem erros de página. No refinamento foram repetidos apenas os dois E2E de motion, que cobrem o comportamento alterado; os demais fluxos não foram modificados. O chunk atualizado mede 6,92 kB gzip no cliente.
+
+## Escopo das transições — 20/11/2026
+
+Por solicitação do usuário, a navegação autenticada mantém sidebar, cabeçalho e
+barra de abas estáveis. O Router não inicia View Transitions da viewport inteira.
+`soe-route-content` aplica a entrada apenas à página de visão geral ou ao
+`TabsContent` da aba selecionada; as abas possuem chaves próprias para reiniciar
+a entrada sem remontar a moldura. Reduced-motion desabilita essa animação.
+O indicador de carregamento Hairline continua acompanhando a navegação real.
+
+`SidebarSelection` adapta a receita Tabs sliding de Transitions.dev para a
+seleção vertical do menu. Um único marcador decorativo mede o botão com
+`data-active=true` e move-se por transform entre os destinos. A primeira medição,
+redimensionamentos e rolagem posicionam sem interpolação; uma troca de destino
+usa os tokens de duração/curva de página. Movimento reduzido remove a transição.
+A seleção semântica e as cores do texto continuam nos links, independentes da
+posição visual do marcador. O marcador não captura eventos nem entra na árvore
+acessível. Observadores/listeners são encerrados ao desmontar.

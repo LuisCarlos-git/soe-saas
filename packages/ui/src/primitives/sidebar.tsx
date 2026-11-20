@@ -40,6 +40,7 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
+  triggerRef: React.RefObject<HTMLButtonElement | null>;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -68,6 +69,7 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -122,8 +124,18 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      triggerRef,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
+    [
+      state,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+      triggerRef,
+    ],
   );
 
   return (
@@ -163,7 +175,8 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { isMobile, state, openMobile, setOpenMobile, triggerRef } =
+    useSidebar();
 
   if (collapsible === "none") {
     return (
@@ -187,6 +200,10 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            triggerRef.current?.focus();
+          }}
           className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
           style={
             {
@@ -196,8 +213,10 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            <SheetTitle>Menu de navegação</SheetTitle>
+            <SheetDescription>
+              Acesse as áreas e as configurações da sua conta.
+            </SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
@@ -255,13 +274,23 @@ function Sidebar({
 
 function SidebarTrigger({
   className,
+  ref: forwardedRef,
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, triggerRef } = useSidebar();
+  const setTriggerRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      triggerRef.current = node;
+      if (typeof forwardedRef === "function") forwardedRef(node);
+      else if (forwardedRef) forwardedRef.current = node;
+    },
+    [triggerRef, forwardedRef],
+  );
 
   return (
     <Button
+      ref={setTriggerRef}
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
@@ -274,7 +303,7 @@ function SidebarTrigger({
       {...props}
     >
       <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">Alternar menu de navegação</span>
     </Button>
   );
 }
@@ -286,10 +315,10 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
     <button
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label="Toggle Sidebar"
+      aria-label="Alternar menu de navegação"
       tabIndex={-1}
       onClick={toggleSidebar}
-      title="Toggle Sidebar"
+      title="Alternar menu de navegação"
       className={cn(
         "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-[color,background-color,border-color,box-shadow,opacity,transform,translate] ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border sm:flex",
         "in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize",
@@ -329,6 +358,102 @@ function SidebarInput({
       className={cn("h-8 w-full bg-background shadow-none", className)}
       {...props}
     />
+  );
+}
+
+function SidebarSelection({
+  activeKey,
+  children,
+  className,
+}: {
+  activeKey: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const root = React.useRef<HTMLDivElement>(null);
+  const [position, setPosition] = React.useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    animate: boolean;
+  } | null>(null);
+  const measure = React.useCallback((animate: boolean) => {
+    const container = root.current;
+    const active = container?.querySelector<HTMLElement>(
+      '[data-sidebar="menu-button"][data-active="true"]',
+    );
+    if (!container || !active) {
+      setPosition(null);
+      return;
+    }
+    const frame = container.getBoundingClientRect();
+    const target = active.getBoundingClientRect();
+    if (!target.width || !target.height) return;
+    setPosition((previous) => {
+      const next = {
+        x: target.left - frame.left,
+        y: target.top - frame.top,
+        width: target.width,
+        height: target.height,
+        animate: animate && previous !== null,
+      };
+      if (
+        previous &&
+        previous.x === next.x &&
+        previous.y === next.y &&
+        previous.width === next.width &&
+        previous.height === next.height
+      )
+        return previous;
+      return next;
+    });
+  }, []);
+  React.useLayoutEffect(() => {
+    measure(true);
+  }, [activeKey, measure]);
+  React.useLayoutEffect(() => {
+    const container = root.current;
+    if (!container) return;
+    const resize = () => measure(false);
+    const observer = new ResizeObserver(resize);
+    observer.observe(container);
+    for (const child of container.children)
+      if (
+        child instanceof HTMLElement &&
+        child.dataset.slot !== "sidebar-selection-indicator"
+      )
+        observer.observe(child);
+    container.addEventListener("scroll", resize, true);
+    return () => {
+      observer.disconnect();
+      container.removeEventListener("scroll", resize, true);
+    };
+  }, [measure]);
+  return (
+    <div
+      ref={root}
+      className={cn(
+        "soe-sidebar-selection relative isolate flex min-h-0 flex-1 flex-col",
+        className,
+      )}
+      data-slot="sidebar-selection"
+    >
+      {position && (
+        <span
+          aria-hidden="true"
+          data-slot="sidebar-selection-indicator"
+          data-animate={position.animate}
+          className="pointer-events-none absolute left-0 top-0 rounded-lg bg-sidebar-accent"
+          style={{
+            width: position.width,
+            height: position.height,
+            transform: `translate(${position.x}px, ${position.y}px)`,
+          }}
+        />
+      )}
+      {children}
+    </div>
   );
 }
 
@@ -707,6 +832,7 @@ export {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarSelection,
   SidebarInput,
   SidebarInset,
   SidebarMenu,

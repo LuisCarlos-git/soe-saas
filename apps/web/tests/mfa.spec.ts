@@ -49,6 +49,8 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
   await page.getByLabel("E-mail", { exact: true }).fill(email);
   await page.getByLabel("Senha", { exact: true }).fill("12345678");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
+  await expect(page).toHaveURL(/\/account$/);
+  await page.goto("/settings/security");
   await expect(
     page.getByRole("heading", { name: "Proteção em duas etapas" }),
   ).toBeVisible();
@@ -105,6 +107,7 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
   await page.screenshot({
     path: `test-results/mfa-setup-modal-${test.info().project.name}.png`,
     fullPage: true,
+    animations: "disabled",
   });
   await modal
     .getByRole("button", { name: "Já adicionei ao aplicativo" })
@@ -139,6 +142,8 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
   await expect(modal).toBeHidden();
   await expect(page.getByText("Proteção ativa nesta sessão.")).toBeVisible();
   await expect(page.locator("code")).toHaveCount(0);
+  if (test.info().project.name === "mobile")
+    await page.getByRole("button", { name: "Abrir menu de navegação" }).click();
   await page.getByRole("button", { name: "Sair", exact: true }).click();
   await page.getByLabel("E-mail", { exact: true }).fill(email);
   await page.getByLabel("Senha", { exact: true }).fill("12345678");
@@ -178,17 +183,27 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
   await page.getByLabel("Código do aplicativo").fill(totp(uri));
   await page.getByRole("button", { name: "Verificar código" }).click();
   await expect(page).toHaveURL(/\/account$/);
+  await page.goto("/settings/security");
   await expect(page.getByText("Proteção ativa nesta sessão.")).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  const storage = await page.evaluate(() => ({
+    local: { ...localStorage },
+    session: { ...sessionStorage },
+  }));
+  expect(storage.local).toEqual({});
   expect(
-    await page.evaluate(() =>
-      JSON.stringify({ ...localStorage, ...sessionStorage }),
+    Object.keys(storage.session).every((key) =>
+      key.startsWith("tsr-scroll-restoration-"),
     ),
-  ).toBe("{}");
+  ).toBe(true);
+  expect(JSON.stringify(storage)).not.toContain(secret);
+  expect(JSON.stringify(storage)).not.toMatch(
+    /12345678|session_token|AUTH_SECRET/,
+  );
   expect(await (await page.request.get("/account")).text()).not.toContain(
     secret,
   );

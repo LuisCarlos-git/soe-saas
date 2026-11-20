@@ -118,3 +118,30 @@
     animation: none !important;
   }
 }
+
+/* Content-only route entry and a vertical adapter of Transitions.dev tabs-sliding.
+ * Keep the application frame mounted; only the active marker changes position.
+ */
+.soe-route-content,
+[data-slot="tabs-content"].soe-route-content[data-state="active"] {
+  animation: soe-page-in var(--soe-motion-page) var(--soe-motion-ease) both;
+}
+.soe-sidebar-selection > :not([data-slot="sidebar-selection-indicator"]) {
+  position: relative;
+  z-index: 1;
+}
+.soe-sidebar-selection [data-sidebar="menu-button"][data-active="true"] {
+  background: transparent;
+}
+[data-slot="sidebar-selection-indicator"][data-animate="true"] {
+  transition: transform var(--soe-motion-page) var(--soe-motion-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .soe-route-content,
+  [data-slot="tabs-content"].soe-route-content[data-state="active"] {
+    animation: none;
+  }
+  [data-slot="sidebar-selection-indicator"] {
+    transition: none !important;
+  }
+}
