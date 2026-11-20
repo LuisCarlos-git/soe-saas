@@ -4,6 +4,7 @@ import { useAppForm, validateOnChangeAndBlur } from "@soe/form";
 import { Button } from "@soe/ui";
 import { useStepFlow } from "@soe/ui/hooks/use-step-flow";
 import { StepFlowContent } from "@soe/ui/components/step-flow-content";
+import { ChevronDown, KeyRound } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { mfaEnrollmentFormSchema } from "../model/mfa-validation";
 import type { ApiClient } from "@soe/api-client";
@@ -81,9 +82,17 @@ function MfaEnrollment({
               className="max-w-full"
             />
           </div>
-          <details className="rounded-lg border border-rule p-3 text-sm">
-            <summary className="cursor-pointer rounded-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-              Não consegue escanear?
+          <details className="group rounded-lg border border-rule p-3 text-sm">
+            <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+              <KeyRound
+                className="size-4 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <span className="flex-1">Não consegue escanear?</span>
+              <ChevronDown
+                className="size-4 shrink-0 text-muted-foreground group-open:rotate-180"
+                aria-hidden="true"
+              />
             </summary>
             <p className="mt-3 text-muted-foreground">
               Adicione uma conta chamada SOe, escolha códigos baseados em tempo
