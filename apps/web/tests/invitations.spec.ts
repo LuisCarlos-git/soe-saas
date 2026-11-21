@@ -247,6 +247,12 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   ).toBeVisible();
   expect(sends).toBe(1);
   await dialog.getByRole("button", { name: "Concluir", exact: true }).click();
+  if (project === "desktop")
+    await expect(dialog).toHaveAttribute("data-state", "closed");
+  await expect(dialog).toBeHidden();
+  await expect(
+    page.getByRole("button", { name: "Convidar profissional", exact: true }),
+  ).toBeFocused();
   await expect(
     page.getByText("Pendente de aceite", { exact: true }),
   ).toBeVisible();

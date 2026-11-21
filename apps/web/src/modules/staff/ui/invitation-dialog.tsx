@@ -33,22 +33,26 @@ export function InvitationDialog({
   onSent: () => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
+  const [instance, setInstance] = useState(0);
+  function changeOpen(next: boolean) {
+    if (next) setInstance((value) => value + 1);
+    setOpen(next);
+  }
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={changeOpen}>
       <DialogTrigger asChild>
         <Button>
           <UserPlus className="size-4" aria-hidden="true" />
           Convidar profissional
         </Button>
       </DialogTrigger>
-      {open && (
-        <InvitationContent
-          api={api}
-          school={school}
-          close={() => setOpen(false)}
-          onSent={onSent}
-        />
-      )}
+      <InvitationContent
+        key={instance}
+        api={api}
+        school={school}
+        close={() => setOpen(false)}
+        onSent={onSent}
+      />
     </Dialog>
   );
 }
