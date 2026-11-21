@@ -1,0 +1,50 @@
+$ turbo run build --filter=@soe/api && node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.integration.config.cjs --runInBand
+
+   • turbo 2.11.10
+   • Packages in scope: @soe/api
+   • Running build in 1 package
+   • Remote caching disabled
+
+@soe/api:db:generate: cache bypass, force executing f8d313dde4be4436
+@soe/contracts:build: cache hit, replaying logs 86bb7b98cf539d7c
+@soe/email:build: cache hit, replaying logs dba1415b1e2da342
+@soe/contracts:build: $ tsc -p tsconfig.json
+@soe/email:build: $ tsc -p tsconfig.json && esbuild src/index.tsx --outdir=dist --bundle --format=esm --platform=node --packages=external --target=node24 --sourcemap
+@soe/email:build:
+@soe/email:build:   dist/index.js      4.9kb
+@soe/email:build:   dist/index.js.map  6.6kb
+@soe/email:build:
+@soe/email:build: ⚡ Done in 1ms
+@soe/api:db:generate: $ prisma generate --no-hints
+@soe/api:db:generate: Loaded Prisma config from prisma.config.ts.
+@soe/api:db:generate:
+@soe/api:db:generate: Prisma schema loaded from prisma/schema.prisma.
+@soe/api:db:generate:
+@soe/api:db:generate: ✔ Generated Prisma Client (7.10.1) to ./src/infrastructure/database/generated in 44ms
+@soe/api:db:generate:
+@soe/api:build: cache miss, executing 487de544360fa211
+@soe/api:build: $ nest build && node scripts/bundle.mjs && node scripts/generate-openapi.mjs
+@soe/api:build:
+@soe/api:build:   dist/app.js                           157.2kb
+@soe/api:build:   dist/main.js                          153.4kb
+@soe/api:build:   dist/cli/synthetic-identities.js       65.1kb
+@soe/api:build:   dist/cli/seed-development.js           65.0kb
+@soe/api:build:   dist/app.js.map                       299.6kb
+@soe/api:build:   dist/main.js.map                      294.4kb
+@soe/api:build:   dist/cli/seed-development.js.map      158.6kb
+@soe/api:build:   dist/cli/synthetic-identities.js.map  158.4kb
+@soe/api:build:
+@soe/api:build: ⚡ Done in 14ms
+
+ Tasks:    4 successful, 4 total
+Cached:    2 cached, 4 total
+  Time:    4.46s
+
+(node:16288) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Test Suites: 6 passed, 6 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        36.168 s
+Ran all test suites.

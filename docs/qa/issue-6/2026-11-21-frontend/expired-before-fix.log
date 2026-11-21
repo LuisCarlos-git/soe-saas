@@ -1,0 +1,30 @@
+(node:9257) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL apps/api/tests/invitations-qa.test.mjs (5.305 s)
+  ● QA-006-03-N: novo convite substitui expirado sem revalidar o link anterior
+
+    expected 201 "Created", got 409 "Conflict"
+
+      60 |     .set("Origin", origin)
+      61 |     .send({ name: "Profissional QA", email, roles })
+    > 62 |     .expect(201);
+         |      ^
+      63 |   expect(invitationSchema.safeParse(response.body).success).toBe(true);
+      64 |   const mail = await poll(async () => {
+      65 |     const data = await (
+
+      at invitation (apps/api/tests/invitations-qa.test.mjs:62:6)
+      at Object.<anonymous> (apps/api/tests/invitations-qa.test.mjs:243:19)
+      ----
+      at Test._assertStatus (node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:535:14)
+      at node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:591:13
+      at Test._assertFunction (node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:568:13)
+      at Test.assert (node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:432:23)
+      at localAssert (node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:382:38)
+      at Server.<anonymous> (node_modules/.pnpm/supertest@7.3.2_supports-color@8.1.1/node_modules/supertest/lib/test.js:126:7)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 12 skipped, 13 total
+Snapshots:   0 total
+Time:        5.333 s, estimated 10 s
+Ran all test suites matching apps/api/tests/invitations-qa.test.mjs with tests matching "QA-006-03-N".

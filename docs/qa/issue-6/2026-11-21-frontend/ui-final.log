@@ -1,0 +1,21 @@
+[WebServer] (node:34025) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:34218) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:34217) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:34249) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  1 [desktop] › apps/web/tests/invitations.spec.ts:113:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (596ms)
+  ✓  2 [desktop] › apps/web/tests/invitations.spec.ts:138:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (14.7s)
+(node:34621) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › apps/web/tests/invitations.spec.ts:113:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (618ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+  ✓  4 [mobile] › apps/web/tests/invitations.spec.ts:138:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (10.5s)
+
+  4 passed (31.3s)
