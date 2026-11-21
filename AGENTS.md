@@ -35,6 +35,17 @@ interna; lint e checagens arquiteturais verificam a origem dos controles no web.
 
 ## Agent skills
 
+### QA obrigatório por etapa
+
+Antes de implementar cada etapa e antes de avançar, abrir PR ou concluir uma
+entrega, leia e aplique
+[qa-browser-evidence](.agents/skills/qa-browser-evidence/SKILL.md).
+Planeje cenários a partir do PRD/spec, execute QA de UI/API com exploração de
+ações reais inesperadas e publique resultados, prints e GIFs sanitizados nas
+issues do GitHub. Use a extensão Chrome solicitada pelo usuário; indisponibilidade
+de conexão/captura deve ficar registrada como bloqueio, sem declarar o QA aprovado.
+Uma etapa é uma fatia de implementação ou marco de entrega, não cada comando.
+
 ### Issue tracker
 
 Issues e specs ficam no GitHub, em LuisCarlos-git/soe-saas.
