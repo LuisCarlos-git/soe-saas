@@ -5,6 +5,7 @@ import { SubmitButton } from "./components/submit-button";
 import {
   TextareaField,
   CheckboxField,
+  CheckboxGroupField,
   SwitchField,
   SelectField,
   NativeSelectField,
@@ -19,6 +20,7 @@ export const { useAppForm, withForm, withFieldGroup } = createFormHook({
     TextField,
     TextareaField,
     CheckboxField,
+    CheckboxGroupField,
     SwitchField,
     SelectField,
     NativeSelectField,

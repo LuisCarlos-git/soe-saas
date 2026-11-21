@@ -42,6 +42,7 @@ do fonte são sem extensão; os artefatos são ESM compilados, com declarações
 | TextField (texto, e-mail, senha) | string                                         |
 | TextareaField                    | string                                         |
 | CheckboxField e SwitchField      | boolean                                        |
+| CheckboxGroupField               | string[]; opções selecionadas sem repetição    |
 | SelectField e NativeSelectField  | string; vazio representa ausência de seleção   |
 | RadioGroupField                  | string                                         |
 | NumberField                      | number ou null quando vazio; zero é preservado |

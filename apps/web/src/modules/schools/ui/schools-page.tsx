@@ -48,6 +48,13 @@ export function SchoolsPage({
                 </span>
                 <span className="shrink-0 text-sm">Configurar</span>
               </Link>
+              <Link
+                to="/schools/$organizationId/professionals"
+                params={{ organizationId: school.id }}
+                className="mx-5 mb-4 inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-4"
+              >
+                Profissionais de {school.name}
+              </Link>
             </li>
           ))}
         </ul>

@@ -59,6 +59,7 @@ model Organization {
   createdAt DateTime @default(now())
   memberships SchoolMembership[]
   audits SchoolAudit[]
+  invitations SchoolInvitation[]
   @@map("organization")
 }
 
@@ -68,10 +69,44 @@ model SchoolMembership {
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   user User @relation(fields: [userId], references: [id], onDelete: Restrict)
   role String
+  roles String[] @default(["SCHOOL_ADMIN"])
+  version Int @default(1)
   active Boolean @default(true)
   @@id([organizationId, userId])
   @@index([userId, active])
   @@map("school_membership")
+}
+
+model SchoolInvitation {
+  id String @id @default(uuid())
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  name String
+  email String
+  roles String[]
+  isInitial Boolean @default(false)
+  tokenHash String @unique
+  tokenCiphertext String?
+  revision Int @default(1)
+  createdByUserId String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  acceptedAt DateTime?
+  acceptedByUserId String?
+  revokedAt DateTime?
+  deliveryStatus String @default("QUEUED")
+  deliveryAttempts Int @default(0)
+  sentAt DateTime?
+  @@unique([organizationId, id])
+  @@index([organizationId, createdAt])
+  @@map("school_invitation")
+}
+
+model InvitationRateLimit {
+  key String @id
+  count Int
+  expiresAt DateTime
+  @@map("invitation_rate_limit")
 }
 
 model SchoolAudit {

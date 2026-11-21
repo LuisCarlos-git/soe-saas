@@ -1,6 +1,6 @@
 # Organização atual da API e feedback de erros
 
-Decisão do usuário: [ADR 0003](../adr/0003-api-local-backend.md). O backend exclusivo está em `apps/api`; não existem mais os pacotes backend, database ou test-utils. Packages contém contracts, ui, api-client (HTTP neutro), eslint-config e typescript-config.
+Decisão do usuário: [ADR 0003](../adr/0003-api-local-backend.md). O backend exclusivo está em `apps/api`; não existem mais os pacotes backend, database ou test-utils. Packages contém contracts, ui, form, email, api-client (HTTP neutro), eslint-config e typescript-config.
 
 ```text
 apps/api/
@@ -37,3 +37,20 @@ Fronteiras executáveis rejeitam: API no web, SDK em domain/repository/use-case,
 Executado localmente: build de todos os apps/pacotes e bundles Node; 14 testes de integração em PostgreSQL descartável; 4 testes unitários; 4 E2E em desktop/360 px com reduced-motion, Axe sem violações e toasts richColors. O vermelho padrão do Sonner falhou no contraste e foi substituído pelos tokens semânticos do SOE. As capturas de login e identificação foram geradas em test-results e a captura móvel com toast foi inspecionada visualmente.
 
 Checagens arquiteturais incluem cinco fixtures negativas. Typecheck, lint e inspeção do bundle cliente passaram. As migrations movidas foram comparadas byte a byte com as anteriores, sem alteração de SQL/histórico. O dev foi iniciado de verdade: readiness 200, query inválida 400 (metadados de DTO preservados), login 200. Hot reload foi exercitado ao alterar o mtime de src/main.ts, com um reinício e retorno da aplicação, sem observar dist/.build em loop. O processo da verificação foi encerrado para liberar as portas do desenvolvedor. Estes são resultados locais, não execução de CI remoto.
+
+## Convites e identidade
+
+Staff valida a disponibilidade do convite e a autoridade do emissor nos casos
+de uso. A criação de uma identidade global usa a capacidade pública interna de
+Identity em `modules/identity/public.ts`, composta por factories. Identity é dono
+da credencial compatível com Better Auth e da auditoria de autenticação; Staff
+não grava diretamente usuário ou conta. A factory recebe o escopo transacional
+de persistência para que identidade e auditoria escolar façam commit juntas.
+Os contratos de domínio/casos de uso permanecem independentes de Prisma.
+
+Convites expirados podem ser substituídos na criação de um novo convite para
+o mesmo e-mail/escola. O registro antigo permanece, o segredo pendente é removido,
+a revisão do job é invalidada e a substituição é auditada na mesma transação
+do novo convite e seu enfileiramento. Convite válido duplicado continua sendo
+conflito. O envio externo é responsabilidade da API; `@soe/email` apenas renderiza
+o template em HTML/texto e não entra no cliente web.

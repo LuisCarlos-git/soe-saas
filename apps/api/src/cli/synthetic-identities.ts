@@ -51,6 +51,13 @@ async function provision(url: string, mfaFixtures = false) {
             ["Operador Mobile", "operator-mobile@example.test"],
             ["Responsável Desktop", "school-desktop@example.test"],
             ["Responsável Mobile", "school-mobile@example.test"],
+            [
+              "Operador Convites Desktop",
+              "invite-operator-desktop@example.test",
+            ],
+            ["Operador Convites Mobile", "invite-operator-mobile@example.test"],
+            ["Admin Convites Desktop", "invite-admin-desktop@example.test"],
+            ["Admin Convites Mobile", "invite-admin-mobile@example.test"],
           ]
         : []),
     ]) {
@@ -67,6 +74,8 @@ async function provision(url: string, mfaFixtures = false) {
             "operator@example.test",
             "operator-desktop@example.test",
             "operator-mobile@example.test",
+            "invite-operator-desktop@example.test",
+            "invite-operator-mobile@example.test",
           ].includes(email)
         )
           await transaction.saasOperator.upsert({

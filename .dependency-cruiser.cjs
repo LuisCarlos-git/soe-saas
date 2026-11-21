@@ -25,7 +25,7 @@ module.exports = {
       severity: "error",
       from: { path: "^apps/web/src/" },
       to: {
-        path: "^apps/api/|^@soe/api(?:/|$)|^@soe/(backend|database)$|/(@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
+        path: "^apps/api/|^@soe/(api|email)(?:/|$)|^packages/email/|^@soe/(backend|database)$|/(react-email|@nestjs|@prisma|prisma|pg|pino|better-auth|@better-auth)/",
       },
     },
     {
@@ -77,7 +77,21 @@ module.exports = {
         path: "^@soe/(backend|database|ui|form)(?:/|$)|^apps/|^packages/(backend|database|ui|form)/|/(@nestjs|@prisma|prisma|react|pg)/",
       },
     },
-    ...["contracts", "api-client", "ui", "form"].map((name) => ({
+    {
+      name: "email-server-only",
+      severity: "error",
+      from: { path: "^packages/", pathNot: "^packages/email/" },
+      to: { path: "^packages/email/|^@soe/email(?:/|$)|/react-email/" },
+    },
+    {
+      name: "neutral-email",
+      severity: "error",
+      from: { path: "^packages/email/" },
+      to: {
+        path: "^apps/|^@soe/(contracts|api-client|ui|form)(?:/|$)|^packages/(contracts|api-client|ui|form)/|/(@nestjs|@prisma|prisma|pg|nodemailer|pg-boss|better-auth)/",
+      },
+    },
+    ...["contracts", "api-client", "ui", "form", "email"].map((name) => ({
       name: `no-${name}-internals`,
       severity: "error",
       from: { path: "^(apps|packages)/", pathNot: `^packages/${name}/` },

@@ -5,6 +5,12 @@ import {
   type ExceptionFilter,
 } from "@nestjs/common";
 import { EnvironmentUnavailable } from "../../modules/environment/domain/environment";
+import {
+  InvalidInvitation,
+  StaffConflict,
+  InvitationMfaRequired,
+  InvitationWrongIdentity,
+} from "../../modules/staff/domain/staff";
 import { errorSchema } from "@soe/contracts";
 import type { Response } from "express";
 import { randomUUID } from "node:crypto";
@@ -28,6 +34,13 @@ export class SafeErrorFilter implements ExceptionFilter {
     let status = 500;
     if (error instanceof HttpException) status = error.getStatus();
     if (error instanceof EnvironmentUnavailable) status = 503;
+    if (error instanceof InvalidInvitation) status = 410;
+    if (error instanceof StaffConflict) status = 409;
+    if (
+      error instanceof InvitationMfaRequired ||
+      error instanceof InvitationWrongIdentity
+    )
+      status = 403;
     if (oversizedBody) status = 413;
     const safeErrors: Record<number, { code: string; message: string }> = {
       400: { code: "INVALID_INPUT", message: "Parâmetros inválidos." },
@@ -55,10 +68,29 @@ export class SafeErrorFilter implements ExceptionFilter {
         message: "Ambiente temporariamente indisponível.",
       },
     };
-    const safe = safeErrors[status] ?? {
-      code: "INTERNAL_ERROR",
-      message: "Não foi possível concluir a operação.",
-    };
+    const safe =
+      error instanceof InvalidInvitation
+        ? {
+            code: "INVITATION_INVALID",
+            message:
+              "Este convite não está disponível. Peça um novo convite à escola.",
+          }
+        : error instanceof StaffConflict
+          ? {
+              code: "INVITATION_CONFLICT",
+              message:
+                "Já existe uma conta, vínculo ou convite para este acesso. Confira a conta ou solicite um novo convite à escola.",
+            }
+          : error instanceof InvitationMfaRequired
+            ? {
+                code: "MFA_REQUIRED",
+                message:
+                  "Verifique sua identidade com o aplicativo autenticador para aceitar este acesso administrativo.",
+              }
+            : (safeErrors[status] ?? {
+                code: "INTERNAL_ERROR",
+                message: "Não foi possível concluir a operação.",
+              });
     response.status(status).setHeader("Cache-Control", "no-store");
     response.json(errorSchema.parse({ ...safe, correlationId }));
   }

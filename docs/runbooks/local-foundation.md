@@ -28,6 +28,30 @@ as migrações antes de investigar a página. Para simular indisponibilidade som
 no Compose de desenvolvimento, use `docker compose -f infra/compose.yaml stop postgres`;
 `up -d --wait` restabelece o serviço. Nunca use esse procedimento em produção.
 
+## Caixa de e-mail local
+
+```sh
+pnpm mailpit
+```
+
+Abra http://127.0.0.1:43124 para consultar as mensagens capturadas. O servidor
+SMTP local fica em `127.0.0.1:43125`. O comando inicia somente o Mailpit em
+segundo plano e pode ser executado novamente sem criar outro serviço.
+O Compose completo também inicia a caixa junto com o PostgreSQL.
+
+Para habilitar o envio de convites, mantenha no `.env` as variáveis abaixo
+(já presentes no `.env.example`) e reinicie a API:
+
+```dotenv
+INVITATION_MAIL_MODE=development-smtp
+INVITATION_SMTP_HOST=127.0.0.1
+INVITATION_SMTP_PORT=43125
+```
+
+Use `pnpm mailpit:stop` para parar somente a caixa. As mensagens são temporárias
+e podem ser perdidas ao recriar o container. O Mailpit captura as mensagens sem
+enviá-las a endereços externos; a API permanece responsável pela fila de convites.
+
 ## Verificação
 
 ```sh

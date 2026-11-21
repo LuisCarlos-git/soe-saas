@@ -7,6 +7,8 @@ export type { SubmitButtonProps } from "./components/submit-button";
 export { TextareaField } from "./lazy-fields";
 export type { TextareaFieldProps } from "./components/textarea-field";
 export { CheckboxField } from "./lazy-fields";
+export { CheckboxGroupField } from "./lazy-fields";
+export type { CheckboxGroupFieldProps } from "./components/checkbox-group-field";
 export type { CheckboxFieldProps } from "./components/checkbox-field";
 export { SwitchField } from "./lazy-fields";
 export type { SwitchFieldProps } from "./components/switch-field";

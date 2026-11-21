@@ -7,6 +7,7 @@ import {
   LogOut,
   Settings,
   X,
+  Users,
 } from "lucide-react";
 import type { SchoolAccess } from "@soe/contracts";
 import { Button } from "@soe/ui";
@@ -41,6 +42,7 @@ export function ApplicationSidebar({
   });
   const { setOpenMobile } = useSidebar();
   const close = () => setOpenMobile(false);
+  const professionals = pathname.endsWith("/professionals");
   return (
     <Sidebar
       role="complementary"
@@ -112,7 +114,7 @@ export function ApplicationSidebar({
                         asChild
                         isActive={
                           pathname === "/schools" ||
-                          pathname.startsWith("/schools/")
+                          (pathname.startsWith("/schools/") && !professionals)
                         }
                         className="h-11 px-3"
                       >
@@ -121,13 +123,29 @@ export function ApplicationSidebar({
                           onClick={close}
                           aria-current={
                             pathname === "/schools" ||
-                            pathname.startsWith("/schools/")
+                            (pathname.startsWith("/schools/") && !professionals)
                               ? "page"
                               : undefined
                           }
                         >
                           <School aria-hidden="true" />
                           <span>Minhas escolas</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={professionals}
+                        className="h-11 px-3"
+                      >
+                        <Link
+                          to="/schools/professionals"
+                          onClick={close}
+                          aria-current={professionals ? "page" : undefined}
+                        >
+                          <Users aria-hidden="true" />
+                          <span>Profissionais</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

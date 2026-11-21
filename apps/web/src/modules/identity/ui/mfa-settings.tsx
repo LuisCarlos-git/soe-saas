@@ -145,7 +145,15 @@ function MfaEnrollment({
   );
 }
 
-export function MfaSettings({ api }: { api: ApiClient }) {
+export function MfaSettings({
+  api,
+  onVerified,
+  embedded = false,
+}: {
+  api: ApiClient;
+  onVerified?: () => Promise<void>;
+  embedded?: boolean;
+}) {
   const client = useQueryClient();
   const [open, setOpen] = useState(false);
   const state = useQuery({
@@ -157,19 +165,27 @@ export function MfaSettings({ api }: { api: ApiClient }) {
   async function complete() {
     setOpen(false);
     await client.invalidateQueries({ queryKey: ["identity"] });
+    await onVerified?.();
   }
   return (
     <section
-      className="rounded-xl border border-rule bg-surface p-6 sm:p-8"
-      aria-labelledby="mfa-title"
+      className={
+        embedded ? "" : "rounded-xl border border-rule bg-surface p-6 sm:p-8"
+      }
+      aria-labelledby={embedded ? undefined : "mfa-title"}
+      aria-label={embedded ? "Proteção em duas etapas" : undefined}
     >
-      <h2 id="mfa-title" className="text-xl font-semibold">
-        Proteção em duas etapas
-      </h2>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        O aplicativo autenticador protege o acesso à administração e às
-        informações restritas da escola.
-      </p>
+      {!embedded && (
+        <>
+          <h2 id="mfa-title" className="text-xl font-semibold">
+            Proteção em duas etapas
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            O aplicativo autenticador protege o acesso à administração e às
+            informações restritas da escola.
+          </p>
+        </>
+      )}
       {state.isPending ? (
         <p role="status" className="mt-4">
           Verificando proteção…
@@ -202,7 +218,7 @@ export function MfaSettings({ api }: { api: ApiClient }) {
                 : "Conecte um aplicativo autenticador para proteger seu acesso ao SOe."
             }
             trigger={
-              <Button className="mt-6">
+              <Button className={embedded ? "w-full" : "mt-6"}>
                 {state.data.enabled
                   ? "Verificar acesso"
                   : "Configurar aplicativo"}

@@ -1,0 +1,12 @@
+{
+  "extends": "@soe/typescript-config/react.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "outDir": "dist",
+    "rootDir": "src",
+    "emitDeclarationOnly": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", "node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+}

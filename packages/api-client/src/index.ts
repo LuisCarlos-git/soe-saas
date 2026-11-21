@@ -13,6 +13,13 @@ import {
   schoolSchema,
   provisionSchoolSchema,
   updateSchoolSchema,
+  invitationSchema,
+  invitationListSchema,
+  inviteProfessionalSchema,
+  invitationTokenSchema,
+  invitationPreviewSchema,
+  registerInvitedIdentitySchema,
+  membershipsSchema,
 } from "@soe/contracts";
 
 export class ApiError extends Error {
@@ -139,8 +146,57 @@ export function createApiClient(
       schoolSchema,
     );
   }
+  async function invitationCommand(
+    path: string,
+    body: unknown,
+    signal?: AbortSignal,
+  ) {
+    const response = await send(`${baseUrl}/${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      ...(signal && { signal }),
+    });
+    await check(response);
+    return response;
+  }
   return {
     identity,
+    invitations: (organizationId: string, offset = 0, signal?: AbortSignal) =>
+      read(
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations?offset=${offset}`,
+        invitationListSchema,
+        signal,
+      ),
+    inviteProfessional: async (organizationId: string, input: unknown) =>
+      readResponse(
+        await invitationCommand(
+          `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations`,
+          inviteProfessionalSchema.parse(input),
+        ),
+        invitationSchema,
+      ),
+    previewInvitation: async (token: string, signal?: AbortSignal) =>
+      readResponse(
+        await invitationCommand(
+          "invitations/preview",
+          invitationTokenSchema.parse({ token }),
+          signal,
+        ),
+        invitationPreviewSchema,
+      ),
+    registerInvitation: (input: unknown) =>
+      invitationCommand(
+        "invitations/register",
+        registerInvitedIdentitySchema.parse(input),
+      ),
+    acceptInvitation: (token: string) =>
+      invitationCommand(
+        "invitations/accept",
+        invitationTokenSchema.parse({ token }),
+      ),
+    memberships: (signal?: AbortSignal) =>
+      read("identity/memberships", membershipsSchema, signal),
     schoolAccess: (signal?: AbortSignal) =>
       read("identity/school-access", schoolAccessSchema, signal),
     schools: (offset = 0, signal?: AbortSignal) =>

@@ -96,9 +96,11 @@ export function AuthenticatedShell({
                     <li aria-current="page" className="font-medium">
                       {administration
                         ? "Escolas piloto"
-                        : pathname === "/schools"
-                          ? "Minhas escolas"
-                          : "Configurações da escola"}
+                        : pathname.endsWith("/professionals")
+                          ? "Profissionais"
+                          : pathname === "/schools"
+                            ? "Minhas escolas"
+                            : "Configurações da escola"}
                     </li>
                   </>
                 )}

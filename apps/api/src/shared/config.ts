@@ -18,6 +18,25 @@ const configuration = z.object({
     .default("synthetic-development-secret-change-before-production"),
   AUTH_RATE_WINDOW: z.coerce.number().int().min(1).max(3600).default(60),
   AUTH_RATE_MAX: z.coerce.number().int().min(1).max(1000).default(5),
+  INVITATION_MAIL_MODE: z
+    .enum(["disabled", "development-smtp"])
+    .default("disabled"),
+  INVITATION_SMTP_HOST: z
+    .enum(["127.0.0.1", "localhost", "::1"])
+    .default("127.0.0.1"),
+  INVITATION_SMTP_PORT: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(65535)
+    .default(43125),
+  INVITATION_TTL_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(604800)
+    .default(259200),
+  INVITATION_RATE_MAX: z.coerce.number().int().min(1).max(1000).default(30),
   API_PORT: z.coerce.number().int().min(1).max(65535).default(43121),
   API_HOST: z.enum(["127.0.0.1", "0.0.0.0"]).default("127.0.0.1"),
   LOG_LEVEL: z
@@ -41,5 +60,10 @@ export function parseConfiguration(input: unknown) {
   ) {
     throw new Error("Invalid server configuration: AUTH_SECRET, AUTH_ORIGIN");
   }
+  if (
+    parsed.data.NODE_ENV === "production" &&
+    parsed.data.INVITATION_MAIL_MODE !== "disabled"
+  )
+    throw new Error("Invalid server configuration: INVITATION_MAIL_MODE");
   return parsed.data;
 }

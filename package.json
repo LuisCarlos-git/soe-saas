@@ -31,6 +31,8 @@
   },
   "scripts": {
     "dev": "turbo run dev",
+    "mailpit": "docker compose -f infra/compose.yaml up -d --wait mailpit",
+    "mailpit:stop": "docker compose -f infra/compose.yaml stop mailpit",
     "build": "turbo run build",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "turbo run typecheck",

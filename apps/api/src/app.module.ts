@@ -8,6 +8,7 @@ import { httpLoggerOptions } from "./shared/logging";
 import { DatabaseModule } from "./infrastructure/database/database.module";
 import { EnvironmentModule } from "./modules/environment/environment.module";
 import { SchoolsModule } from "./modules/schools/schools.module";
+import { StaffModule } from "./modules/staff/staff.module";
 import { HealthController } from "./health.controller";
 @Module({})
 export class AppModule {
@@ -27,6 +28,7 @@ export class AppModule {
         DatabaseModule.forRoot(config.DATABASE_URL),
         EnvironmentModule,
         SchoolsModule.forRoot(config),
+        StaffModule.forRoot(config),
         TerminusModule.forRoot({ logger: false }),
         LoggerModule.forRoot({ pinoHttp }),
       ],
