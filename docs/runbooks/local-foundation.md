@@ -1,5 +1,21 @@
 # Executar o percurso sintético local
 
+## Dispensar MFA durante o desenvolvimento
+
+Para trabalhar sem repetir o autenticador, defina `DEV_MFA_BYPASS=true` no `.env`
+e reinicie a API. A opção só é aceita com `NODE_ENV=development`, API em
+`127.0.0.1`, origem e PostgreSQL locais. É desligada por padrão e rejeitada em
+test/production. Para testar MFA real, use `DEV_MFA_BYPASS=false` e reinicie a API.
+
+Senha, sessão, origem, rate limiting e permissões continuam exigidos. A opção
+dispensa somente o desafio de login e o pré-requisito de MFA; não altera a
+configuração do autenticador nem grava sessões como TOTP verificado.
+Configurações → Segurança informa quando a dispensa está ativa. Ao desligá-la,
+as sessões criadas nesse modo voltam a exigir verificação. Os testes comuns
+mantêm a flag desligada; a integração valida separadamente a exceção local.
+
+## Preparar o ambiente
+
 Pré-requisitos: Node 24.22.1, pnpm 11.25.0 e Docker disponível. Todas as URLs,
 senhas e registros abaixo são exemplos locais sintéticos; não usar dados reais.
 

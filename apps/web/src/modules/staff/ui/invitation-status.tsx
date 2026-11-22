@@ -71,10 +71,12 @@ export function InvitationStatus({
             className={cn(
               "gap-1.5 border-transparent px-2.5 py-1",
               active
-                ? "bg-positive/10 text-positive"
+                ? "bg-positive text-white"
                 : pending
-                  ? "bg-warning/10 text-warning"
-                  : "bg-canvas text-muted-foreground",
+                  ? "bg-warning-solid text-white"
+                  : invitation.status === "EXPIRED"
+                    ? "bg-negative text-white"
+                    : "bg-canvas text-muted-foreground",
             )}
           >
             {active ? (

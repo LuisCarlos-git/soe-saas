@@ -195,6 +195,14 @@ export function MfaSettings({
           Não foi possível verificar a proteção. Recarregue a página para tentar
           novamente.
         </p>
+      ) : state.data.developmentBypass ? (
+        <p
+          role="status"
+          className="mt-4 text-sm leading-6 text-muted-foreground"
+        >
+          Verificação em duas etapas dispensada no desenvolvimento local.
+          Desative DEV_MFA_BYPASS na API para testar o MFA.
+        </p>
       ) : state.data.verified ? (
         <p role="status" className="mt-4 font-medium text-primary">
           Proteção ativa nesta sessão.

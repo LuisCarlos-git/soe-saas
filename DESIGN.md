@@ -31,6 +31,7 @@ Tailwind em vez de cores locais por funcionalidade.
 | `muted-foreground` | `#475569` | Explicações e metadados             |
 | `rule`             | `#E2E8F0` | Separadores e bordas decorativas    |
 | `control`          | `#64748B` | Bordas de campos                    |
+| `warning-solid`    | `#856300` | Tag pendente com texto branco       |
 
 Sucesso, atenção, erro e informação usam os tokens semânticos do mesmo arquivo.
 Vermelho comunica falha ou urgência operacional; nunca identifica um estudante.
@@ -149,6 +150,10 @@ O suporte de tags de situação fica em tooltip com texto completo, acessível
 por foco, clique e hover; não ocupa uma linha fixa por registro. Detalhes e
 todos os papéis continuam disponíveis no menu da linha. Na tabela, mostrar no
 máximo dois papéis com reticências e truncar o excedente da largura da célula.
+
+Na equipe, Ativo usa fundo `positive`, Pendente usa `warning-solid` (amarelo
+escuro) e Expirado usa `negative`, todos com texto branco. Os rótulos e o
+suporte do tooltip preservam a identificação além da cor.
 
 Minhas escolas é a única seleção escolar em `/schools`; não duplicar essa lista
 em um item Profissionais na sidebar. O endereço antigo `/schools/professionals`
