@@ -2,6 +2,7 @@
 @import "@soe/ui/styles.css";
 @import "@soe/ui/motion.css";
 @source '../../../../packages/ui/src';
+@source '../../../../packages/form/src';
 
 @layer base {
   html {

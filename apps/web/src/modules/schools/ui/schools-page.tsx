@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Button } from "@soe/ui";
+import { PageHeader } from "@soe/ui/components/page-header";
 import { SchoolCreationDialog } from "./school-creation-dialog";
 import { SchoolBoundary } from "./school-boundary";
 
@@ -21,15 +22,10 @@ export function SchoolsPage({
 }) {
   return (
     <section className="soe-route-content space-y-6">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Minhas escolas
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          Configure as escolas que você administra. Cada escola mantém sua
-          própria equipe e histórico.
-        </p>
-      </header>
+      <PageHeader
+        title="Minhas escolas"
+        description="Configure as escolas que você administra. Cada escola mantém sua própria equipe e histórico."
+      />
       <SchoolBoundary
         api={api}
         actorId={actorId}
@@ -73,14 +69,6 @@ export function PilotSchoolsPage({
 }) {
   return (
     <section className="soe-route-content space-y-6">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Escolas piloto
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          Provisione escolas para validar o SOE com dados sintéticos.
-        </p>
-      </header>
       <SchoolBoundary api={api} actorId={actorId} allowed={allowed}>
         <OperatorSchools api={api} actorId={actorId} />
       </SchoolBoundary>
@@ -104,14 +92,17 @@ function OperatorSchools({
 
   return (
     <section className="space-y-5" aria-label="Provisionamento de escolas">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="font-medium">Escolas cadastradas</h2>
-        <SchoolCreationDialog
-          api={api}
-          actorId={actorId}
-          onCreated={() => setOffset(0)}
-        />
-      </div>
+      <PageHeader
+        title="Escolas piloto"
+        description="Provisione escolas para validar o SOE com dados sintéticos."
+        actions={
+          <SchoolCreationDialog
+            api={api}
+            actorId={actorId}
+            onCreated={() => setOffset(0)}
+          />
+        }
+      />
       <p className="rounded-lg bg-primary/5 p-4 text-sm leading-relaxed">
         Ambiente de validação com dados sintéticos. Criar uma escola não
         autoriza a entrada de dados reais nem concede ao operador acesso ao

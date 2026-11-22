@@ -13,10 +13,10 @@ import {
 } from "@soe/ui/primitives/dialog";
 import { useStepFlow } from "@soe/ui/hooks/use-step-flow";
 import { StepFlowContent } from "@soe/ui/components/step-flow-content";
-import { Check, UserPlus, X } from "lucide-react";
-import { staffRoleOptions, roleLabel } from "../model/roles";
+import { Check, Clock, Mail, Send, UserPlus, X } from "lucide-react";
+import { staffRoleOptions } from "../model/roles";
+import { InvitationSummary, type InvitationDraft } from "./invitation-summary";
 
-type Draft = { name: string; email: string; roles: StaffRole[] };
 const flow = {
   details: { next: ["review"] },
   review: { next: ["sent"] },
@@ -72,7 +72,7 @@ function InvitationContent({
     flow,
     initialStep: "details",
   });
-  const [draft, setDraft] = useState<Draft | null>(null);
+  const [draft, setDraft] = useState<InvitationDraft | null>(null);
   const [saving, setSaving] = useState(false);
   const roles: StaffRole[] = [];
   const form = useAppForm({
@@ -117,7 +117,11 @@ function InvitationContent({
       onEscapeKeyDown={requestClose}
       onInteractOutside={requestClose}
     >
-      <DialogHeader className="pr-10 text-left">
+      <DialogHeader
+        className={
+          navigation.currentStep === "sent" ? "sr-only" : "pr-10 text-left"
+        }
+      >
         <DialogTitle className="text-2xl">Convidar profissional</DialogTitle>
         <DialogDescription className="break-words">
           {school.name}
@@ -178,6 +182,7 @@ function InvitationContent({
                 {(field) => (
                   <field.CheckboxGroupField
                     label="Papéis nesta escola"
+                    density="compact"
                     options={staffRoleOptions}
                     description="Selecione os papéis necessários. Administração e direção não liberam relatos restritos."
                   />
@@ -197,54 +202,68 @@ function InvitationContent({
             >
               Confira antes de enviar
             </h3>
-            <dl className="space-y-3 text-sm">
-              <div>
-                <dt className="text-muted-foreground">Profissional</dt>
-                <dd className="mt-1 break-words font-medium">{draft.name}</dd>
-                <dd className="break-all text-muted-foreground">
-                  {draft.email}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-muted-foreground">Papéis nesta escola</dt>
-                <dd className="mt-1">
-                  {draft.roles.map(roleLabel).join(", ")}
-                </dd>
-              </div>
-            </dl>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              O vínculo será criado somente quando a pessoa aceitar o convite.
-              Acesso administrativo exige proteção em duas etapas.
-            </p>
-            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <InvitationSummary draft={draft} />
+            <div className="grid grid-cols-2 gap-3 border-t border-rule pt-4 sm:flex sm:justify-end">
               <Button
                 variant="outline"
+                className="min-w-0 px-3 text-sm sm:px-5 sm:text-base"
                 disabled={saving}
                 onClick={() => navigation.back()}
               >
                 Voltar e editar
               </Button>
-              <Button loading={saving} onClick={() => void send()}>
+              <Button
+                className="min-w-0 px-3 text-sm sm:px-5 sm:text-base"
+                loading={saving}
+                onClick={() => void send()}
+              >
+                <Send className="hidden size-4 sm:block" aria-hidden="true" />
                 Enviar convite
               </Button>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <Check className="size-8 text-primary" aria-hidden="true" />
-            <h3
-              data-step-focus
-              tabIndex={-1}
-              className="text-xl font-semibold outline-none"
-            >
-              Convite criado
-            </h3>
-            <p className="break-words text-muted-foreground">
-              O envio para {draft?.email} será acompanhado na lista de convites.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              E-mail enviado não significa convite aceito.
-            </p>
+          <div className="space-y-6 pt-4">
+            <div className="text-center">
+              <span className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-positive-surface text-positive">
+                <Check className="size-7" aria-hidden="true" />
+              </span>
+              <h3
+                data-step-focus
+                tabIndex={-1}
+                className="text-2xl font-semibold tracking-tight outline-none"
+              >
+                Convite criado
+              </h3>
+              <p className="mt-2 break-words text-sm text-muted-foreground">
+                Convite de acesso para {draft?.name}.
+              </p>
+              <p className="mt-1 break-all text-sm font-medium">
+                {draft?.email}
+              </p>
+            </div>
+            <div className="rounded-lg bg-canvas p-4">
+              <p className="mb-3 text-sm font-semibold">O que acontece agora</p>
+              <ul className="space-y-3 text-sm leading-6 text-muted-foreground">
+                <li className="flex gap-3">
+                  <Mail
+                    className="mt-1 size-4 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>Acompanhe o envio do e-mail na lista de convites.</span>
+                </li>
+                <li className="flex gap-3">
+                  <Clock
+                    className="mt-1 size-4 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    O acesso à escola começa quando a pessoa aceitar. E-mail
+                    enviado ainda não significa aceite.
+                  </span>
+                </li>
+              </ul>
+            </div>
             <Button className="w-full" onClick={close}>
               Concluir
             </Button>

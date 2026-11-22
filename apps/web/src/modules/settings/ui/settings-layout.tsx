@@ -1,3 +1,4 @@
+import { PageHeader } from "@soe/ui/components/page-header";
 import { normalizeNavigationPath } from "../../../shared/navigation-path";
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ShieldCheck, UserRound } from "lucide-react";
@@ -34,12 +35,11 @@ export function SettingsLayout() {
     )?.value ?? "profile";
   return (
     <>
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Configurações</h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-          Gerencie seus dados de acesso e a segurança da sua conta.
-        </p>
-      </header>
+      <PageHeader
+        className="mb-6"
+        title="Configurações"
+        description="Gerencie seus dados de acesso e a segurança da sua conta."
+      />
       <Tabs
         value={active}
         activationMode="manual"

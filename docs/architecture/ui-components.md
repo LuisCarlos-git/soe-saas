@@ -1,5 +1,17 @@
 # Componentes UI do SOE
 
+## Cabeçalhos e tabelas operacionais
+
+`@soe/ui/components/page-header` fornece `PageHeader` com `title`, `description`,
+`back` e `actions`. Mantém um único h1 compacto e agrupa ações; a aplicação passa
+o Link tipado do Router em `back`, preservando destinos e permissões do módulo.
+Use o padrão de composição registrado em DESIGN.md nas telas internas.
+
+A primitiva `Table` aceita `containerProps` para nomear e focar sua região de
+rolagem, sem transformar a própria tabela em um controle de navegação. Colunas,
+filtros e estado do TanStack Table ficam no módulo consumidor; paginação,
+ordenação e busca são executadas pela API. Não adicionar regras de papéis ao UI.
+
 Base adotada em 15/11/2026: shadcn/ui, com as transições de produto do
 Transitions.dev. Identidade e aplicação visual: [DESIGN.md](../../DESIGN.md).
 

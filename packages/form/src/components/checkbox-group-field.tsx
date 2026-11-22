@@ -13,6 +13,7 @@ export type CheckboxGroupFieldProps = FieldContentProps & {
   disabled?: boolean;
   reserveErrorSpace?: boolean;
   className?: string;
+  density?: "default" | "compact";
 };
 
 export function CheckboxGroupField({
@@ -23,6 +24,7 @@ export function CheckboxGroupField({
   disabled,
   reserveErrorSpace = false,
   className,
+  density = "default",
 }: CheckboxGroupFieldProps) {
   const control = useFieldControl<string[]>({ id, label, description });
   return (
@@ -39,7 +41,13 @@ export function CheckboxGroupField({
         className={cn("grid gap-x-4 sm:grid-cols-2", className)}
       >
         {options.map((option, index) => (
-          <div key={option.value} className="flex min-h-11 items-center gap-3">
+          <div
+            key={option.value}
+            className={cn(
+              "flex items-center gap-3",
+              density === "compact" ? "min-h-9" : "min-h-11",
+            )}
+          >
             <Checkbox
               id={`${control.id}-${index}`}
               name={control.field.name}
@@ -64,7 +72,10 @@ export function CheckboxGroupField({
             />
             <Label
               htmlFor={`${control.id}-${index}`}
-              className="flex min-h-11 flex-1 items-center text-sm font-normal"
+              className={cn(
+                "flex flex-1 items-center text-sm font-normal",
+                density === "compact" ? "min-h-9" : "min-h-11",
+              )}
             >
               {option.label}
             </Label>

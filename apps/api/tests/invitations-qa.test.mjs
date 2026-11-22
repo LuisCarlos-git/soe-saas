@@ -4,6 +4,7 @@ import pg from "pg";
 import {
   errorSchema,
   invitationSchema,
+  invitationListSchema,
   membershipsSchema,
 } from "@soe/contracts";
 import { startTestPostgres } from "./support/postgres.mjs";
@@ -541,4 +542,137 @@ test("QA-006-09-L: limite persiste ao reiniciar e não confia em X-Forwarded-For
   } finally {
     await limited?.close();
   }
+});
+
+test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e isolamento", async () => {
+  const path = `/api/v1/schools/${schoolA.id}/invitations`;
+  const records = [];
+  for (let index = 0; index < 23; index++) {
+    const response = await ana
+      .post(path)
+      .set("Origin", origin)
+      .send({
+        name: `Tabela QA ${String(index).padStart(2, "0")}`,
+        email: `tabela-qa-${index}@example.test`,
+        roles: ["TEACHER"],
+      })
+      .expect(201);
+    records.push(response.body);
+  }
+  const list = async (query) => {
+    const response = await ana.get(path).query(query).expect(200);
+    return invitationListSchema.parse(response.body);
+  };
+  const query = {
+    search: "TABELA QA",
+    limit: 10,
+    sortBy: "name",
+    sortDirection: "asc",
+  };
+  const first = await list(query);
+  const second = await list({ ...query, offset: 10 });
+  const last = await list({ ...query, offset: 20 });
+  expect([first.total, second.total, last.total]).toEqual([23, 23, 23]);
+  expect([first.hasMore, second.hasMore, last.hasMore]).toEqual([
+    true,
+    true,
+    false,
+  ]);
+  const rows = [
+    ...first.invitations,
+    ...second.invitations,
+    ...last.invitations,
+  ];
+  expect(rows.map((row) => row.id)).toEqual(records.map((row) => row.id));
+  expect(new Set(rows.map((row) => row.id)).size).toBe(23);
+  expect(
+    rows.every(
+      (row) => row.status === "PENDING" && row.membershipActive === null,
+    ),
+  ).toBe(true);
+  const desc = await list({ ...query, sortDirection: "desc" });
+  expect(desc.invitations[0].id).toBe(records[22].id);
+  expect(
+    (await list({ search: "tabela-qa-22@EXAMPLE.TEST" })).invitations.map(
+      (row) => row.id,
+    ),
+  ).toEqual([records[22].id]);
+  expect((await list({ search: "absent-table-qa" })).total).toBe(0);
+  expect((await list({ search: "%" })).total).toBe(0);
+  expect((await list({ search: "_" })).total).toBe(0);
+  for (const invalid of [
+    { limit: 51 },
+    { offset: -1 },
+    { sortBy: "tokenHash" },
+    { status: "ACTIVE" },
+    { search: "a".repeat(161) },
+  ]) {
+    await ana.get(path).query(invalid).expect(400);
+  }
+  await ana
+    .get(`/api/v1/schools/${schoolB.id}/invitations`)
+    .query(query)
+    .expect(404);
+  await bia.get(path).query(query).expect(404);
+  expect(
+    (
+      await bia
+        .get(`/api/v1/schools/${schoolB.id}/invitations`)
+        .query(query)
+        .expect(200)
+    ).body.total,
+  ).toBe(0);
+  const actor = (
+    await db.query('SELECT id FROM "user" WHERE email=$1', ["ana@example.test"])
+  ).rows[0].id;
+  await db.query(
+    'UPDATE school_invitation SET "acceptedAt"=now(), "acceptedByUserId"=$2 WHERE id=$1',
+    [records[0].id, actor],
+  );
+  await db.query(
+    "UPDATE school_invitation SET \"createdAt\"=now()-interval '2 days', \"expiresAt\"=now()-interval '1 minute' WHERE id=$1",
+    [records[1].id],
+  );
+  await db.query('UPDATE school_invitation SET "revokedAt"=now() WHERE id=$1', [
+    records[2].id,
+  ]);
+  const accepted = await list({ ...query, status: "ACCEPTED" });
+  expect(accepted.invitations).toHaveLength(1);
+  expect(accepted.invitations[0].membershipActive).toBe(true);
+  // Controlled deactivation fixture, read back through the public HTTP boundary.
+  await db.query(
+    'UPDATE school_membership SET active=false WHERE "organizationId"=$1 AND "userId"=$2',
+    [schoolA.id, actor],
+  );
+  try {
+    await ana.get(path).query(query).expect(404);
+  } finally {
+    await db.query(
+      'UPDATE school_membership SET active=true WHERE "organizationId"=$1 AND "userId"=$2',
+      [schoolA.id, actor],
+    );
+  }
+  const inactiveUser = (
+    await db.query('SELECT id FROM "user" WHERE email=$1', ["bia@example.test"])
+  ).rows[0].id;
+  await db.query(
+    "INSERT INTO school_membership (\"organizationId\", \"userId\", role, roles, active) VALUES ($1,$2,'TEACHER',ARRAY['TEACHER'],false)",
+    [schoolA.id, inactiveUser],
+  );
+  await db.query(
+    'UPDATE school_invitation SET "acceptedByUserId"=$2 WHERE id=$1',
+    [records[0].id, inactiveUser],
+  );
+  expect(
+    (await list({ ...query, status: "ACCEPTED" })).invitations[0]
+      .membershipActive,
+  ).toBe(false);
+  for (const [status, expected] of [
+    ["EXPIRED", records[1].id],
+    ["REVOKED", records[2].id],
+  ]) {
+    const result = await list({ ...query, status });
+    expect(result.invitations.map((row) => row.id)).toEqual([expected]);
+  }
+  expect((await list({ ...query, status: "PENDING" })).total).toBe(20);
 });

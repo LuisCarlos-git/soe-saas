@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
+import type { InvitationListQuery } from "@soe/contracts";
 
 export const staffInvitationsKey = (
   actorId: string,
@@ -9,11 +10,11 @@ export function staffInvitationsQuery(
   api: ApiClient,
   actorId: string,
   organizationId: string,
-  offset: number,
+  options: InvitationListQuery,
 ) {
   return queryOptions({
-    queryKey: [...staffInvitationsKey(actorId, organizationId), offset],
-    queryFn: ({ signal }) => api.invitations(organizationId, offset, signal),
+    queryKey: [...staffInvitationsKey(actorId, organizationId), options],
+    queryFn: ({ signal }) => api.invitations(organizationId, options, signal),
     retry: false,
     refetchInterval: (state) =>
       state.state.data?.invitations.some(

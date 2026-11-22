@@ -1,4 +1,9 @@
-import type { Invitation, InviteProfessionalInput } from "../domain/staff";
+import type {
+  Invitation,
+  InviteProfessionalInput,
+  InvitationListQuery,
+  InvitationList,
+} from "../domain/staff";
 export interface StaffTransaction {
   isAdministrator(): Promise<boolean>;
   hasMember(email: string): Promise<boolean>;
@@ -10,9 +15,7 @@ export interface StaffTransaction {
     invitation: Invitation,
     replacementId?: string,
   ): Promise<void>;
-  listInvitations(
-    offset: number,
-  ): Promise<{ invitations: Invitation[]; hasMore: boolean }>;
+  listInvitations(query: InvitationListQuery): Promise<InvitationList>;
 }
 export interface StaffUnitOfWork {
   transaction<T>(

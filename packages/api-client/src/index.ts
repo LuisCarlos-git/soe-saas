@@ -15,6 +15,8 @@ import {
   updateSchoolSchema,
   invitationSchema,
   invitationListSchema,
+  invitationListQuerySchema,
+  type InvitationListQuery,
   inviteProfessionalSchema,
   invitationTokenSchema,
   invitationPreviewSchema,
@@ -162,9 +164,17 @@ export function createApiClient(
   }
   return {
     identity,
-    invitations: (organizationId: string, offset = 0, signal?: AbortSignal) =>
+    invitations: (
+      organizationId: string,
+      options: Partial<InvitationListQuery> = {},
+      signal?: AbortSignal,
+    ) =>
       read(
-        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations?offset=${offset}`,
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations?${new URLSearchParams(
+          Object.entries(invitationListQuerySchema.parse(options))
+            .filter(([, value]) => value !== undefined)
+            .map(([key, value]) => [key, String(value)]),
+        )}`,
         invitationListSchema,
         signal,
       ),

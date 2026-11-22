@@ -26,6 +26,7 @@ import {
   inviteProfessionalSchema,
   invitationSchema,
   invitationListSchema,
+  invitationListQuerySchema,
 } from "@soe/contracts";
 import { AUTHENTICATION } from "../../identity/authentication.token";
 import type { createAuthentication } from "../../identity/factories/authentication.factory";
@@ -43,11 +44,7 @@ class InvitationListResponse extends createZodDto(invitationListSchema) {}
 class SchoolParams extends createZodDto(
   z.object({ organizationId: z.uuid() }),
 ) {}
-class ListQuery extends createZodDto(
-  z.strictObject({
-    offset: z.coerce.number().int().min(0).max(100000).default(0),
-  }),
-) {}
+class ListQuery extends createZodDto(invitationListQuerySchema) {}
 @Controller("api/v1/schools/:organizationId/invitations")
 @ApiCookieAuth()
 @ApiResponse({ status: 400, type: SafeErrorResponse })
@@ -108,7 +105,7 @@ export class StaffInvitationsController {
   ) {
     const actor = await this.actor(cookie);
     return this.run(() =>
-      this.list.execute(actor, params.organizationId, query.offset),
+      this.list.execute(actor, params.organizationId, query),
     );
   }
 }

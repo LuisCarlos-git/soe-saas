@@ -37,9 +37,24 @@ export const invitationSchema = z.strictObject({
   acceptedAt: z.iso.datetime().nullable(),
 });
 export const invitationListSchema = z.strictObject({
-  invitations: z.array(invitationSchema),
+  invitations: z.array(
+    invitationSchema.extend({ membershipActive: z.boolean().nullable() }),
+  ),
   hasMore: z.boolean(),
+  total: z.number().int().nonnegative(),
 });
+export const invitationListQuerySchema = z.strictObject({
+  offset: z.coerce.number().int().min(0).max(100000).default(0),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+  search: z.string().trim().max(160).default(""),
+  status: invitationSchema.shape.status.optional(),
+  sortBy: z.enum(["name", "email", "createdAt"]).default("createdAt"),
+  sortDirection: z.enum(["asc", "desc"]).default("desc"),
+});
+export type InvitationListQuery = z.infer<typeof invitationListQuerySchema>;
+export type ListedInvitation = z.infer<
+  typeof invitationListSchema
+>["invitations"][number];
 export type StaffRole = z.infer<typeof staffRoleSchema>;
 export type Invitation = z.infer<typeof invitationSchema>;
 export const invitationTokenSchema = z.strictObject({

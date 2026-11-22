@@ -6,6 +6,7 @@ import type {
 } from "../repositories/staff-unit-of-work";
 import { isStaffRole, StaffConflict, type Invitation } from "../domain/staff";
 import type { InvitationMail } from "./invitation-mail";
+import type { Prisma } from "../../../infrastructure/database/generated/client";
 
 type InvitationRow = {
   id: string;
@@ -107,16 +108,66 @@ export class PrismaStaffUnitOfWork implements StaffUnitOfWork {
               });
               return rows.map(invitationProjection);
             },
-            listInvitations: async (offset) => {
+            listInvitations: async (query) => {
+              const now = new Date();
+              const search = query.search.replace(/[\\%_]/g, "\\$&");
+              const statusWhere: Prisma.SchoolInvitationWhereInput =
+                query.status === "ACCEPTED"
+                  ? { acceptedAt: { not: null } }
+                  : query.status === "PENDING"
+                    ? {
+                        acceptedAt: null,
+                        revokedAt: null,
+                        expiresAt: { gt: now },
+                      }
+                    : query.status === "EXPIRED"
+                      ? { acceptedAt: null, expiresAt: { lte: now } }
+                      : query.status === "REVOKED"
+                        ? {
+                            acceptedAt: null,
+                            revokedAt: { not: null },
+                            expiresAt: { gt: now },
+                          }
+                        : {};
+              const where: Prisma.SchoolInvitationWhereInput = {
+                organizationId,
+                ...statusWhere,
+                ...(search && {
+                  OR: [
+                    { name: { contains: search, mode: "insensitive" } },
+                    { email: { contains: search, mode: "insensitive" } },
+                  ],
+                }),
+              };
+              const total = await tx.schoolInvitation.count({ where });
               const rows = await tx.schoolInvitation.findMany({
-                where: { organizationId },
-                orderBy: [{ createdAt: "desc" }, { id: "asc" }],
-                skip: offset,
-                take: 21,
+                where,
+                orderBy: [
+                  { [query.sortBy]: query.sortDirection },
+                  { id: "asc" },
+                ],
+                skip: query.offset,
+                take: query.limit,
               });
+              const userIds = rows.flatMap((row) =>
+                row.acceptedByUserId ? [row.acceptedByUserId] : [],
+              );
+              const memberships = await tx.schoolMembership.findMany({
+                where: { organizationId, userId: { in: userIds } },
+                select: { userId: true, active: true },
+              });
+              const active = new Map(
+                memberships.map((member) => [member.userId, member.active]),
+              );
               return {
-                invitations: rows.slice(0, 20).map(invitationProjection),
-                hasMore: rows.length > 20,
+                invitations: rows.map((row) => ({
+                  ...invitationProjection(row),
+                  membershipActive: row.acceptedAt
+                    ? (active.get(row.acceptedByUserId ?? "") ?? false)
+                    : null,
+                })),
+                hasMore: query.offset + rows.length < total,
+                total,
               };
             },
             createInvitation: async (input) => {

@@ -25,6 +25,19 @@ export type Invitation = InviteProfessionalInput & {
   acceptedAt: string | null;
 };
 export class StaffNotFound extends Error {}
+export type InvitationListQuery = {
+  offset: number;
+  limit: number;
+  search: string;
+  status?: Invitation["status"] | undefined;
+  sortBy: "name" | "email" | "createdAt";
+  sortDirection: "asc" | "desc";
+};
+export type InvitationList = {
+  invitations: (Invitation & { membershipActive: boolean | null })[];
+  hasMore: boolean;
+  total: number;
+};
 export class StaffConflict extends Error {}
 export class InvitationMailUnavailable extends Error {}
 export class InvalidInvitation extends Error {}

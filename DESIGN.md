@@ -119,6 +119,24 @@ compartilhadas ficam em `packages/ui/src/styles/motion.css` e `packages/ui/src/m
 
 ## Aplicação em novas telas
 
+### Cabeçalhos operacionais
+
+Use `PageHeader` de `@soe/ui/components/page-header` nas telas internas: um
+único título de 24 px, contexto curto abaixo e ações relacionadas agrupadas à
+direita. Em detalhes, a seta de voltar fica imediatamente ao lado do título,
+com nome acessível que identifica o destino. Páginas iniciais não inventam um
+destino de retorno. No celular o grupo de ações pode ocupar a linha seguinte,
+mantendo atualizar e criar/convidar juntos.
+
+Não repita o título em um cabeçalho grande e em outro bloco da mesma lista.
+Atualizar uma lista usa botão secundário somente com ícone RefreshCw, label e
+title; a ação principal de criar/convidar fica ao lado. Preserve ações de
+formulário junto do envio, como recarregar configurações ao lado de salvar.
+Listas de gestão com busca, ordenação e paginação consultam a coleção no
+servidor; cabeçalhos ordenáveis indicam direção com ícone e `aria-sort`. Tags
+usam texto junto da cor semântica. Rolagem de tabelas fica contida em uma região
+com nome e acesso por teclado em telas pequenas.
+
 1. Leia o PRD, esta base e as instruções de interface do repositório; consulte as
    skills exigidas. Taste orienta composição; Hairline é consultada quando houver
    figura; Transitions.dev quando houver movimento. Adapte referências à tarefa

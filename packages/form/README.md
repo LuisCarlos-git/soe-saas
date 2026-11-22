@@ -177,3 +177,8 @@ com labels e alvos de 44 px mantidos. `FieldMessage` conserva a mensagem durante
 a saída; o recolhimento usa a receita grid de Transitions.dev e respeita
 `prefers-reduced-motion`. A opção equivalente na primitiva UI é
 `FieldMessage reserveSpace={false}`.
+
+`CheckboxGroupField` aceita `density="compact"` para grupos extensos dentro de
+modais: opções de 36 px de altura, com toda a label clicável. O padrão continua
+44 px. A aplicação Tailwind consumidora deve incluir o fonte de `@soe/form`
+em `@source`, além de UI, para gerar os estilos dos adapters.
