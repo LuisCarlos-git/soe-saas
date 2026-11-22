@@ -1,0 +1,48 @@
+{
+  "issue": 4,
+  "sourceBase": "0a00412acfdc3351970b5cf6d51005b4b23aefb6",
+  "provenance": "Tested source and evidence committed together; SHA-256 identifies exact tested files",
+  "capture": "Playwright complementary, not connected Browser; no GIF",
+  "checks": {
+    "webBuild": 0,
+    "webTypecheck": 0,
+    "scopedLint": 0,
+    "format": 0,
+    "mfaJourney": {
+      "exitCode": 0,
+      "tests": 2
+    }
+  },
+  "screenshots": [
+    {
+      "file": "mfa-actions-back-desktop.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "mfa-actions-back-mobile.png",
+      "width": 360,
+      "height": 780
+    },
+    {
+      "file": "mfa-actions-cancel-desktop.png",
+      "width": 1280,
+      "height": 793
+    },
+    {
+      "file": "mfa-actions-cancel-mobile.png",
+      "width": 360,
+      "height": 857
+    }
+  ],
+  "sha256": {
+    "apps/web/src/modules/identity/ui/mfa-verification.tsx": "2459bd5a4eb462b6d279288a4599552565c202db4413b6ef4a4b82183a585f45",
+    "apps/web/tests/mfa.spec.ts": "37a998c6a7c7cc057cf6605e4916969af213c5b9c23ee33bb6c73f3f640b2da9",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/mfa-actions-back-desktop.png": "8f9ef8bbb8994844f03dab2e17a2c5c19f8a4c0beb06bc407f300c1545bca988",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/mfa-actions-back-mobile.png": "ec9238080f968c10f4906819754fac10612c588cb281762354e7e68df42cb7d3",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/mfa-actions-cancel-desktop.png": "0306911125c757384a5fa2b57c47d85b6c7c366ae6adbd6ec7966f7ea913bbf0",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/mfa-actions-cancel-mobile.png": "7317c0de3ca93d7fa48ebacdae9c4ac9ba3dab099dd159bcfd75004b68dcbb17",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/mfa-e2e.log": "2b880382cbf6d0870b8a40e8c7dc85d8d87eb0dbc55757cacf2971f32b69f541",
+    "docs/qa/issue-4/2026-11-22-mfa-actions/report.md": "4cac9a647d19465c992c51110e95648b0126682e2156b42d6821113c21336c22"
+  }
+}
