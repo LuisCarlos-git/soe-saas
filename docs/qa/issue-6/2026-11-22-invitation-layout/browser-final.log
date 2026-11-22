@@ -1,0 +1,62 @@
+[WebServer] (node:82025) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:82156) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:82155) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:82189) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  1 [desktop] › apps/web/tests/invitations.spec.ts:319:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (610ms)
+Table density {
+  state: 'school-directory',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓  2 [desktop] › apps/web/tests/invitations.spec.ts:344:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (22.5s)
+(node:83016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › apps/web/tests/invitations.spec.ts:319:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (623ms)
+Table density {
+  state: 'school-directory',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓  4 [mobile] › apps/web/tests/invitations.spec.ts:344:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (19.9s)
+
+  4 passed (48.5s)

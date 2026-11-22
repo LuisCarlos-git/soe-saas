@@ -44,3 +44,15 @@ Standards: 1 violação corrigida, 0 material restante, 1 heurística não bloqu
 Spec: 0 divergências materiais, 1 pendência de QA nativo.
 
 Checks e capturas: [relatório de QA](../qa/issue-6/2026-11-22-pr-review/report.md).
+
+## Revisão adicional — layout dos convites
+
+Base incremental `1cfad2e`, fonte final `d0c766b`. Novos agentes independentes
+revisaram a repaginação solicitada e a cobertura responsiva. Standards apontou
+um padding fora da escala aprovada, corrigido de 20 para 16 px e revalidado.
+Spec não encontrou divergências funcionais ou ampliação de escopo. A captura
+antiga de 320 px foi substituída por captura da compilação final, mantendo a
+reprodução do corte dos botões como evidência intermediária.
+
+Standards: 1 apontamento menor corrigido, 0 pendências. Spec: 0 achados de
+implementação; QA nativo continua pendente. [Logs, capturas e reteste](../qa/issue-6/2026-11-22-invitation-layout/report.md).
