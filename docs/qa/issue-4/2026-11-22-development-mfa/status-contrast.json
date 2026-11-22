@@ -1,0 +1,17 @@
+{
+  "Ativo": {
+    "background": "#166534",
+    "foreground": "#ffffff",
+    "contrast": 7.13
+  },
+  "Pendente": {
+    "background": "#856300",
+    "foreground": "#ffffff",
+    "contrast": 5.55
+  },
+  "Expirado": {
+    "background": "#b91c1c",
+    "foreground": "#ffffff",
+    "contrast": 6.47
+  }
+}
