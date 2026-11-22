@@ -1,0 +1,69 @@
+{
+  "issue": 6,
+  "run": "2026-11-22-pr-review",
+  "sourceCommit": "4c71d123160f55bbb73cc80cbd7a04eeca6f87cb",
+  "controlScreenshotsCommit": "803cf51",
+  "method": "Playwright complementar; extens\u00e3o Chrome/GIF pendentes",
+  "artifacts": {
+    "architecture.log": {
+      "bytes": 738,
+      "sha256": "b365c836dddb70f151b0f5f4aa3b449af23128811798fda260eb217d703cf230"
+    },
+    "bundle.log": {
+      "bytes": 118,
+      "sha256": "33cc2df0db2b83cf9448644c67572d8c9eca4b3df5dd5d59898084d1474f5987"
+    },
+    "controls-desktop.png": {
+      "bytes": 85900,
+      "sha256": "ca1b7410a6729b4c3c39c27e6057492cc9258f20d758695f8b7e2ffe155c3558"
+    },
+    "controls-mobile.png": {
+      "bytes": 80833,
+      "sha256": "8bf7c51ea52e4ab92b5bb8ba08cc8db47c844fed64137b9700c145ff807fd1de"
+    },
+    "design-detector.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "form-browser.log": {
+      "bytes": 2719,
+      "sha256": "42c9982a617e4cc84e2752a87cb1edba3cddfd4f97e50a8be6d3cbddfe5a6376"
+    },
+    "format.log": {
+      "bytes": 87,
+      "sha256": "1d66faad74f5e8709353f7288592866bd3a9095da1174a916e7aa632949971e2"
+    },
+    "integration.log": {
+      "bytes": 2404,
+      "sha256": "6265dd0a2086a305e0d690105ed692ff5bcfd8f83b8e4cd9c82a21df6c041139"
+    },
+    "lint.log": {
+      "bytes": 28,
+      "sha256": "960f1eb37ac4d28430af9bef2c98f32333254854ffde619330f53d373ce0f632"
+    },
+    "report.md": {
+      "bytes": 3839,
+      "sha256": "e30000ca9670f8f51a3e9d0be531cd782dda39d5179c9c4d70de5957b3350e52"
+    },
+    "typecheck.log": {
+      "bytes": 3740,
+      "sha256": "6e24220a2e0dbaaea9f92e3c3ea39b98b1d0acbcafbc530ca5ec3ed2f3ca1843"
+    },
+    "unit.log": {
+      "bytes": 208,
+      "sha256": "3d9275fdbc43113c0dc30c6e96f1537653853073431d5bb7cdd3cca999b367a9"
+    },
+    "web-build.log": {
+      "bytes": 10989,
+      "sha256": "e2bc0f4a8d050beecd5b5f97b59a57ae8663393a94cde04565372a0ac9c3cfa5"
+    },
+    "web-final.log": {
+      "bytes": 4210,
+      "sha256": "bf8217430db13f57c9827577db430dd0b0e7bce67862a1e282c7dd709986e11c"
+    },
+    "web-full-before-privacy-fix.log": {
+      "bytes": 6375,
+      "sha256": "ecdd2650c779dddebafe641b6fddc1ac12830bcefdd06e5f69ec7635b422fc1d"
+    }
+  }
+}
