@@ -162,6 +162,13 @@ relacionados próximos e alinhamento vertical central. Linhas regulares ficam
 próximas de 53 px, preservando controles de 44 px. Nomes longos podem aumentar
 a altura naturalmente; não impor altura fixa que corte conteúdo.
 
+Em convites, nome e e-mail permanecem completos nos resumos. O e-mail ocupa
+a largura do grupo, abaixo do nome/avatar; preservar quebras naturais e usar
+`overflow-wrap: anywhere` apenas para segmentos que excedam a largura. Evitar
+`break-all` em textos de leitura. Títulos de modais usam 20 px no celular e
+24 px a partir de sm, reservando espaço para o fechar. Metadados do convite
+ficam em duas colunas compactas e a validade mantém data/hora juntas.
+
 Referências desta revisão: [Atlassian Page header](https://atlassian.design/components/page-header/usage)
 e [Polaris, retorno no cabeçalho](https://shopify.dev/docs/apps/build/app-home/migrate-from-polaris-react/breadcrumbs).
 

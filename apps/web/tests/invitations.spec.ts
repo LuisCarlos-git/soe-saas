@@ -39,6 +39,7 @@ async function menu(page: Page) {
 }
 async function capture(page: Page, name: string) {
   await page.evaluate(async () => {
+    window.scrollTo(0, 0);
     await document.fonts.ready;
     await Promise.all(
       document
@@ -96,6 +97,52 @@ async function capture(page: Page, name: string) {
     await modal.evaluate((element) => {
       element.scrollTop = 0;
     });
+  }
+  if (
+    test.info().project.name === "desktop" &&
+    [
+      "dialog-review",
+      "dialog-success",
+      "details-modal",
+      "register",
+      "confirm",
+      "existing-sign-in",
+    ].includes(name)
+  ) {
+    const original = page.viewportSize();
+    for (const width of [320, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.evaluate(() => window.scrollTo(0, 0));
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      const surface = (await modal.isVisible()) ? modal : page.locator("main");
+      expect(
+        await surface.evaluate(
+          (element) => element.scrollWidth <= element.clientWidth + 1,
+        ),
+      ).toBe(true);
+      expect(
+        await surface
+          .locator("button .soe-button-label")
+          .evaluateAll((labels) =>
+            labels.every(
+              (label) =>
+                label.scrollWidth <= label.clientWidth + 1 &&
+                label.getBoundingClientRect().width <=
+                  (label.parentElement?.getBoundingClientRect().width ?? 0) + 1,
+            ),
+          ),
+      ).toBe(true);
+      await page.screenshot({
+        path: `test-results/invitation-${name}-width-${width}.png`,
+        fullPage: false,
+        animations: "disabled",
+      });
+    }
+    if (original) await page.setViewportSize(original);
   }
 }
 
@@ -301,7 +348,7 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   test.setTimeout(90000);
   const project = test.info().project.name;
   const schoolName = `Escola Convites ${project}`;
-  const recipient = `profissional-${project}@example.test`;
+  const recipient = `profissional.nome.sobrenome-${project}@equipe.example.test`;
   const adminEmail = `invite-admin-${project}@example.test`;
   await login(page, `invite-operator-${project}@example.test`);
   await enroll(page);

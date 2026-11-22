@@ -11,6 +11,7 @@ import {
 import type { z } from "zod";
 import { useAppForm, validateOnChangeAndBlur } from "@soe/form";
 import { Button } from "@soe/ui";
+import { Badge } from "@soe/ui/primitives/badge";
 import { Check, School } from "lucide-react";
 import { roleLabel } from "../model/roles";
 
@@ -145,7 +146,7 @@ export function AcceptInvitationPage({
       <div className="space-y-4">
         <Check className="size-9 text-primary" aria-hidden="true" />
         <h1 className="text-2xl font-semibold">Convite aceito</h1>
-        <p className="break-words leading-relaxed text-muted-foreground">
+        <p className="leading-relaxed text-muted-foreground [overflow-wrap:anywhere]">
           Seu vínculo com {preview?.schoolName} foi criado. Os papéis valem
           somente para esta escola.
         </p>
@@ -162,16 +163,30 @@ export function AcceptInvitationPage({
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Convite para a equipe
           </h1>
-          <p className="mt-3 break-words text-lg font-medium">
+          <p className="mt-3 text-lg font-medium leading-7 [overflow-wrap:anywhere]">
             {preview.schoolName}
           </p>
-          <p className="mt-1 break-all text-sm text-muted-foreground">
-            Para {preview.email}
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Convite para
+            <span className="block font-medium text-ink [overflow-wrap:anywhere]">
+              {preview.email}
+            </span>
           </p>
         </header>
         <div className="space-y-2 border-y border-rule py-4">
           <p className="text-sm font-medium">Papéis nesta escola</p>
-          <p className="text-sm">{preview.roles.map(roleLabel).join(", ")}</p>
+          <ul className="flex flex-wrap gap-2" aria-label="Papéis do convite">
+            {preview.roles.map((role) => (
+              <li key={role} className="min-w-0 max-w-full">
+                <Badge
+                  variant="secondary"
+                  className="max-w-full whitespace-normal rounded-md bg-canvas px-2 py-1 text-ink [overflow-wrap:anywhere]"
+                >
+                  {roleLabel(role)}
+                </Badge>
+              </li>
+            ))}
+          </ul>
           <p className="text-sm leading-relaxed text-muted-foreground">
             Administração e direção não liberam acesso automático a relatos
             restritos.
@@ -196,9 +211,12 @@ export function AcceptInvitationPage({
         ) : identity.email.toLowerCase() !== preview.email.toLowerCase() ? (
           <div className="space-y-4">
             <h2 className="text-lg font-semibold">Use a conta do convite</h2>
-            <p className="break-all text-sm text-muted-foreground">
-              Você está conectado como {identity.email}. Este convite é para
-              outra conta.
+            <p className="text-sm leading-6 text-muted-foreground">
+              Você está conectado como{" "}
+              <span className="font-medium text-ink [overflow-wrap:anywhere]">
+                {identity.email}
+              </span>
+              . Este convite é para outra conta.
             </p>
             <Button
               variant="outline"
@@ -244,15 +262,23 @@ export function AcceptInvitationPage({
             </Button>
           </div>
         )}
-        <p className="text-xs leading-5 text-muted-foreground">
-          Uso único. Válido até{" "}
-          {new Intl.DateTimeFormat("pt-BR", {
-            dateStyle: "short",
-            timeStyle: "short",
-            timeZone: preview.timeZone,
-          }).format(new Date(preview.expiresAt))}{" "}
-          · horário da escola.
-        </p>
+        <footer className="space-y-1 border-t border-rule pt-4 text-xs leading-5 text-muted-foreground">
+          <p>Convite de uso único</p>
+          <p>
+            Válido até{" "}
+            <time
+              dateTime={preview.expiresAt}
+              className="whitespace-nowrap font-medium text-ink"
+            >
+              {new Intl.DateTimeFormat("pt-BR", {
+                dateStyle: "short",
+                timeStyle: "short",
+                timeZone: preview.timeZone,
+              }).format(new Date(preview.expiresAt))}
+            </time>
+          </p>
+          <p>Horário da escola.</p>
+        </footer>
       </div>
     ) : null;
   return (
@@ -262,7 +288,7 @@ export function AcceptInvitationPage({
           <School className="size-6" aria-hidden="true" />
           SOE
         </div>
-        <section className="rounded-xl border border-rule bg-surface p-6 sm:p-8">
+        <section className="min-w-0 rounded-xl border border-rule bg-surface p-5 sm:p-8">
           {content}
         </section>
       </div>

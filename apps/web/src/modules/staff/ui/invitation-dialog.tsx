@@ -129,13 +129,13 @@ function InvitationContent({
         <DialogTitle
           ref={title}
           tabIndex={-1}
-          className="text-2xl outline-none"
+          className="text-xl leading-snug tracking-tight outline-none sm:text-2xl"
         >
           {navigation.currentStep === "review"
             ? "Confira antes de enviar"
             : "Convidar profissional"}
         </DialogTitle>
-        <DialogDescription className="break-words">
+        <DialogDescription className="leading-6 [overflow-wrap:anywhere]">
           {school.name}
         </DialogDescription>
       </DialogHeader>
@@ -208,7 +208,7 @@ function InvitationContent({
         ) : navigation.currentStep === "review" && draft ? (
           <div className="space-y-5">
             <InvitationSummary draft={draft} />
-            <div className="grid grid-cols-2 gap-3 border-t border-rule pt-4 sm:flex sm:justify-end">
+            <div className="grid grid-cols-1 gap-3 border-t border-rule pt-4 min-[360px]:grid-cols-2 sm:flex sm:justify-end">
               <Button
                 variant="outline"
                 className="min-w-0 px-3 text-sm sm:px-5 sm:text-base"
@@ -240,10 +240,15 @@ function InvitationContent({
               >
                 Convite criado
               </h3>
-              <p className="mt-2 break-words text-sm text-muted-foreground">
-                Convite de acesso para {draft?.name}.
+              <p className="mt-2 text-sm text-muted-foreground">
+                Acompanhe o envio na lista de convites.
               </p>
-              <p className="mt-1 break-all text-sm font-medium">
+            </div>
+            <div className="min-w-0 rounded-lg border border-rule p-4">
+              <p className="font-medium leading-6 [overflow-wrap:anywhere]">
+                {draft?.name}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground [overflow-wrap:anywhere]">
                 {draft?.email}
               </p>
             </div>
@@ -255,7 +260,7 @@ function InvitationContent({
                     className="mt-1 size-4 shrink-0 text-primary"
                     aria-hidden="true"
                   />
-                  <span>Acompanhe o envio do e-mail na lista de convites.</span>
+                  <span>O e-mail inclui um link para aceitar o convite.</span>
                 </li>
                 <li className="flex gap-3">
                   <Clock

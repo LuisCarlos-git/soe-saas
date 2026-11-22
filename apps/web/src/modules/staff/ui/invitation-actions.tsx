@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import type { ListedInvitation } from "@soe/contracts";
 import { Button } from "@soe/ui";
 import {
@@ -41,29 +41,37 @@ export function InvitationActions({
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const date = (value: string | null) =>
-    value
-      ? new Intl.DateTimeFormat("pt-BR", {
-          dateStyle: "short",
-          timeStyle: "short",
-          timeZone,
-        }).format(new Date(value))
-      : "—";
-  const information = [
+    value ? (
+      <time dateTime={value}>
+        <span className="block whitespace-nowrap">
+          {new Intl.DateTimeFormat("pt-BR", {
+            dateStyle: "short",
+            timeZone,
+          }).format(new Date(value))}
+        </span>
+        <span className="block whitespace-nowrap text-muted-foreground">
+          {new Intl.DateTimeFormat("pt-BR", {
+            timeStyle: "short",
+            timeZone,
+          }).format(new Date(value))}
+        </span>
+      </time>
+    ) : (
+      "—"
+    );
+  const information: [string, ReactNode][] = [
     ["Situação do convite", statusLabels[invitation.status]],
     ["Envio do e-mail", deliveryLabels[invitation.deliveryStatus]],
     ["Convidado em", date(invitation.createdAt)],
     ["Válido até", date(invitation.expiresAt)],
     ["E-mail enviado em", date(invitation.sentAt)],
     ["Aceito em", date(invitation.acceptedAt)],
-    ...(invitation.status === "ACCEPTED"
-      ? [
-          [
-            "Vínculo na escola",
-            invitation.membershipActive ? "Ativo" : "Inativo",
-          ],
-        ]
-      : []),
   ];
+  if (invitation.status === "ACCEPTED")
+    information.push([
+      "Vínculo na escola",
+      invitation.membershipActive ? "Ativo" : "Inativo",
+    ]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DropdownMenu>
@@ -103,8 +111,10 @@ export function InvitationActions({
         }}
       >
         <DialogHeader className="pr-8 text-left">
-          <DialogTitle className="text-2xl">Detalhes do convite</DialogTitle>
-          <DialogDescription className="break-words">
+          <DialogTitle className="text-xl leading-snug tracking-tight sm:text-2xl">
+            Detalhes do convite
+          </DialogTitle>
+          <DialogDescription className="leading-6 [overflow-wrap:anywhere]">
             {schoolName}
           </DialogDescription>
         </DialogHeader>
@@ -117,11 +127,13 @@ export function InvitationActions({
           <X className="size-5" aria-hidden="true" />
         </Button>
         <InvitationSummary draft={invitation} />
-        <dl className="grid grid-cols-1 gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-4 border-t border-rule pt-4 text-sm">
           {information.map(([label, value]) => (
-            <div key={label}>
+            <div key={label} className="min-w-0">
               <dt className="text-muted-foreground">{label}</dt>
-              <dd className="mt-1 font-medium tabular-nums">{value}</dd>
+              <dd className="mt-1 font-medium leading-6 tabular-nums [overflow-wrap:anywhere]">
+                {value}
+              </dd>
             </div>
           ))}
         </dl>
