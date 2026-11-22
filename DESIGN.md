@@ -147,10 +147,17 @@ por foco, clique e hover; não ocupa uma linha fixa por registro. Detalhes e
 todos os papéis continuam disponíveis no menu da linha. Na tabela, mostrar no
 máximo dois papéis com reticências e truncar o excedente da largura da célula.
 
-As telas Profissionais (seleção da escola) e Minhas escolas usam o mesmo
-diretório tabular: nome, ano/fuso, profissionais ativos e convites pendentes
-com total. Busca, ordenação, páginas e contagens vêm da API no escopo das
-escolas administradas. Atalhos por linha levam à equipe ou configurações.
+Minhas escolas é a única seleção escolar em `/schools`; não duplicar essa lista
+em um item Profissionais na sidebar. O endereço antigo `/schools/professionals`
+redireciona para a lista unificada, preservando a permissão. O diretório mostra
+nome, ano/fuso, profissionais ativos e convites pendentes com total. O nome
+abre configurações; a contagem de profissionais e o menu levam à equipe.
+Busca, ordenação, páginas e contagens vêm da API no escopo autorizado.
+
+As tabelas de gestão usam células com 4 px de padding vertical, textos
+relacionados próximos e alinhamento vertical central. Linhas regulares ficam
+próximas de 53 px, preservando controles de 44 px. Nomes longos podem aumentar
+a altura naturalmente; não impor altura fixa que corte conteúdo.
 
 Referências desta revisão: [Atlassian Page header](https://atlassian.design/components/page-header/usage)
 e [Polaris, retorno no cabeçalho](https://shopify.dev/docs/apps/build/app-home/migrate-from-polaris-react/breadcrumbs).

@@ -10,26 +10,14 @@ import { managedSchoolsQuery } from "../data/queries";
 import { SchoolBoundary } from "./school-boundary";
 import { SchoolDirectoryTable } from "./school-directory-table";
 
-export function SchoolDirectory(props: {
-  api: ApiClient;
-  actorId: string;
-  mode: "settings" | "professionals";
-}) {
+export function SchoolDirectory(props: { api: ApiClient; actorId: string }) {
   return (
     <SchoolBoundary api={props.api} actorId={props.actorId} allowed>
       <Directory {...props} />
     </SchoolBoundary>
   );
 }
-function Directory({
-  api,
-  actorId,
-  mode,
-}: {
-  api: ApiClient;
-  actorId: string;
-  mode: "settings" | "professionals";
-}) {
+function Directory({ api, actorId }: { api: ApiClient; actorId: string }) {
   const [options, setOptions] = useState<ManagedSchoolsQuery>({
     offset: 0,
     limit: 10,
@@ -50,11 +38,7 @@ function Directory({
   return (
     <section className="soe-route-content space-y-6">
       <PageToolbar
-        description={
-          mode === "professionals"
-            ? "Escolha uma escola para acompanhar a equipe e gerenciar convites."
-            : "Consulte sua equipe e configure as escolas que você administra."
-        }
+        description="Gerencie suas escolas, acompanhe a equipe e organize convites."
         actions={
           <Button
             variant="outline"
@@ -147,7 +131,6 @@ function Directory({
           options={options}
           setOptions={setOptions}
           fetching={query.isFetching}
-          mode={mode}
         />
       )}
     </section>

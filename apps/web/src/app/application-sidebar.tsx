@@ -7,7 +7,6 @@ import {
   LogOut,
   Settings,
   X,
-  Users,
 } from "lucide-react";
 import type { SchoolAccess } from "@soe/contracts";
 import { Button } from "@soe/ui";
@@ -42,7 +41,8 @@ export function ApplicationSidebar({
   });
   const { setOpenMobile } = useSidebar();
   const close = () => setOpenMobile(false);
-  const professionals = pathname.endsWith("/professionals");
+  const schoolPage =
+    pathname === "/schools" || pathname.startsWith("/schools/");
   return (
     <Sidebar
       role="complementary"
@@ -112,40 +112,16 @@ export function ApplicationSidebar({
                     <SidebarMenuItem>
                       <SidebarMenuButton
                         asChild
-                        isActive={
-                          pathname === "/schools" ||
-                          (pathname.startsWith("/schools/") && !professionals)
-                        }
+                        isActive={schoolPage}
                         className="h-11 px-3"
                       >
                         <Link
                           to="/schools"
                           onClick={close}
-                          aria-current={
-                            pathname === "/schools" ||
-                            (pathname.startsWith("/schools/") && !professionals)
-                              ? "page"
-                              : undefined
-                          }
+                          aria-current={schoolPage ? "page" : undefined}
                         >
                           <School aria-hidden="true" />
                           <span>Minhas escolas</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={professionals}
-                        className="h-11 px-3"
-                      >
-                        <Link
-                          to="/schools/professionals"
-                          onClick={close}
-                          aria-current={professionals ? "page" : undefined}
-                        >
-                          <Users aria-hidden="true" />
-                          <span>Profissionais</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

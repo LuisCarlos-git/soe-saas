@@ -6,9 +6,7 @@ export const Route = createFileRoute("/_authenticated/schools/")({
   },
   head: () => ({ meta: [{ title: "Minhas escolas · SOE" }] }),
   component: function SchoolsRoute() {
-    const { api, identity, schoolAccess } = Route.useRouteContext();
-    return (
-      <SchoolsPage api={api} actorId={identity.id} access={schoolAccess} />
-    );
+    const { api, identity } = Route.useRouteContext();
+    return <SchoolsPage api={api} actorId={identity.id} />;
   },
 });

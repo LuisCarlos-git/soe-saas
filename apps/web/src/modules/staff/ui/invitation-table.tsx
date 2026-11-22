@@ -54,7 +54,7 @@ export function InvitationTable({
             <p className="break-words font-medium text-ink">
               {row.original.name}
             </p>
-            <p className="mt-1 break-all text-muted-foreground">
+            <p className="break-all text-muted-foreground">
               {row.original.email}
             </p>
           </div>
@@ -235,7 +235,7 @@ export function InvitationTable({
                 <TableCell
                   key={cell.id}
                   className={cn(
-                    "whitespace-normal px-4 py-4 align-top",
+                    "whitespace-normal px-4 py-1 align-middle",
                     cell.column.id === "actions" &&
                       "sticky right-0 bg-surface px-1",
                   )}

@@ -40,14 +40,12 @@ export function SchoolDirectoryTable({
   options,
   setOptions,
   fetching,
-  mode,
 }: {
   schools: ManagedSchool[];
   total: number;
   options: ManagedSchoolsQuery;
   setOptions: Dispatch<SetStateAction<ManagedSchoolsQuery>>;
   fetching: boolean;
-  mode: "settings" | "professionals";
 }) {
   const columns = useMemo<ColumnDef<ManagedSchool>[]>(
     () => [
@@ -55,15 +53,11 @@ export function SchoolDirectoryTable({
         accessorKey: "name",
         header: "Escola",
         cell: ({ row }) => (
-          <div className="space-y-1">
+          <div className="space-y-0">
             <Link
-              to={
-                mode === "settings"
-                  ? "/schools/$organizationId/settings"
-                  : "/schools/$organizationId/professionals"
-              }
+              to="/schools/$organizationId/settings"
               params={{ organizationId: row.original.id }}
-              className="inline-flex min-h-11 items-center break-words font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-primary"
+              className="inline-flex min-h-6 items-center break-words font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-primary"
             >
               {row.original.name}
             </Link>
@@ -77,7 +71,7 @@ export function SchoolDirectoryTable({
         accessorKey: "academicYear",
         header: "Ano letivo",
         cell: ({ row }) => (
-          <div className="space-y-1 tabular-nums">
+          <div className="space-y-0 tabular-nums">
             <p>{row.original.academicYear}</p>
             <p className="break-words text-xs text-muted-foreground">
               {row.original.timeZone.replaceAll("_", " ")}
@@ -90,9 +84,15 @@ export function SchoolDirectoryTable({
         header: "Profissionais ativos",
         enableSorting: false,
         cell: ({ row }) => (
-          <span className="tabular-nums">
+          <Link
+            to="/schools/$organizationId/professionals"
+            params={{ organizationId: row.original.id }}
+            aria-label={`Ver profissionais de ${row.original.name}: ${row.original.activeProfessionals} ${row.original.activeProfessionals === 1 ? "profissional ativo" : "profissionais ativos"}`}
+            className="inline-flex min-h-11 items-center gap-2 rounded-sm font-medium tabular-nums text-primary hover:underline focus-visible:outline-2 focus-visible:outline-primary"
+          >
             {row.original.activeProfessionals}
-          </span>
+            <ChevronRight className="size-3" aria-hidden="true" />
+          </Link>
         ),
       },
       {
@@ -100,7 +100,7 @@ export function SchoolDirectoryTable({
         header: "Convites pendentes",
         enableSorting: false,
         cell: ({ row }) => (
-          <div className="space-y-1 tabular-nums">
+          <div className="space-y-0 tabular-nums">
             <p>{row.original.pendingInvitations}</p>
             <p className="text-xs text-muted-foreground">
               {row.original.totalInvitations} no total
@@ -148,7 +148,7 @@ export function SchoolDirectoryTable({
         ),
       },
     ],
-    [mode],
+    [],
   );
   const sorting = [
     { id: options.sortBy, desc: options.sortDirection === "desc" },
@@ -267,7 +267,7 @@ export function SchoolDirectoryTable({
                 <TableCell
                   key={cell.id}
                   className={cn(
-                    "whitespace-normal px-4 py-4 align-top",
+                    "whitespace-normal px-4 py-1 align-middle",
                     cell.column.id === "actions" &&
                       "sticky right-0 bg-surface px-1",
                   )}

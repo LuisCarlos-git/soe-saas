@@ -54,6 +54,21 @@ async function capture(page: Page, name: string) {
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  if (name === "school-directory" || name === "table-sorted") {
+    console.info("Table density", {
+      state: name,
+      project: test.info().project.name,
+      ...(await page.getByRole("table").evaluate((element) => {
+        const row = element.querySelector("tbody tr");
+        const cell = row?.querySelector("td");
+        return {
+          rowHeight: row?.getBoundingClientRect().height,
+          paddingTop: cell ? getComputedStyle(cell).paddingTop : null,
+          paddingBottom: cell ? getComputedStyle(cell).paddingBottom : null,
+        };
+      })),
+    });
+  }
   const modal = page.getByRole("dialog");
   if (await modal.isVisible())
     await modal.evaluate((element) => {
@@ -330,9 +345,13 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   await enroll(page);
   await page.reload();
   await menu(page);
-  await page.getByRole("link", { name: "Profissionais", exact: true }).click();
+  await page.getByRole("link", { name: "Minhas escolas", exact: true }).click();
   await expect(
-    page.getByRole("heading", { level: 1, name: "Profissionais", exact: true }),
+    page.getByRole("heading", {
+      level: 1,
+      name: "Minhas escolas",
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(page.getByRole("table")).toBeVisible();
   await capture(page, "school-directory");
@@ -419,10 +438,25 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   await page.getByRole("button", { name: "Limpar", exact: true }).click();
   await expect(page.getByRole("row")).toHaveCount(3);
   await page.goto("/schools/professionals");
+  await expect(page).toHaveURL(/\/schools\/?$/);
+  await menu(page);
   await expect(
-    page.getByRole("heading", { name: "Profissionais", level: 1, exact: true }),
+    page.getByRole("link", { name: "Profissionais", exact: true }),
+  ).toHaveCount(0);
+  if (project === "mobile") await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("heading", {
+      name: "Minhas escolas",
+      level: 1,
+      exact: true,
+    }),
   ).toBeVisible();
-  await page.getByRole("link", { name: schoolName, exact: true }).click();
+  await page
+    .getByRole("link", {
+      name: `Ver profissionais de ${schoolName}`,
+      exact: false,
+    })
+    .click();
   await expect(page.getByText("Nenhum convite por aqui")).toBeVisible();
   await capture(page, "empty");
   await page
@@ -529,17 +563,27 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   await capture(page, "pending");
   const link = await invitationLink(recipient, schoolName);
   await page
-    .getByRole("link", { name: "Escolher outra escola", exact: true })
+    .getByRole("link", { name: "Voltar às escolas", exact: true })
     .click();
-  await page.getByRole("link", { name: secondName, exact: true }).click();
+  await page
+    .getByRole("link", {
+      name: `Ver profissionais de ${secondName}`,
+      exact: false,
+    })
+    .click();
   await expect(
     page.getByText("Nenhum convite por aqui", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(recipient, { exact: true })).toHaveCount(0);
   await page
-    .getByRole("link", { name: "Escolher outra escola", exact: true })
+    .getByRole("link", { name: "Voltar às escolas", exact: true })
     .click();
-  await page.getByRole("link", { name: schoolName, exact: true }).click();
+  await page
+    .getByRole("link", {
+      name: `Ver profissionais de ${schoolName}`,
+      exact: false,
+    })
+    .click();
   const context = await browser.newContext({
     viewport: page.viewportSize() ?? { width: 1280, height: 900 },
     reducedMotion: project === "mobile" ? "reduce" : "no-preference",
@@ -737,7 +781,7 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
     await expect(administrative).toHaveURL(/\/account$/);
     await menu(administrative);
     await expect(
-      administrative.getByRole("link", { name: "Profissionais", exact: true }),
+      administrative.getByRole("link", { name: "Minhas escolas", exact: true }),
     ).toBeVisible();
   } finally {
     await administrativeContext.close();

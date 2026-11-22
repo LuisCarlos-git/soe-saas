@@ -12,7 +12,8 @@ habilitam o envio; reinicie a API após adicioná-las ao `.env` existente.
    Administração → Escolas piloto. Nesta entrega, o responsável inicial da
    escola ainda deve ser uma identidade existente, como `ana@example.test`.
 3. Entre com a conta do responsável, configure/verifique MFA e abra
-   Escola → Profissionais. Escolha explicitamente a escola.
+   Escola → Minhas escolas. Escolha explicitamente a escola e use a contagem
+   de profissionais ou o menu da linha → Ver profissionais para abrir a equipe.
 4. Clique em Convidar profissional. Preencha nome, um e-mail sintético novo
    (por exemplo `profissional-manual@example.test`) e os papéis. Revise os
    dados; Voltar e editar preserva o formulário. Enviar convite cria a entrada
@@ -23,7 +24,8 @@ habilitam o envio; reinicie a API após adicioná-las ao `.env` existente.
 6. Uma identidade nova cria nome/senha e entra. Uma identidade existente usa
    a senha que já possui. Confira escola e papéis e clique em Aceitar convite.
    Administração escolar exige configurar/verificar MFA antes desse aceite.
-7. Volte à lista da escola e use Atualizar lista; o status passa para Aceito.
+7. Volte à lista da escola e use Atualizar lista; a tag passa para Ativo quando
+   o aceite cria um vínculo ativo. O tooltip e Ver detalhes separam envio e aceite.
    A pessoa passa a ter um vínculo somente nessa escola, com esses papéis.
    Reabrir o mesmo link deve informar Convite indisponível.
 

@@ -7,19 +7,14 @@ import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { SchoolCreationDialog } from "./school-creation-dialog";
 import { SchoolBoundary } from "./school-boundary";
 
-type Access = {
-  canProvisionSchools: boolean;
-  schools: { id: string; name: string }[];
-};
 export function SchoolsPage({
   api,
   actorId,
 }: {
   api: ApiClient;
   actorId: string;
-  access: Access;
 }) {
-  return <SchoolDirectory api={api} actorId={actorId} mode="settings" />;
+  return <SchoolDirectory api={api} actorId={actorId} />;
 }
 export function PilotSchoolsPage({
   api,
