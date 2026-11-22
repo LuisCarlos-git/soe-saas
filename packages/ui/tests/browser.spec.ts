@@ -11,6 +11,14 @@ test("loading troca texto por spinner sem mudar tamanho; erros entram e saem ace
     exact: true,
   });
   const before = await button.boundingBox();
+  expect(before?.height).toBe(44);
+  expect(
+    (
+      await page
+        .getByLabel("Nome de demonstração", { exact: true })
+        .boundingBox()
+    )?.height,
+  ).toBe(before?.height);
   const originalLabel = await button.locator(".soe-button-label").boundingBox();
   await button.click();
   await expect(button).toBeDisabled();

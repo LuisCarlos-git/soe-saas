@@ -86,6 +86,9 @@ split de login ou sua fotografia para cada tela interna.
 
 - Labels persistentes acima dos campos, ajuda perto do controle e foco visível.
   Campos com pelo menos 44 px de altura e largura coerente dentro do grupo.
+- Botões e inputs padrão têm a mesma altura de 44 px, inclusive durante loading.
+  No botão compartilhado, padding vertical de 8 px e altura mínima de 44 px
+  permitem crescimento natural quando o conteúdo exigir.
 - Uma ação principal por tarefa. Em formulários curtos de entrada, o botão ocupa
   100% da largura dos campos.
 - No loading, o texto sai para cima e o spinner entra de baixo até o mesmo

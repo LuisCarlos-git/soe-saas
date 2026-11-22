@@ -35,6 +35,31 @@ interna; lint e checagens arquiteturais verificam a origem dos controles no web.
 
 ## Agent skills
 
+### Descoberta de skills
+
+Sempre use `find-skills` ao precisar de uma capacidade específica, integração,
+biblioteca ou técnica. Consulte primeiro as skills disponíveis; se nenhuma
+atender, siga a busca e verificação de qualidade da skill antes de recomendar
+ou instalar uma opção.
+
+Para decisões de interface, aplique as cinco skills: `ui-ux-pro-max`,
+`frontend-design`, `frontend-ui-engineering`, `interface-design` e `impeccable`.
+`DESIGN.md` é a fonte das diretrizes aprovadas.
+
+### Revisão obrigatória antes do PR
+
+Sempre execute `code-review` antes de abrir qualquer PR. Fixe o SHA da base do
+PR, revise Standards e Spec com agentes independentes e corrija os achados
+relevantes. Registre resultados e pendências separadamente por eixo.
+
+### Issues após merge
+
+Após cada merge confirmado, atualize as issues relacionadas no GitHub com o
+PR, o commit integrado, a entrega e suas evidências. Atualize os critérios
+comprovados e o acompanhamento na issue pai quando aplicável. Preserve
+critérios pendentes; encerre a issue somente quando todo o escopo estiver
+concluído e validado. Abrir um PR não equivale a concluir ou integrar a entrega.
+
 ### QA obrigatório por etapa
 
 Antes de implementar cada etapa e antes de avançar, abrir PR ou concluir uma

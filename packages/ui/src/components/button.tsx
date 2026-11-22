@@ -26,7 +26,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading}
       className={cn(
-        "soe-button h-auto min-h-11 items-center justify-center rounded-lg px-5 py-3 text-base font-semibold focus-visible:ring-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-60",
+        "soe-button h-auto min-h-11 items-center justify-center rounded-lg px-5 py-2 text-base font-semibold focus-visible:ring-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary disabled:cursor-wait disabled:opacity-60",
         { "hover:bg-primary-hover": variant === "default" },
         className,
       )}
