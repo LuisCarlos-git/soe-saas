@@ -288,7 +288,7 @@ export function AcceptInvitationPage({
           <School className="size-6" aria-hidden="true" />
           SOE
         </div>
-        <section className="min-w-0 rounded-xl border border-rule bg-surface p-5 sm:p-8">
+        <section className="min-w-0 rounded-xl border border-rule bg-surface p-4 sm:p-8">
           {content}
         </section>
       </div>
