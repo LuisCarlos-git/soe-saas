@@ -24,6 +24,7 @@ export function InvitationFilters({
   return (
     <form.AppForm>
       <form
+        method="post"
         className="grid items-end gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_12rem_auto]"
         onSubmit={(event) => {
           event.preventDefault();

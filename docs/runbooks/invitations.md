@@ -34,6 +34,11 @@ pode receber outro convite de outra escola com papéis independentes.
 
 ## Estados e recuperação
 
+Buscas nas listas usam `POST /api/v1/schools/search` e
+`POST /api/v1/schools/:organizationId/invitations/search`, com filtros no corpo
+JSON e resposta 200 sem cache. Nome e e-mail não vão na URL. As leituras GET
+compatíveis aceitam apenas filtros não sensíveis e rejeitam `search`.
+
 - E-mail na fila: o envio ainda será processado. A lista acompanha convites
   pendentes automaticamente enquanto a página está aberta.
 - E-mail enviado: o SMTP local aceitou a mensagem; isso não comprova leitura

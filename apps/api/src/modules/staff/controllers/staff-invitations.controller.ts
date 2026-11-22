@@ -7,6 +7,7 @@ import {
   Query,
   Headers,
   Header,
+  HttpCode,
   Inject,
   UnauthorizedException,
   ForbiddenException,
@@ -45,6 +46,9 @@ class SchoolParams extends createZodDto(
   z.object({ organizationId: z.uuid() }),
 ) {}
 class ListQuery extends createZodDto(invitationListQuerySchema) {}
+class PublicListQuery extends createZodDto(
+  invitationListQuerySchema.omit({ search: true }),
+) {}
 @Controller("api/v1/schools/:organizationId/invitations")
 @ApiCookieAuth()
 @ApiResponse({ status: 400, type: SafeErrorResponse })
@@ -101,7 +105,19 @@ export class StaffInvitationsController {
   async read(
     @Headers("cookie") cookie = "",
     @Param() params: SchoolParams,
-    @Query() query: ListQuery,
+    @Query() query: PublicListQuery,
+  ) {
+    return this.search(cookie, params, { ...query, search: "" });
+  }
+  @Post("search")
+  @HttpCode(200)
+  @ApiOkResponse({ type: InvitationListResponse })
+  @Header("Cache-Control", "no-store")
+  @ZodSerializerDto(InvitationListResponse)
+  async search(
+    @Headers("cookie") cookie = "",
+    @Param() params: SchoolParams,
+    @Body() query: ListQuery,
   ) {
     const actor = await this.actor(cookie);
     return this.run(() =>

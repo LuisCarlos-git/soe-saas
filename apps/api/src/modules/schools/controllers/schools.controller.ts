@@ -8,6 +8,7 @@ import {
   Query,
   Headers,
   Header,
+  HttpCode,
   Inject,
   UnauthorizedException,
   ForbiddenException,
@@ -53,6 +54,9 @@ class AccessResponse extends createZodDto(schoolAccessSchema) {}
 class ListResponse extends createZodDto(schoolListSchema) {}
 class ManagedSchoolsResponse extends createZodDto(managedSchoolsSchema) {}
 class ManagedSchoolsQuery extends createZodDto(managedSchoolsQuerySchema) {}
+class PublicManagedSchoolsQuery extends createZodDto(
+  managedSchoolsQuerySchema.omit({ search: true }),
+) {}
 class SchoolParams extends createZodDto(
   z.object({ organizationId: z.uuid() }),
 ) {}
@@ -124,7 +128,18 @@ export class SchoolsController {
   @ZodSerializerDto(ManagedSchoolsResponse)
   async managed(
     @Headers("cookie") cookie = "",
-    @Query() query: ManagedSchoolsQuery,
+    @Query() query: PublicManagedSchoolsQuery,
+  ) {
+    return this.searchManaged(cookie, { ...query, search: "" });
+  }
+  @Post("schools/search")
+  @HttpCode(200)
+  @ApiOkResponse({ type: ManagedSchoolsResponse })
+  @Header("Cache-Control", "no-store")
+  @ZodSerializerDto(ManagedSchoolsResponse)
+  async searchManaged(
+    @Headers("cookie") cookie = "",
+    @Body() query: ManagedSchoolsQuery,
   ) {
     return this.run(async () =>
       this.listManaged.execute(await this.actor(cookie), query),

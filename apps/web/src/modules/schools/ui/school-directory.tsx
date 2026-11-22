@@ -55,6 +55,7 @@ function Directory({ api, actorId }: { api: ApiClient; actorId: string }) {
       />
       <form.AppForm>
         <form
+          method="post"
           className="flex flex-wrap items-end gap-3"
           onSubmit={(event) => {
             event.preventDefault();

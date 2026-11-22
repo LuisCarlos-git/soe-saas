@@ -1,6 +1,43 @@
 import { expect, test } from "vitest";
 import { ApiError, createApiClient } from "./index.js";
 
+test("buscas sensíveis usam corpo POST, preservando credencial SSR e cancelamento", async () => {
+  const calls: { url: string; options: RequestInit | undefined }[] = [];
+  const signal = new AbortController().signal;
+  const client = createApiClient(
+    "/api/v1",
+    async (url, options) => {
+      calls.push({ url: String(url), options });
+      return Response.json({
+        ...(String(url).includes("/invitations/")
+          ? { invitations: [] }
+          : { schools: [] }),
+        total: 0,
+        hasMore: false,
+      });
+    },
+    "synthetic-session",
+  );
+  await client.managedSchools({ search: "Nome privado" }, signal);
+  await client.invitations(
+    "00000000-0000-4000-8000-000000000001",
+    { search: "private@example.test" },
+    signal,
+  );
+  for (const [index, call] of calls.entries()) {
+    expect(call.url).not.toContain("?");
+    expect(call.url).toMatch(/\/search$/);
+    expect(call.options?.method).toBe("POST");
+    expect(call.options?.signal).toBe(signal);
+    expect(new Headers(call.options?.headers).get("cookie")).toBe(
+      "synthetic-session",
+    );
+    expect(JSON.parse(String(call.options?.body)).search).toBe(
+      index === 0 ? "Nome privado" : "private@example.test",
+    );
+  }
+});
+
 test("erros HTTP usam o callback padrão uma única vez com a mensagem segura", async () => {
   const notices: ApiError[] = [];
   const client = createApiClient(

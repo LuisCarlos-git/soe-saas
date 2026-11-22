@@ -129,11 +129,20 @@ export function createApiClient(
     path: string,
     schema: { parse: (body: unknown) => T },
     signal?: AbortSignal,
+    input?: unknown,
   ) {
     const headers = new Headers({ Accept: "application/json" });
     if (credential) headers.set("cookie", credential);
+    if (input !== undefined) headers.set("Content-Type", "application/json");
     return readResponse(
-      await send(`${baseUrl}/${path}`, { headers, ...(signal && { signal }) }),
+      await send(`${baseUrl}/${path}`, {
+        headers,
+        ...(input !== undefined && {
+          method: "POST",
+          body: JSON.stringify(input),
+        }),
+        ...(signal && { signal }),
+      }),
       schema,
     );
   }
@@ -172,9 +181,10 @@ export function createApiClient(
       signal?: AbortSignal,
     ) =>
       read(
-        `schools?${new URLSearchParams(Object.entries(managedSchoolsQuerySchema.parse(options)).map(([key, value]) => [key, String(value)]))}`,
+        "schools/search",
         managedSchoolsSchema,
         signal,
+        managedSchoolsQuerySchema.parse(options),
       ),
     invitations: (
       organizationId: string,
@@ -182,13 +192,10 @@ export function createApiClient(
       signal?: AbortSignal,
     ) =>
       read(
-        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations?${new URLSearchParams(
-          Object.entries(invitationListQuerySchema.parse(options))
-            .filter(([, value]) => value !== undefined)
-            .map(([key, value]) => [key, String(value)]),
-        )}`,
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations/search`,
         invitationListSchema,
         signal,
+        invitationListQuerySchema.parse(options),
       ),
     inviteProfessional: async (organizationId: string, input: unknown) =>
       readResponse(

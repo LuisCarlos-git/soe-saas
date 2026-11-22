@@ -547,6 +547,11 @@ test("QA-006-09-L: limite persiste ao reiniciar e não confia em X-Forwarded-For
 
 test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e isolamento", async () => {
   const path = `/api/v1/schools/${schoolA.id}/invitations`;
+  await ana.get(path).query({ search: "sensitive@example.test" }).expect(400);
+  await request(app.getHttpServer())
+    .post(`${path}/search`)
+    .send({})
+    .expect(401);
   const records = [];
   for (let index = 0; index < 23; index++) {
     const response = await ana
@@ -561,7 +566,7 @@ test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e 
     records.push(response.body);
   }
   const list = async (query) => {
-    const response = await ana.get(path).query(query).expect(200);
+    const response = await ana.post(`${path}/search`).send(query).expect(200);
     return invitationListSchema.parse(response.body);
   };
   const query = {
@@ -608,18 +613,18 @@ test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e 
     { status: "ACTIVE" },
     { search: "a".repeat(161) },
   ]) {
-    await ana.get(path).query(invalid).expect(400);
+    await ana.post(`${path}/search`).send(invalid).expect(400);
   }
   await ana
-    .get(`/api/v1/schools/${schoolB.id}/invitations`)
-    .query(query)
+    .post(`/api/v1/schools/${schoolB.id}/invitations/search`)
+    .send(query)
     .expect(404);
-  await bia.get(path).query(query).expect(404);
+  await bia.post(`${path}/search`).send(query).expect(404);
   expect(
     (
       await bia
-        .get(`/api/v1/schools/${schoolB.id}/invitations`)
-        .query(query)
+        .post(`/api/v1/schools/${schoolB.id}/invitations/search`)
+        .send(query)
         .expect(200)
     ).body.total,
   ).toBe(0);
@@ -646,7 +651,7 @@ test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e 
     [schoolA.id, actor],
   );
   try {
-    await ana.get(path).query(query).expect(404);
+    await ana.post(`${path}/search`).send(query).expect(404);
   } finally {
     await db.query(
       'UPDATE school_membership SET active=true WHERE "organizationId"=$1 AND "userId"=$2',
@@ -679,13 +684,21 @@ test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e 
 });
 
 test("QA-006-S01: diretório escolar agrega somente vínculos autorizados e pagina a coleção real", async () => {
+  await ana
+    .get("/api/v1/schools")
+    .query({ search: "Nome privado" })
+    .expect(400);
+  await request(app.getHttpServer())
+    .post("/api/v1/schools/search")
+    .send({})
+    .expect(401);
   await request(app.getHttpServer()).get("/api/v1/schools").expect(401);
   expect(
     (await operator.get("/api/v1/schools").expect(200)).body.schools,
   ).toEqual([]);
   const list = async (agent, query = {}) =>
     managedSchoolsSchema.parse(
-      (await agent.get("/api/v1/schools").query(query).expect(200)).body,
+      (await agent.post("/api/v1/schools/search").send(query).expect(200)).body,
     );
   const own = await list(ana);
   expect(own.total).toBe(1);
@@ -748,7 +761,7 @@ test("QA-006-S01: diretório escolar agrega somente vínculos autorizados e pagi
       { sortBy: "tokenHash" },
       { search: "x".repeat(161) },
     ])
-      await ana.get("/api/v1/schools").query(query).expect(400);
+      await ana.post("/api/v1/schools/search").send(query).expect(400);
     await db.query(
       'UPDATE school_membership SET active=false WHERE "organizationId"=$1 AND "userId"=$2',
       [schoolB.id, actor],
