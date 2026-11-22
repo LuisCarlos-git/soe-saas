@@ -1,0 +1,34 @@
+[WebServer] (node:39298) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:39530) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:39529) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:39551) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › apps/web/tests/invitations.spec.ts:234:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (4.0s)
+
+
+  1) [desktop] › apps/web/tests/invitations.spec.ts:234:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      348 |     const box = element.getBoundingClientRect();
+      349 |     return element.contains(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2));
+    > 350 |   })).toBe(true);
+          |       ^
+      351 |   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+      352 |   await dialog.getByRole("button", { name: "Concluir", exact: true }).click();
+      353 |   if (project === "desktop")
+        at <repo>/apps/web/tests/invitations.spec.ts:350:7
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/error-context.md
+
+  1 failed
+    [desktop] › apps/web/tests/invitations.spec.ts:234:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real

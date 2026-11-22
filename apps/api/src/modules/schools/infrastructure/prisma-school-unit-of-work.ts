@@ -1,4 +1,6 @@
 import type { Database } from "../../../infrastructure/database/database.factory";
+import type { Prisma } from "../../../infrastructure/database/generated/client";
+import type { ManagedSchoolsQuery } from "../domain/school";
 import type {
   SchoolUnitOfWork,
   SchoolTransaction,
@@ -131,6 +133,67 @@ export class PrismaSchoolUnitOfWork implements SchoolUnitOfWork {
       canProvisionSchools: !!operator,
       schools: memberships.map((row) => row.organization),
     };
+  }
+  async listForAdministrator(actorId: string, query: ManagedSchoolsQuery) {
+    return this.database.$transaction(
+      async (tx) => {
+        const search = query.search.replace(/[\\%_]/g, "\\$&");
+        const where: Prisma.OrganizationWhereInput = {
+          memberships: {
+            some: {
+              userId: actorId,
+              active: true,
+              roles: { has: "SCHOOL_ADMIN" },
+            },
+          },
+          ...(search && { name: { contains: search, mode: "insensitive" } }),
+        };
+        const total = await tx.organization.count({ where });
+        const rows = await tx.organization.findMany({
+          where,
+          orderBy: [{ [query.sortBy]: query.sortDirection }, { id: "asc" }],
+          skip: query.offset,
+          take: query.limit,
+          select: {
+            id: true,
+            name: true,
+            timeZone: true,
+            academicYear: true,
+            supportTeamLabel: true,
+            _count: {
+              select: {
+                memberships: { where: { active: true } },
+                invitations: true,
+              },
+            },
+          },
+        });
+        const pending = await tx.schoolInvitation.groupBy({
+          by: ["organizationId"],
+          where: {
+            organizationId: { in: rows.map((row) => row.id) },
+            acceptedAt: null,
+            revokedAt: null,
+            expiresAt: { gt: new Date() },
+          },
+          _count: { _all: true },
+        });
+        const pendingCounts = new Map(
+          pending.map((row) => [row.organizationId, row._count._all]),
+        );
+        return {
+          total,
+          hasMore: query.offset + rows.length < total,
+          schools: rows.map(({ _count, ...school }) => ({
+            ...school,
+            activeProfessionals: _count.memberships,
+            totalInvitations: _count.invitations,
+            pendingInvitations: pendingCounts.get(school.id) ?? 0,
+          })),
+        };
+      },
+      { isolationLevel: "RepeatableRead" },
+    );
   }
   async listForOperator(actorId: string, offset: number) {
     return this.database.$transaction(

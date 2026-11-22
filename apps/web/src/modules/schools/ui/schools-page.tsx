@@ -1,9 +1,9 @@
+import { SchoolDirectory } from "./school-directory";
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Button } from "@soe/ui";
-import { PageHeader } from "@soe/ui/components/page-header";
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { SchoolCreationDialog } from "./school-creation-dialog";
 import { SchoolBoundary } from "./school-boundary";
 
@@ -14,49 +14,12 @@ type Access = {
 export function SchoolsPage({
   api,
   actorId,
-  access,
 }: {
   api: ApiClient;
   actorId: string;
   access: Access;
 }) {
-  return (
-    <section className="soe-route-content space-y-6">
-      <PageHeader
-        title="Minhas escolas"
-        description="Configure as escolas que você administra. Cada escola mantém sua própria equipe e histórico."
-      />
-      <SchoolBoundary
-        api={api}
-        actorId={actorId}
-        allowed={access.schools.length > 0}
-      >
-        <ul className="divide-y divide-rule rounded-xl border border-rule bg-surface">
-          {access.schools.map((school) => (
-            <li key={school.id}>
-              <Link
-                to="/schools/$organizationId/settings"
-                params={{ organizationId: school.id }}
-                className="flex min-h-16 items-center justify-between gap-4 rounded-lg px-5 py-4 text-primary focus-visible:outline-2 focus-visible:outline-primary"
-              >
-                <span className="min-w-0 break-words font-medium">
-                  {school.name}
-                </span>
-                <span className="shrink-0 text-sm">Configurar</span>
-              </Link>
-              <Link
-                to="/schools/$organizationId/professionals"
-                params={{ organizationId: school.id }}
-                className="mx-5 mb-4 inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-4"
-              >
-                Profissionais de {school.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </SchoolBoundary>
-    </section>
-  );
+  return <SchoolDirectory api={api} actorId={actorId} mode="settings" />;
 }
 export function PilotSchoolsPage({
   api,
@@ -92,8 +55,7 @@ function OperatorSchools({
 
   return (
     <section className="space-y-5" aria-label="Provisionamento de escolas">
-      <PageHeader
-        title="Escolas piloto"
+      <PageToolbar
         description="Provisione escolas para validar o SOE com dados sintéticos."
         actions={
           <SchoolCreationDialog

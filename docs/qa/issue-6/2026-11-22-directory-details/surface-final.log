@@ -1,0 +1,46 @@
+[WebServer] (node:70734) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:70928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:70927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:70950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › apps/web/tests/invitations.spec.ts:257:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (707ms)
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✓   2 [desktop] › apps/web/tests/invitations.spec.ts:282:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (21.9s)
+(node:71703) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.9s)
+  ✓   4 [desktop] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (514ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓   5 [desktop] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (5.0s)
+  ✓   6 [desktop] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.3s)
+(node:71901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [mobile] › apps/web/tests/invitations.spec.ts:257:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (631ms)
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✓   8 [mobile] › apps/web/tests/invitations.spec.ts:282:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (20.3s)
+(node:72389) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.6s)
+  ✓  10 [mobile] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (512ms)
+  ✓  11 [mobile] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (3.8s)
+  ✓  12 [mobile] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.2s)
+
+  12 passed (1.1m)

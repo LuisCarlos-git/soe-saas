@@ -2,10 +2,11 @@
 
 ## Cabeçalhos e tabelas operacionais
 
-`@soe/ui/components/page-header` fornece `PageHeader` com `title`, `description`,
-`back` e `actions`. Mantém um único h1 compacto e agrupa ações; a aplicação passa
-o Link tipado do Router em `back`, preservando destinos e permissões do módulo.
-Use o padrão de composição registrado em DESIGN.md nas telas internas.
+O shell autenticado resolve o h1 e o retorno na faixa superior, usando o mapa
+de apresentação `apps/web/src/app/page-heading.ts`. Os módulos não repetem o
+título: `@soe/ui/components/page-toolbar` fornece `PageToolbar` com `description`
+e `actions`. Preserva ações no conteúdo, perto da tarefa, e evita registro por
+effects/portals para compor o cabeçalho. Use o padrão de DESIGN.md.
 
 A primitiva `Table` aceita `containerProps` para nomear e focar sua região de
 rolagem, sem transformar a própria tabela em um controle de navegação. Colunas,

@@ -121,12 +121,17 @@ compartilhadas ficam em `packages/ui/src/styles/motion.css` e `packages/ui/src/m
 
 ### Cabeçalhos operacionais
 
-Use `PageHeader` de `@soe/ui/components/page-header` nas telas internas: um
-único título de 24 px, contexto curto abaixo e ações relacionadas agrupadas à
-direita. Em detalhes, a seta de voltar fica imediatamente ao lado do título,
-com nome acessível que identifica o destino. Páginas iniciais não inventam um
-destino de retorno. No celular o grupo de ações pode ocupar a linha seguinte,
-mantendo atualizar e criar/convidar juntos.
+O shell autenticado concentra um único h1 de 18 px na faixa superior branca,
+onde ficava o breadcrumb. Em detalhes, a seta de 16 px fica imediatamente ao
+lado do título, com alvo de 40 px, gap de 4 px e nome acessível do destino.
+Páginas iniciais não inventam retorno. Em Configurações, a aba atual aparece
+como contexto da localização. Sidebar e faixa superior permanecem estáveis;
+a transição continua apenas no conteúdo.
+
+O conteúdo usa `PageToolbar` de `@soe/ui/components/page-toolbar` para contexto
+curto, como o nome da escola, e ações agrupadas à direita. Não repetir o título
+do shell nem reservar uma segunda faixa para voltar. No celular as ações
+podem ocupar a linha seguinte, mantendo atualizar e criar/convidar juntos.
 
 Não repita o título em um cabeçalho grande e em outro bloco da mesma lista.
 Atualizar uma lista usa botão secundário somente com ícone RefreshCw, label e
@@ -136,6 +141,19 @@ Listas de gestão com busca, ordenação e paginação consultam a coleção no
 servidor; cabeçalhos ordenáveis indicam direção com ícone e `aria-sort`. Tags
 usam texto junto da cor semântica. Rolagem de tabelas fica contida em uma região
 com nome e acesso por teclado em telas pequenas.
+
+O suporte de tags de situação fica em tooltip com texto completo, acessível
+por foco, clique e hover; não ocupa uma linha fixa por registro. Detalhes e
+todos os papéis continuam disponíveis no menu da linha. Na tabela, mostrar no
+máximo dois papéis com reticências e truncar o excedente da largura da célula.
+
+As telas Profissionais (seleção da escola) e Minhas escolas usam o mesmo
+diretório tabular: nome, ano/fuso, profissionais ativos e convites pendentes
+com total. Busca, ordenação, páginas e contagens vêm da API no escopo das
+escolas administradas. Atalhos por linha levam à equipe ou configurações.
+
+Referências desta revisão: [Atlassian Page header](https://atlassian.design/components/page-header/usage)
+e [Polaris, retorno no cabeçalho](https://shopify.dev/docs/apps/build/app-home/migrate-from-polaris-react/breadcrumbs).
 
 1. Leia o PRD, esta base e as instruções de interface do repositório; consulte as
    skills exigidas. Taste orienta composição; Hairline é consultada quando houver

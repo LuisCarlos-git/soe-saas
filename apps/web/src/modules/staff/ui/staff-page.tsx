@@ -1,49 +1,18 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import type { InvitationListQuery } from "@soe/contracts";
 import { Button } from "@soe/ui";
-import { buttonVariants } from "@soe/ui/primitives/button";
-import { ArrowLeft, ChevronRight, Mail, RefreshCw } from "lucide-react";
+import { Mail, RefreshCw } from "lucide-react";
 import { InvitationDialog } from "./invitation-dialog";
 import { InvitationFilters } from "./invitation-filters";
 import { InvitationTable } from "./invitation-table";
-import { PageHeader } from "@soe/ui/components/page-header";
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import {
   staffInvitationsKey,
   staffInvitationsQuery,
   staffSchoolQuery,
 } from "../data/queries";
-
-export function StaffSchoolsPage({
-  schools,
-}: {
-  schools: { id: string; name: string }[];
-}) {
-  return (
-    <section className="soe-route-content space-y-6">
-      <PageHeader
-        title="Profissionais"
-        description="Escolha a escola para convidar profissionais e acompanhar os convites da equipe."
-      />
-      <ul className="divide-y divide-rule rounded-xl border border-rule bg-surface">
-        {schools.map((school) => (
-          <li key={school.id}>
-            <Link
-              to="/schools/$organizationId/professionals"
-              params={{ organizationId: school.id }}
-              className="flex min-h-16 items-center justify-between gap-4 rounded-lg px-5 py-4 font-medium text-primary focus-visible:outline-2 focus-visible:outline-primary"
-            >
-              <span className="min-w-0 break-words">{school.name}</span>
-              <ChevronRight className="size-5 shrink-0" aria-hidden="true" />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
 
 export function StaffPage({
   api,
@@ -68,23 +37,9 @@ export function StaffPage({
   );
   return (
     <section className="soe-route-content space-y-6">
-      <PageHeader
-        title="Convites da equipe"
+      <PageToolbar
         description={school.name}
-        back={
-          <Link
-            to="/schools/professionals"
-            aria-label="Escolher outra escola"
-            title="Escolher outra escola"
-            className={buttonVariants({
-              variant: "ghost",
-              size: "icon",
-              className: "size-11 text-muted-foreground",
-            })}
-          >
-            <ArrowLeft className="size-5" aria-hidden="true" />
-          </Link>
-        }
+
         actions={
           <>
             <Button
@@ -156,6 +111,7 @@ export function StaffPage({
         </div>
       ) : (
         <InvitationTable
+          schoolName={school.name}
           invitations={query.data.invitations}
           total={query.data.total}
           options={options}
@@ -164,10 +120,6 @@ export function StaffPage({
           timeZone={settings.data.timeZone}
         />
       )}
-      <p className="text-xs leading-5 text-muted-foreground">
-        O vínculo é criado após o aceite. A tag Ativo indica um vínculo ativo
-        com esta escola. Envio de e-mail e aceite são etapas diferentes.
-      </p>
     </section>
   );
 }

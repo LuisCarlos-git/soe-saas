@@ -219,7 +219,7 @@ test("operador provisiona escola e responsável administra configurações isola
   await expect(page.getByRole("button", { name: "Nova escola" })).toHaveCount(
     0,
   );
-  await page.getByRole("link", { name: `${name} Configurar` }).click();
+  await page.getByRole("link", { name, exact: true }).click();
   await expect(page.getByLabel("Nome da escola")).toHaveValue(name);
   await expect(page.getByLabel("Fuso horário")).toHaveValue("America/Manaus");
   await expect(page.getByLabel("Ano letivo")).toHaveValue("2027");

@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { StaffSchoolsPage } from "../modules/staff";
+import { SchoolDirectory } from "../modules/schools";
 export const Route = createFileRoute("/_authenticated/schools/professionals")({
   beforeLoad: ({ context }) => {
     if (!context.schoolAccess.schools.length) throw notFound();
@@ -7,8 +7,10 @@ export const Route = createFileRoute("/_authenticated/schools/professionals")({
   head: () => ({ meta: [{ title: "Profissionais · SOE" }] }),
   component: function StaffSchoolsRoute() {
     return (
-      <StaffSchoolsPage
-        schools={Route.useRouteContext().schoolAccess.schools}
+      <SchoolDirectory
+        mode="professionals"
+        api={Route.useRouteContext().api}
+        actorId={Route.useRouteContext().identity.id}
       />
     );
   },

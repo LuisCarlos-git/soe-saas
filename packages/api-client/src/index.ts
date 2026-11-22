@@ -10,6 +10,9 @@ import {
   loginSchema,
   schoolAccessSchema,
   schoolListSchema,
+  managedSchoolsSchema,
+  managedSchoolsQuerySchema,
+  type ManagedSchoolsQuery,
   schoolSchema,
   provisionSchoolSchema,
   updateSchoolSchema,
@@ -164,6 +167,15 @@ export function createApiClient(
   }
   return {
     identity,
+    managedSchools: (
+      options: Partial<ManagedSchoolsQuery> = {},
+      signal?: AbortSignal,
+    ) =>
+      read(
+        `schools?${new URLSearchParams(Object.entries(managedSchoolsQuerySchema.parse(options)).map(([key, value]) => [key, String(value)]))}`,
+        managedSchoolsSchema,
+        signal,
+      ),
     invitations: (
       organizationId: string,
       options: Partial<InvitationListQuery> = {},

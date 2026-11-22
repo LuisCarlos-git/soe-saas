@@ -1,4 +1,4 @@
-import { PageHeader } from "@soe/ui/components/page-header";
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Settings } from "lucide-react";
@@ -9,10 +9,7 @@ export function AccountPage({ api }: { api: ApiClient }) {
   const { data } = useQuery(sessionQuery(api));
   return (
     <div className="soe-route-content">
-      <PageHeader
-        title="Seu espaço no SOE"
-        description="Consulte seu perfil e cuide da segurança do seu acesso."
-      />
+      <PageToolbar description="Consulte seu perfil e cuide da segurança do seu acesso." />
       {data ? (
         <section
           aria-label="Identificação"

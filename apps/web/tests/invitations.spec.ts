@@ -93,7 +93,8 @@ async function exerciseTable(page: Page, schoolId: string, project: string) {
         data: {
           name: `Equipe ${String(index).padStart(2, "0")}`,
           email: `table-${project}-${index}@example.test`,
-          roles: ["TEACHER"],
+          roles:
+            index === 0 ? ["DIRECTION", "TEACHER", "MONITOR"] : ["TEACHER"],
         },
       },
     );
@@ -110,6 +111,46 @@ async function exerciseTable(page: Page, schoolId: string, project: string) {
   await header.getByRole("button").click();
   await expect(header).toHaveAttribute("aria-sort", "ascending");
   await expect(page.getByRole("row").nth(1)).toContainText("Equipe 00");
+  const firstRow = page.getByRole("row").nth(1);
+  await expect(firstRow.getByRole("cell").nth(1)).toHaveText(
+    "Direção, Professor…",
+  );
+  const actions = firstRow.getByRole("button", {
+    name: "Ações do convite de Equipe 00",
+    exact: true,
+  });
+  await actions.click();
+  await capture(page, "details-menu");
+  await page
+    .getByRole("menuitem", { name: "Ver detalhes", exact: true })
+    .click();
+  const details = page.getByRole("dialog", {
+    name: "Detalhes do convite",
+    exact: true,
+  });
+  await expect(details).toBeVisible();
+  await expect(
+    details.getByText(`table-${project}-0@example.test`, { exact: true }),
+  ).toBeVisible();
+  for (const role of ["Direção", "Professor", "Monitor"])
+    await expect(details.getByText(role, { exact: true })).toBeVisible();
+  await expect(details.getByText("Válido até", { exact: true })).toBeVisible();
+  await capture(page, "details-modal");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.keyboard.press("Escape");
+  await expect(details).toBeHidden();
+  await expect(actions).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("menuitem", { name: "Ver detalhes", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(details).toBeVisible();
+  await details
+    .getByRole("button", { name: "Fechar detalhes do convite", exact: true })
+    .click();
+  await expect(details).toBeHidden();
+  await expect(actions).toBeFocused();
   await capture(page, "table-sorted");
   if (project === "desktop") {
     const viewport = page.viewportSize()!;
@@ -151,6 +192,13 @@ async function exerciseTable(page: Page, schoolId: string, project: string) {
   await page.getByRole("button", { name: "Filtrar", exact: true }).click();
   await expect(page.getByText("1–1 de 1", { exact: true })).toBeVisible();
   await expect(page.getByText("Ativo", { exact: true })).toBeVisible();
+  const activeStatus = page.getByRole("button", { name: "Ativo", exact: true });
+  if (project === "mobile") await activeStatus.click();
+  else await activeStatus.focus();
+  await expect(page.getByRole("tooltip")).toContainText("vínculo ativo");
+  await capture(page, "active-tooltip");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toBeHidden();
   const region = page.getByRole("region", {
     name: "Tabela de convites, role horizontalmente em telas pequenas",
   });
@@ -283,6 +331,97 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   await page.reload();
   await menu(page);
   await page.getByRole("link", { name: "Profissionais", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Profissionais", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("table")).toBeVisible();
+  await capture(page, "school-directory");
+  if (project === "mobile") {
+    const directory = page.getByRole("region", {
+      name: "Escolas que você administra, role horizontalmente em telas pequenas",
+      exact: true,
+    });
+    await directory.focus();
+    await page.keyboard.press("ArrowRight");
+    await expect
+      .poll(() => directory.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(0);
+    await directory.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await capture(page, "school-directory-counts");
+    await directory.evaluate((element) => {
+      element.scrollLeft = 0;
+    });
+  }
+  const directoryRow = page
+    .getByRole("row")
+    .filter({ has: page.getByRole("link", { name: schoolName, exact: true }) });
+  await expect(directoryRow.getByRole("cell").nth(2)).toHaveText("1");
+  await expect(directoryRow.getByRole("cell").nth(3)).toContainText(
+    "0 no total",
+  );
+  await page.getByLabel("Buscar escola", { exact: true }).fill(secondName);
+  await page.getByRole("button", { name: "Buscar", exact: true }).click();
+  await expect(page.getByRole("row")).toHaveCount(2);
+  await expect(
+    page.getByRole("link", { name: schoolName, exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Limpar", exact: true }).click();
+  await expect(page.getByRole("row")).toHaveCount(3);
+  const schoolHeader = page.getByRole("columnheader", {
+    name: "Escola",
+    exact: true,
+  });
+  await schoolHeader.getByRole("button").click();
+  await expect(schoolHeader).toHaveAttribute("aria-sort", "descending");
+  await expect(page.getByRole("row").nth(1)).toContainText(secondName);
+  await directoryRow
+    .getByRole("button", { name: `Ações da escola ${schoolName}`, exact: true })
+    .click();
+  await page
+    .getByRole("menuitem", { name: "Configurar escola", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", {
+      name: "Configurações da escola",
+      level: 1,
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Nome da escola", { exact: true })).toHaveValue(
+    schoolName,
+  );
+  await page
+    .getByRole("link", { name: "Voltar às escolas", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", {
+      name: "Minhas escolas",
+      level: 1,
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByRole("table")).toBeVisible();
+  await capture(page, "my-schools-directory");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page
+    .getByLabel("Buscar escola", { exact: true })
+    .fill("escola-inexistente");
+  await page.getByRole("button", { name: "Buscar", exact: true }).click();
+  await expect(
+    page.getByRole("heading", {
+      name: "Nenhuma escola encontrada",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await capture(page, "school-directory-no-results");
+  await page.getByRole("button", { name: "Limpar", exact: true }).click();
+  await expect(page.getByRole("row")).toHaveCount(3);
+  await page.goto("/schools/professionals");
+  await expect(
+    page.getByRole("heading", { name: "Profissionais", level: 1, exact: true }),
+  ).toBeVisible();
   await page.getByRole("link", { name: schoolName, exact: true }).click();
   await expect(page.getByText("Nenhum convite por aqui")).toBeVisible();
   await capture(page, "empty");
@@ -343,8 +482,30 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
   ).toBeVisible();
   expect(sends).toBe(1);
   await capture(page, "dialog-success");
+  const closeInvite = dialog.getByRole("button", {
+    name: "Fechar convite",
+    exact: true,
+  });
+  const closeHit = await closeInvite.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const target = document.elementFromPoint(
+      box.x + box.width / 2,
+      box.y + box.height / 2,
+    );
+    return {
+      receivesClick: element.contains(target),
+      topSlot: target?.closest("[data-slot]")?.getAttribute("data-slot"),
+      pointerEvents: getComputedStyle(element).pointerEvents,
+      width: box.width,
+      height: box.height,
+    };
+  });
+  console.info("Invitation close hit-test", closeHit);
+  expect(closeHit.receivesClick).toBe(true);
+  expect(closeHit.width).toBeGreaterThanOrEqual(44);
+  expect(closeHit.height).toBeGreaterThanOrEqual(44);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-  await dialog.getByRole("button", { name: "Concluir", exact: true }).click();
+  await closeInvite.click();
   if (project === "desktop")
     await expect(dialog).toHaveAttribute("data-state", "closed");
   await expect(dialog).toBeHidden();
@@ -352,9 +513,19 @@ test("QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail r
     page.getByRole("button", { name: "Convidar profissional", exact: true }),
   ).toBeFocused();
   await expect(page.getByText("Pendente", { exact: true })).toBeVisible();
-  await expect(page.getByText("E-mail enviado", { exact: true })).toBeVisible({
+  const pendingStatus = page.getByRole("button", {
+    name: "Pendente",
+    exact: true,
+  });
+  if (project === "mobile") await pendingStatus.click();
+  else await pendingStatus.focus();
+  await expect(page.getByRole("tooltip")).toContainText("Aguardando o aceite");
+  await expect(page.getByRole("tooltip")).toContainText("E-mail enviado", {
     timeout: 15000,
   });
+  await capture(page, "pending-tooltip");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toBeHidden();
   await capture(page, "pending");
   const link = await invitationLink(recipient, schoolName);
   await page

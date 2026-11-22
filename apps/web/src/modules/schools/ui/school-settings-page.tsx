@@ -1,10 +1,7 @@
-import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiClient } from "@soe/api-client";
 import { Button, toast } from "@soe/ui";
-import { buttonVariants } from "@soe/ui/primitives/button";
-import { PageHeader } from "@soe/ui/components/page-header";
-import { ArrowLeft } from "lucide-react";
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { schoolSettingsSchema } from "@soe/contracts";
 import { schoolSettingsQuery } from "../data/queries";
 import { SchoolForm } from "./school-form";
@@ -57,24 +54,7 @@ function Settings({
   const school = query.data;
   return (
     <section className="soe-route-content mx-auto w-full max-w-4xl space-y-6">
-      <PageHeader
-        title="Configurações da escola"
-        description={school.name}
-        back={
-          <Link
-            to="/schools"
-            aria-label="Voltar às escolas"
-            title="Voltar às escolas"
-            className={buttonVariants({
-              variant: "ghost",
-              size: "icon",
-              className: "size-11 text-muted-foreground hover:text-primary",
-            })}
-          >
-            <ArrowLeft className="size-5" aria-hidden="true" />
-          </Link>
-        }
-      />
+      <PageToolbar description={school.name} />
       <p className="rounded-lg bg-primary/5 p-4 text-sm leading-relaxed">
         Validação com dados sintéticos. A liberação para dados reais depende das
         aprovações e verificações do piloto.

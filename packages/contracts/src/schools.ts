@@ -63,3 +63,27 @@ export const schoolListSchema = z.strictObject({
 export type SchoolSettings = z.infer<typeof schoolSettingsSchema>;
 export type School = z.infer<typeof schoolSchema>;
 export type SchoolAccess = z.infer<typeof schoolAccessSchema>;
+export const managedSchoolSchema = z.strictObject({
+  id: z.uuid(),
+  name: z.string(),
+  timeZone: z.string(),
+  academicYear: z.number().int(),
+  supportTeamLabel: z.string(),
+  activeProfessionals: z.number().int().nonnegative(),
+  pendingInvitations: z.number().int().nonnegative(),
+  totalInvitations: z.number().int().nonnegative(),
+});
+export const managedSchoolsQuerySchema = z.strictObject({
+  offset: z.coerce.number().int().min(0).max(100000).default(0),
+  limit: z.coerce.number().int().min(1).max(50).default(10),
+  search: z.string().trim().max(160).default(""),
+  sortBy: z.enum(["name", "academicYear"]).default("name"),
+  sortDirection: z.enum(["asc", "desc"]).default("asc"),
+});
+export const managedSchoolsSchema = z.strictObject({
+  schools: z.array(managedSchoolSchema),
+  total: z.number().int().nonnegative(),
+  hasMore: z.boolean(),
+});
+export type ManagedSchool = z.infer<typeof managedSchoolSchema>;
+export type ManagedSchoolsQuery = z.infer<typeof managedSchoolsQuerySchema>;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { ApiClient } from "@soe/api-client";
 import { inviteProfessionalSchema, type StaffRole } from "@soe/contracts";
 import { useAppForm, validateOnChangeAndBlur } from "@soe/form";
@@ -74,6 +74,10 @@ function InvitationContent({
   });
   const [draft, setDraft] = useState<InvitationDraft | null>(null);
   const [saving, setSaving] = useState(false);
+  const title = useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(() => {
+    if (navigation.currentStep === "review") title.current?.focus();
+  }, [navigation.currentStep]);
   const roles: StaffRole[] = [];
   const form = useAppForm({
     defaultValues: { name: "", email: "", roles },
@@ -122,7 +126,15 @@ function InvitationContent({
           navigation.currentStep === "sent" ? "sr-only" : "pr-10 text-left"
         }
       >
-        <DialogTitle className="text-2xl">Convidar profissional</DialogTitle>
+        <DialogTitle
+          ref={title}
+          tabIndex={-1}
+          className="text-2xl outline-none"
+        >
+          {navigation.currentStep === "review"
+            ? "Confira antes de enviar"
+            : "Convidar profissional"}
+        </DialogTitle>
         <DialogDescription className="break-words">
           {school.name}
         </DialogDescription>
@@ -130,7 +142,7 @@ function InvitationContent({
       <Button
         aria-label="Fechar convite"
         variant="ghost"
-        className="absolute right-3 top-3 size-11 p-0"
+        className="absolute right-3 top-3 z-10 size-11 p-0"
         disabled={saving}
         onClick={() => {
           if (
@@ -195,13 +207,6 @@ function InvitationContent({
           </form.AppForm>
         ) : navigation.currentStep === "review" && draft ? (
           <div className="space-y-5">
-            <h3
-              data-step-focus
-              tabIndex={-1}
-              className="text-lg font-semibold outline-none"
-            >
-              Confira antes de enviar
-            </h3>
             <InvitationSummary draft={draft} />
             <div className="grid grid-cols-2 gap-3 border-t border-rule pt-4 sm:flex sm:justify-end">
               <Button

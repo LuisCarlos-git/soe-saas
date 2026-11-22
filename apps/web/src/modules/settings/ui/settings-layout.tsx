@@ -1,4 +1,4 @@
-import { PageHeader } from "@soe/ui/components/page-header";
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { normalizeNavigationPath } from "../../../shared/navigation-path";
 import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ShieldCheck, UserRound } from "lucide-react";
@@ -35,9 +35,9 @@ export function SettingsLayout() {
     )?.value ?? "profile";
   return (
     <>
-      <PageHeader
+      <PageToolbar
         className="mb-6"
-        title="Configurações"
+
         description="Gerencie seus dados de acesso e a segurança da sua conta."
       />
       <Tabs

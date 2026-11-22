@@ -1,3 +1,4 @@
+import { InvitationStatus } from "./invitation-status";
 import { useMemo, type Dispatch, type SetStateAction } from "react";
 import {
   flexRender,
@@ -8,7 +9,6 @@ import {
 } from "@tanstack/react-table";
 import type { InvitationListQuery, ListedInvitation } from "@soe/contracts";
 import { Button, cn } from "@soe/ui";
-import { Badge } from "@soe/ui/primitives/badge";
 import {
   Table,
   TableBody,
@@ -21,53 +21,11 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
-  Check,
-  Clock,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { roleLabel } from "../model/roles";
-
-function InvitationStatus({ invitation }: { invitation: ListedInvitation }) {
-  const active =
-    invitation.status === "ACCEPTED" && invitation.membershipActive;
-  const pending = invitation.status === "PENDING";
-  const label =
-    invitation.status === "ACCEPTED"
-      ? active
-        ? "Ativo"
-        : "Inativo"
-      : pending
-        ? "Pendente"
-        : invitation.status === "EXPIRED"
-          ? "Expirado"
-          : "Revogado";
-  return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "gap-1.5 border-transparent px-2.5 py-1",
-        active
-          ? "bg-positive/10 text-positive"
-          : pending
-            ? "bg-warning/10 text-warning"
-            : "bg-canvas text-muted-foreground",
-      )}
-    >
-      {active ? (
-        <Check aria-hidden="true" />
-      ) : pending ? (
-        <Clock aria-hidden="true" />
-      ) : null}
-      {label}
-    </Badge>
-  );
-}
-const deliveryLabels = {
-  QUEUED: "E-mail na fila",
-  SENT: "E-mail enviado",
-  FAILED: "Falha no envio do e-mail",
-};
+import { InvitationActions } from "./invitation-actions";
 
 export function InvitationTable({
   invitations,
@@ -76,6 +34,7 @@ export function InvitationTable({
   setOptions,
   fetching,
   timeZone,
+  schoolName,
 }: {
   invitations: ListedInvitation[];
   total: number;
@@ -83,6 +42,7 @@ export function InvitationTable({
   setOptions: Dispatch<SetStateAction<InvitationListQuery>>;
   fetching: boolean;
   timeZone: string;
+  schoolName: string;
 }) {
   const columns = useMemo<ColumnDef<ListedInvitation>[]>(
     () => [
@@ -105,8 +65,9 @@ export function InvitationTable({
         header: "Papéis na escola",
         enableSorting: false,
         cell: ({ row }) => (
-          <p className="leading-6">
-            {row.original.roles.map(roleLabel).join(", ")}
+          <p className="truncate leading-6">
+            {row.original.roles.slice(0, 2).map(roleLabel).join(", ")}
+            {row.original.roles.length > 2 ? "…" : ""}
           </p>
         ),
       },
@@ -114,21 +75,7 @@ export function InvitationTable({
         id: "status",
         header: "Situação",
         enableSorting: false,
-        cell: ({ row }) => (
-          <div className="space-y-2">
-            <InvitationStatus invitation={row.original} />
-            <p
-              className={cn(
-                "text-xs",
-                row.original.deliveryStatus === "FAILED"
-                  ? "text-negative"
-                  : "text-muted-foreground",
-              )}
-            >
-              {deliveryLabels[row.original.deliveryStatus]}
-            </p>
-          </div>
-        ),
+        cell: ({ row }) => <InvitationStatus invitation={row.original} />,
       },
       {
         accessorKey: "createdAt",
@@ -146,8 +93,20 @@ export function InvitationTable({
           </time>
         ),
       },
+      {
+        id: "actions",
+        header: () => <span className="sr-only">Ações</span>,
+        enableSorting: false,
+        cell: ({ row }) => (
+          <InvitationActions
+            invitation={row.original}
+            schoolName={schoolName}
+            timeZone={timeZone}
+          />
+        ),
+      },
     ],
-    [timeZone],
+    [timeZone, schoolName],
   );
   const sorting = [
     { id: options.sortBy, desc: options.sortDirection === "desc" },
@@ -218,11 +177,13 @@ export function InvitationTable({
                   scope="col"
                   className={cn(
                     "px-4",
-                    header.id === "name"
-                      ? "w-[32%]"
-                      : header.id === "roles"
-                        ? "w-[26%]"
-                        : "w-[21%]",
+                    header.id === "actions"
+                      ? "sticky right-0 w-14 bg-canvas px-1"
+                      : header.id === "name"
+                        ? "w-[30%]"
+                        : header.id === "roles"
+                          ? "w-[22%]"
+                          : "w-[20%]",
                   )}
                   aria-sort={
                     header.column.getCanSort()
@@ -273,7 +234,11 @@ export function InvitationTable({
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  className="whitespace-normal px-4 py-4 align-top"
+                  className={cn(
+                    "whitespace-normal px-4 py-4 align-top",
+                    cell.column.id === "actions" &&
+                      "sticky right-0 bg-surface px-1",
+                  )}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>

@@ -1,4 +1,9 @@
-import type { School, SchoolSettings } from "../domain/school";
+import type {
+  School,
+  SchoolSettings,
+  ManagedSchool,
+  ManagedSchoolsQuery,
+} from "../domain/school";
 export interface SchoolTransaction {
   isOperator(actorId: string): Promise<boolean>;
   findAdministrator(email: string): Promise<{ id: string } | null>;
@@ -25,6 +30,10 @@ export interface SchoolTransaction {
   ): Promise<void>;
 }
 export interface SchoolUnitOfWork {
+  listForAdministrator(
+    actorId: string,
+    query: ManagedSchoolsQuery,
+  ): Promise<{ schools: ManagedSchool[]; total: number; hasMore: boolean }>;
   transaction<T>(
     work: (transaction: SchoolTransaction) => Promise<T>,
   ): Promise<T>;

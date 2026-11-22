@@ -5,6 +5,7 @@ import {
   errorSchema,
   invitationSchema,
   invitationListSchema,
+  managedSchoolsSchema,
   membershipsSchema,
 } from "@soe/contracts";
 import { startTestPostgres } from "./support/postgres.mjs";
@@ -12,7 +13,7 @@ import { startTestMailpit } from "./support/mailpit.mjs";
 import { migrateTestDatabase } from "../../../scripts/migrate-test-database.mjs";
 import { totp } from "../../../scripts/test-totp.mjs";
 
-let database, mailbox, app, db, ana, bia, schoolA, schoolB, openApi;
+let database, mailbox, app, db, ana, bia, operator, schoolA, schoolB, openApi;
 const origin = "http://127.0.0.1:43120";
 const password = "qa-synthetic-password";
 const logs = [];
@@ -153,7 +154,7 @@ beforeAll(async () => {
   await provisionTestIdentities(database.url, "test");
   db = new pg.Client({ connectionString: database.url });
   await db.connect();
-  const operator = await administrator("operator@example.test");
+  operator = await administrator("operator@example.test");
   const createSchool = async (name, email) =>
     (
       await operator
@@ -675,4 +676,93 @@ test("QA-006-T01-03: busca global, ordenação estável, paginação, estados e 
     expect(result.invitations.map((row) => row.id)).toEqual([expected]);
   }
   expect((await list({ ...query, status: "PENDING" })).total).toBe(20);
+});
+
+test("QA-006-S01: diretório escolar agrega somente vínculos autorizados e pagina a coleção real", async () => {
+  await request(app.getHttpServer()).get("/api/v1/schools").expect(401);
+  expect(
+    (await operator.get("/api/v1/schools").expect(200)).body.schools,
+  ).toEqual([]);
+  const list = async (agent, query = {}) =>
+    managedSchoolsSchema.parse(
+      (await agent.get("/api/v1/schools").query(query).expect(200)).body,
+    );
+  const own = await list(ana);
+  expect(own.total).toBe(1);
+  expect(own.schools.map((row) => row.id)).toEqual([schoolA.id]);
+  const counts = (
+    await db.query(
+      `SELECT
+    (SELECT count(*)::int FROM school_membership WHERE "organizationId"=$1 AND active=true) AS active,
+    (SELECT count(*)::int FROM school_invitation WHERE "organizationId"=$1) AS total,
+    (SELECT count(*)::int FROM school_invitation WHERE "organizationId"=$1 AND "acceptedAt" IS NULL AND "revokedAt" IS NULL AND "expiresAt">now()) AS pending`,
+      [schoolA.id],
+    )
+  ).rows[0];
+  expect(own.schools[0]).toMatchObject({
+    name: schoolA.name,
+    academicYear: 2026,
+    timeZone: "America/Sao_Paulo",
+    activeProfessionals: counts.active,
+    totalInvitations: counts.total,
+    pendingInvitations: counts.pending,
+  });
+  expect((await list(bia)).schools.map((row) => row.id)).toEqual([schoolB.id]);
+  const actor = (
+    await db.query('SELECT id FROM "user" WHERE email=$1', ["ana@example.test"])
+  ).rows[0].id;
+  await db.query(
+    "INSERT INTO school_membership (\"organizationId\", \"userId\", role, roles, active) VALUES ($1,$2,'SCHOOL_ADMIN',ARRAY['SCHOOL_ADMIN'],true)",
+    [schoolB.id, actor],
+  );
+  try {
+    const first = await list(ana, {
+      limit: 1,
+      sortBy: "name",
+      sortDirection: "asc",
+    });
+    const second = await list(ana, {
+      limit: 1,
+      offset: 1,
+      sortBy: "name",
+      sortDirection: "asc",
+    });
+    expect(first.total).toBe(2);
+    expect(first.hasMore).toBe(true);
+    expect(second.hasMore).toBe(false);
+    expect([first.schools[0].id, second.schools[0].id]).toEqual([
+      schoolA.id,
+      schoolB.id,
+    ]);
+    expect(
+      (await list(ana, { sortDirection: "desc" })).schools.map((row) => row.id),
+    ).toEqual([schoolB.id, schoolA.id]);
+    expect(
+      (await list(ana, { search: "qa a" })).schools.map((row) => row.id),
+    ).toEqual([schoolA.id]);
+    expect((await list(ana, { search: "%" })).total).toBe(0);
+    expect((await list(ana, { search: "missing" })).total).toBe(0);
+    for (const query of [
+      { limit: 51 },
+      { offset: -1 },
+      { sortBy: "tokenHash" },
+      { search: "x".repeat(161) },
+    ])
+      await ana.get("/api/v1/schools").query(query).expect(400);
+    await db.query(
+      'UPDATE school_membership SET active=false WHERE "organizationId"=$1 AND "userId"=$2',
+      [schoolB.id, actor],
+    );
+    expect((await list(ana)).total).toBe(1);
+    await db.query(
+      "UPDATE school_membership SET active=true, role='TEACHER', roles=ARRAY['TEACHER'] WHERE \"organizationId\"=$1 AND \"userId\"=$2",
+      [schoolB.id, actor],
+    );
+    expect((await list(ana)).total).toBe(1);
+  } finally {
+    await db.query(
+      'DELETE FROM school_membership WHERE "organizationId"=$1 AND "userId"=$2',
+      [schoolB.id, actor],
+    );
+  }
 });

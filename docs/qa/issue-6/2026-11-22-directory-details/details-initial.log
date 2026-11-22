@@ -1,0 +1,1026 @@
+[WebServer] (node:42712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42843) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:42874) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › apps/web/tests/invitations.spec.ts:250:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (698ms)
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✘  2 [desktop] › apps/web/tests/invitations.spec.ts:275:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (12.3s)
+(node:43196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › apps/web/tests/invitations.spec.ts:250:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (604ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✓  4 [mobile] › apps/web/tests/invitations.spec.ts:275:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (16.9s)
+
+
+  1) [desktop] › apps/web/tests/invitations.spec.ts:275:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 968
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#ffffff",
+    +               "contrastRatio": 1.86,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#bbbec3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.86 (foreground color: #bbbec3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div data-side=\"bottom\" data-align=\"end\" role=\"menu\" aria-orientation=\"vertical\" data-state=\"closed\" data-radix-menu-cont...=\"\" dir=\"ltr\" id=\"radix-_r_35_\" aria-labelledby=\"radix-_r_34_\" data-slot=\"dropdown-menu-conten...\" class=\"t-dropdown z-50 max-...\" tabindex=\"-1\" ...>",
+    +                 "target": Array [
+    +                   "#radix-_r_35_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.86 (foreground color: #bbbec3, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<div role=\"menuitem\" data-slot=\"dropdown-menu-item\" data-variant=\"default\" class=\"relative flex cursor...\" tabindex=\"-1\" data-orientation=\"vertical\" data-radix-collectio...=\"\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".cursor-default",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#ddddde",
+    +               "contrastRatio": 2.17,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#8e97a2",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.17 (foreground color: #8e97a2, background color: #ddddde, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<main data-slot=\"sidebar-inset\" class=\"relative flex w-full...\">",
+    +                 "target": Array [
+    +                   "main",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.17 (foreground color: #8e97a2, background color: #ddddde, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p id=\"radix-_r_33_\" data-slot=\"dialog-description\" class=\"text-sm text-muted-foreground break-words\">Escola Convites desktop</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "#radix-_r_33_",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#ddddde",
+    +               "contrastRatio": 3.3,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#727782",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.3 (foreground color: #727782, background color: #ddddde, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<main data-slot=\"sidebar-inset\" class=\"relative flex w-full...\">",
+    +                 "target": Array [
+    +                   "main",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.3 (foreground color: #727782, background color: #ddddde, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"break-words font-semibold\">Equipe 00</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".break-words.font-semibold",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#ddddde",
+    +               "contrastRatio": 2.17,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#8e97a2",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.17 (foreground color: #8e97a2, background color: #ddddde, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<main data-slot=\"sidebar-inset\" class=\"relative flex w-full...\">",
+    +                 "target": Array [
+    +                   "main",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.17 (foreground color: #8e97a2, background color: #ddddde, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"break-all text-sm text-muted-foreground\">table-desktop-0@example.test</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".break-all.text-sm",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<input data-slot=\"input\" class=\"h-9 min-w-0 py-1 tra...\" placeholder=\"Nome ou e-mail\" maxlength=\"160\" id=\"_r_17_\" type=\"search\" value=\"\" name=\"search\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"\">",
+    +                 "target": Array [
+    +                   "#_r_17_",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"mb-2 text-sm text-muted-foreground\">Papéis nesta escola</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".border-y > .mb-2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#d9dbdc",
+    +               "contrastRatio": 3.23,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#727782",
+    +               "fontSize": "9.0pt (12px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +                 "target": Array [
+    +                   ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(1)",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(1)",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#d9dbdc",
+    +               "contrastRatio": 3.23,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#727782",
+    +               "fontSize": "9.0pt (12px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +                 "target": Array [
+    +                   ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(2)",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(2)",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#d9dbdc",
+    +               "contrastRatio": 3.23,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#727782",
+    +               "fontSize": "9.0pt (12px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +                 "target": Array [
+    +                   ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(3)",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.23 (foreground color: #727782, background color: #d9dbdc, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span data-slot=\"badge\" data-variant=\"secondary\" class=\"inline-flex w-fit sh...\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".\\[a\\&\\]\\:hover\\:bg-secondary\\/90.px-2[data-variant=\"secondary\"]:nth-child(3)",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.18,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9198a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.18 (foreground color: #9198a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<tr data-slot=\"table-row\" class=\"border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted border-rule\">",
+    +                 "target": Array [
+    +                   ".hover\\:bg-muted\\/50:nth-child(1)",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.18 (foreground color: #9198a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">Situação do convite</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(1) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dd class=\"mt-1 font-medium tabular-nums\">Pendente de aceite</dd>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(1) > dd",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.18,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9198a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.18 (foreground color: #9198a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<tr data-slot=\"table-row\" class=\"border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted border-rule\">",
+    +                 "target": Array [
+    +                   ".hover\\:bg-muted\\/50:nth-child(1)",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.18 (foreground color: #9198a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">Envio do e-mail</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(2) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dd class=\"mt-1 font-medium tabular-nums\">E-mail enviado</dd>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(2) > dd",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">Convidado em</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(3) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dd class=\"mt-1 font-medium tabular-nums\">21/11/2026, 23:57</dd>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(3) > dd",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">Válido até</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(4) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dd class=\"mt-1 font-medium tabular-nums\">24/11/2026, 23:57</dd>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(4) > dd",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">E-mail enviado em</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(5) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dd class=\"mt-1 font-medium tabular-nums\">21/11/2026, 23:57</dd>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(5) > dd",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt class=\"text-muted-foreground\">Aceito em</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(6) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 2.16,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#9199a3",
+    +               "fontSize": "9.0pt (12px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div role=\"dialog\" id=\"radix-_r_31_\" data-state=\"open\" data-slot=\"dialog-content\" class=\"t-modal fixed top-[5...\" tabindex=\"-1\" aria-labelledby=\"radix-_r_32_\" aria-describedby=\"radix-_r_33_\" style=\"pointer-events: auto...\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+    +                 "target": Array [
+    +                   ".inset-0",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"overflow-hidden rounded-xl border border-rule bg-surface\" data-aria-hidden=\"true\" aria-hidden=\"true\">",
+    +                 "target": Array [
+    +                   ".rounded-xl.bg-surface[data-aria-hidden=\"true\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.16 (foreground color: #9199a3, background color: #dfdfdf, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"text-xs text-muted-foreground\">Datas no horário da escola. Envio de e-mail e aceite são etapas diferentes.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "#radix-_r_31_ > .text-xs",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#dfdfdf",
+    +               "contrastRatio": 3.26,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#757983",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button data-slot=\"button\" data-variant=\"outline\" data-size=\"default\" class=\"inline-flex shrink-0...\" aria-busy=\"false\">",
+    +                 "target": Array [
+    +                   "#radix-_r_31_ > .bg-background.shadow-xs.dark\\:border-input",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.26 (foreground color: #757983, background color: #dfdfdf, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"t-text-swap soe-button-label col-start-1 row-start-1\">Fechar detalhes</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "#radix-_r_31_ > .bg-background.shadow-xs.dark\\:border-input > .soe-button-content.inline-grid.justify-items-center > .soe-button-label.t-text-swap.col-start-1",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      136 |     await expect(details.getByText(role, { exact: true })).toBeVisible();
+      137 |   await expect(details.getByText("Válido até", { exact: true })).toBeVisible();
+    > 138 |   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+          |                                                                 ^
+      139 |   await capture(page, "details-modal");
+      140 |   await page.keyboard.press("Escape");
+      141 |   await expect(details).toBeHidden();
+        at exerciseTable (<repo>/apps/web/tests/invitations.spec.ts:138:65)
+        at <repo>/apps/web/tests/invitations.spec.ts:503:3
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/error-context.md
+
+  1 failed
+    [desktop] › apps/web/tests/invitations.spec.ts:275:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+  3 passed (35.4s)
