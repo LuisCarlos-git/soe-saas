@@ -112,11 +112,40 @@ async function capture(page: Page, name: string) {
     const original = page.viewportSize();
     for (const width of [320, 768]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.evaluate(() => window.scrollTo(0, 0));
+      const viewportState = await page.evaluate(async () => {
+        window.scrollTo(0, 0);
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        });
+        const root = document.documentElement;
+        const body = document.body;
+        return {
+          fits: root.scrollWidth <= window.innerWidth,
+          innerWidth: window.innerWidth,
+          documentScrollWidth: root.scrollWidth,
+          documentClientWidth: root.clientWidth,
+          bodyScrollWidth: body.scrollWidth,
+          bodyClientWidth: body.clientWidth,
+          bodyPaddingRight: getComputedStyle(body).paddingRight,
+          bodyChildren: Array.from(body.children, (element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              tag: element.tagName,
+              id: element.id,
+              className:
+                typeof element.className === "string" ? element.className : "",
+              left: rect.left,
+              right: rect.right,
+              width: rect.width,
+              scrollWidth: element.scrollWidth,
+              clientWidth: element.clientWidth,
+            };
+          }),
+        };
+      });
       expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= innerWidth,
-        ),
+        viewportState.fits,
+        `Viewport overflow diagnostics: ${JSON.stringify(viewportState)}`,
       ).toBe(true);
       const surface = (await modal.isVisible()) ? modal : page.locator("main");
       expect(

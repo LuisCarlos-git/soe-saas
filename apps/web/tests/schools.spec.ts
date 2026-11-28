@@ -28,7 +28,10 @@ async function login(page: Page, email: string) {
 }
 async function openMenu(page: Page) {
   const trigger = page.getByRole("button", { name: "Abrir menu de navegação" });
-  if (await trigger.isVisible()) await trigger.click();
+  if ((page.viewportSize()?.width ?? 1280) < 768) {
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+  }
 }
 test("pessoa sem permissão não vê menus escolares e não abre suas rotas", async ({
   page,
