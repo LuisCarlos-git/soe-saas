@@ -1,3 +1,4 @@
+import { PageToolbar } from "@soe/ui/components/page-toolbar";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Settings } from "lucide-react";
@@ -8,12 +9,7 @@ export function AccountPage({ api }: { api: ApiClient }) {
   const { data } = useQuery(sessionQuery(api));
   return (
     <div className="soe-route-content">
-      <h1 className="text-3xl font-semibold tracking-tight">
-        Seu espaço no SOE
-      </h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-        Consulte seu perfil e cuide da segurança do seu acesso.
-      </p>
+      <PageToolbar description="Consulte seu perfil e cuide da segurança do seu acesso." />
       {data ? (
         <section
           aria-label="Identificação"

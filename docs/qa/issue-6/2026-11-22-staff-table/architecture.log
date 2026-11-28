@@ -1,0 +1,17 @@
+$ node scripts/architecture-check.mjs
+
+✔ no dependency violations found (312 modules, 898 dependencies cruised)
+
+Negative fixture rejected: no-email-internals.
+Negative fixture rejected: email-server-only.
+Negative fixture rejected: web-no-server.
+Negative fixture rejected: neutral-email.
+Negative fixture rejected: web-no-server.
+Negative fixture rejected: pure-business.
+Negative fixture rejected: pure-business.
+Negative fixture rejected: orm-only-infrastructure.
+Negative fixture rejected: packages-no-apps.
+Negative fixture rejected: neutral-form.
+Negative fixture rejected: no-form-internals.
+Negative fixture rejected: web-form-controls-from-package.
+Form control lint fixtures: rejected direct controls and accepted @soe/form.

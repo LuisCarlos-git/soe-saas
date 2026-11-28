@@ -1,0 +1,25 @@
+(node:35909) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL apps/api/tests/invitations-qa.test.mjs (7.728 s)
+  ● QA-006-08-O: OpenAPI documenta os erros observados nos fluxos de convite
+
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: ArrayContaining ["400", "401", "403", "404", "409"]
+    Received: ["201"]
+
+      187 |     ["/api/v1/invitations/accept", "post", [400, 401, 403, 409, 410, 429, 500]],
+      188 |   ]) {
+    > 189 |     expect(Object.keys(openApi.paths[path][method].responses)).toEqual(
+          |                                                                ^
+      190 |       expect.arrayContaining(statuses.map(String)),
+      191 |     );
+      192 |   }
+
+      at Object.<anonymous> (apps/api/tests/invitations-qa.test.mjs:189:64)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 8 passed, 9 total
+Snapshots:   0 total
+Time:        7.75 s, estimated 8 s
+Ran all test suites matching apps/api/tests/invitations-qa.test.mjs.

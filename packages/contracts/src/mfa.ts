@@ -11,6 +11,7 @@ export const mfaSetupSchema = z.strictObject({
 export const mfaStatusSchema = z.strictObject({
   enabled: z.boolean(),
   verified: z.boolean(),
+  developmentBypass: z.literal(true).optional(),
 });
 export const mfaChallengeSchema = z.strictObject({
   twoFactorRedirect: z.literal(true),

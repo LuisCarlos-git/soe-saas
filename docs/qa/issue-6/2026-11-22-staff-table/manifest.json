@@ -1,0 +1,267 @@
+{
+  "issue": 6,
+  "run": "2026-11-22-staff-table",
+  "sourceBase": "c525650362cd3a6c7579420231c9bf6a9e34d842",
+  "sourceFiles": {
+    "DESIGN.md": "aa191bf9a4ed65c8849076b4c925927f29c62136c983505b3f50e8981958afaf",
+    "apps/api/src/modules/staff/controllers/staff-invitations.controller.ts": "d0eabf9245ac44dc4a4afe19fab92e43c36a9a887924abe7f21c02e847cf58c1",
+    "apps/api/src/modules/staff/domain/staff.ts": "b170e95bfbe5989a69442624c955be974450f7057d79a302d60aea06dd636579",
+    "apps/api/src/modules/staff/infrastructure/prisma-staff-unit-of-work.ts": "7dfd7b0b2a4fa64486f75278c7a14cc34e3a26fca8b7a976f22cf0fe8b151d8c",
+    "apps/api/src/modules/staff/repositories/staff-unit-of-work.ts": "55c046e6946acd27c387a5438127e037d120007b66ed7fc71e50eb4c3e0b4116",
+    "apps/api/src/modules/staff/use-cases/list-invitations.use-case.ts": "a0ffa40bb1a630b8a3d9ddf4cbced36f2eaed06793f8ea78a1a5a8f95ac5651e",
+    "apps/api/tests/invitations-qa.test.mjs": "c5f3e6887169bc0d1c5dce5eff2d88610961bd537407f12c0bc00f21d7a442dd",
+    "apps/web/package.json": "a1eaf64d6ca333e34122457d696e37e0d2c3776fec4f3fd5cb374ec65fa0eb07",
+    "apps/web/src/modules/identity/ui/account-page.tsx": "461ccc2d34070f2e7f646df04fad51ce13ee8e357d299182c47d776203cc70f9",
+    "apps/web/src/modules/schools/ui/school-settings-page.tsx": "ca1495bd6c6f68c06302b4d8bc9973add9acf180bfd7a1d2e0472c726a6bab94",
+    "apps/web/src/modules/schools/ui/schools-page.tsx": "55499c8eca970e67b2259b45136e52bea71df3461a01e99428f1f0d56a9eb4e5",
+    "apps/web/src/modules/settings/ui/settings-layout.tsx": "91f917d98c6838835b7a6697f8272243a6646f4c0e6c41141ef5ff6e847f985f",
+    "apps/web/src/modules/staff/data/queries.ts": "235dc7f698b157b92d9042b7a0025de442b215211239e3ba1155537d4288b476",
+    "apps/web/src/modules/staff/ui/invitation-dialog.tsx": "e58b346ba7630768ae46d57988de344e105eb3ec7242d3a5dec798f50498d0e3",
+    "apps/web/src/modules/staff/ui/invitation-filters.tsx": "060d721196de14b3452c2d2ea85614bf9874364315693faeb88bcdd332417aca",
+    "apps/web/src/modules/staff/ui/invitation-summary.tsx": "8b64781d39041eb3de8a9b69a3088d458de71855ff635f37b28c3605ca6c3d6f",
+    "apps/web/src/modules/staff/ui/invitation-table.tsx": "3a869b61001f2341777326bd867313c658ae67ffd18c02ed015d25999ab19e13",
+    "apps/web/src/modules/staff/ui/staff-page.tsx": "85df93ab6d0233c31c2c9386cd2836958352d42e513478a5416254e85b5c3c14",
+    "apps/web/src/styles/app.css": "861b8b4670fa72147292e317392d4b35ca4c5e0ed0f633dea69ca901264da22b",
+    "apps/web/tests/invitations.spec.ts": "0295a234853704223cf441144127dc20cb029a62949990a5414374f951dded26",
+    "docs/architecture/ui-components.md": "12f7bb95c7bd35a12e8a4d974aacebc910dfbb61381ffe46c787e9177e916e31",
+    "packages/api-client/src/index.ts": "b97ac44de9980077440205aff8fea0a2f9ed340371e297c8f25f186a68b12b1e",
+    "packages/contracts/src/staff.ts": "483779c9d8dc82b0021ec6eeb4ee678f6671fd8d26ad91244840fda85f41ef95",
+    "packages/form/README.md": "ce77daf9e0abf26005ebcc7facfd81398217b2f948c46568eb9039dafa5599eb",
+    "packages/form/src/components/checkbox-group-field.tsx": "6449b9024bde44facd243143ef5c7a06e441aaaad9b522f7a860f47eca44121f",
+    "packages/ui/src/components/page-header.tsx": "e87bd7cdb574c2306d82240a2f097a6f82a455845af7b6d6dc95925c556a9f0f",
+    "packages/ui/src/primitives/table.tsx": "0378afe21d7466a01ce64a6e192a6f402078c9253ca0eff89138f6e948f4a970",
+    "pnpm-lock.yaml": "36f7bb0cfdec369805ed4f879cbb227acdd41e304bdd23282299761b8401b719"
+  },
+  "artifacts": {
+    "api-build.log": {
+      "sha256": "d8740d15587db851056d3de60bbcf0d59a451943b3ea8fc280decf48813f96c1",
+      "bytes": 480
+    },
+    "api-types.log": {
+      "sha256": "38ac890c60e7f38d59ddfb410325cdfb5fca83c9411765c5481754e01c021630",
+      "bytes": 32
+    },
+    "architecture.log": {
+      "sha256": "9faed1896cc3e53a86d3cccb1bfcf0c44565a412ce6e0060166bab28188d95ad",
+      "bytes": 738
+    },
+    "baseline.log": {
+      "sha256": "ec1ebf28aa88170bfb940e17adbe4c6ffd3511b8bfd5fe7759399dfc1b813e53",
+      "bytes": 1659
+    },
+    "bundle.log": {
+      "sha256": "33cc2df0db2b83cf9448644c67572d8c9eca4b3df5dd5d59898084d1474f5987",
+      "bytes": 118
+    },
+    "form-browser.log": {
+      "sha256": "fe7d433f5594be22aa7fa4e1e572de9f7807705566fe837c917777b8135c7b91",
+      "bytes": 2719
+    },
+    "form-types.log": {
+      "sha256": "38ac890c60e7f38d59ddfb410325cdfb5fca83c9411765c5481754e01c021630",
+      "bytes": 32
+    },
+    "format.log": {
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "bytes": 66
+    },
+    "integration-final.log": {
+      "sha256": "7157df5b680ed7b7b0b9273b4be052242467b9004409be8920dee64180bea005",
+      "bytes": 402
+    },
+    "integration-initial.log": {
+      "sha256": "68fbb3f173b5f76c48b5c011f5110416e290d16fc41ef055d992defa9eff8819",
+      "bytes": 1078
+    },
+    "invitation-dialog-details-desktop.png": {
+      "sha256": "93067672203c6b1b650eb21ba0f5cc3b006aa86d3f81e68a7cb11fa9f7b32e43",
+      "bytes": 91159,
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-dialog-details-mobile.png": {
+      "sha256": "5645bbd1e73febf2a18f5ebc31be01fcaa8868da4729bf6f5befd9d429cd6ae6",
+      "bytes": 54307,
+      "width": 360,
+      "height": 798
+    },
+    "invitation-dialog-review-desktop.png": {
+      "sha256": "490931a8ae8c9fb7e56550871957449e63102580b1be280bc2421343d9fa4f78",
+      "bytes": 88987,
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-dialog-review-mobile.png": {
+      "sha256": "7e6f60c9791b40579d9d9a6b1c7703c4a679ba5a224e597ac6f4b57333da6e32",
+      "bytes": 59970,
+      "width": 360,
+      "height": 798
+    },
+    "invitation-dialog-success-desktop.png": {
+      "sha256": "b49008665090310c1c530834f199c17805b8814f6f96b9deac97de8bc6624bd4",
+      "bytes": 93368,
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-dialog-success-mobile.png": {
+      "sha256": "8a0319e15df7df5cd086938608f5502cd3f4682840d2cb4350a35c44bfa9149e",
+      "bytes": 52968,
+      "width": 360,
+      "height": 826
+    },
+    "invitation-table-active-right-mobile.png": {
+      "sha256": "2ddb8699679c5e22141450f3555d669e5fbc15e91db7f9afb5f32994a7ede7ae",
+      "bytes": 47655,
+      "width": 360,
+      "height": 826
+    },
+    "invitation-table-no-results-desktop.png": {
+      "sha256": "e4ac9f367e19446f9ad63eea30eb1aac2c75f27413be5c1c2f50268ba2e69714",
+      "bytes": 69348,
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-table-no-results-mobile.png": {
+      "sha256": "e13ce1cab57f605879f12c6c27aeb92c680a8e7ec2596e85b5148c71168c21b1",
+      "bytes": 47499,
+      "width": 360,
+      "height": 798
+    },
+    "invitation-table-page-2-desktop.png": {
+      "sha256": "bf2fa0771768c0395b5eff36b3bcf7babf3d1b035ba420c1c95bab431f274e02",
+      "bytes": 107289,
+      "width": 1280,
+      "height": 744
+    },
+    "invitation-table-page-2-mobile.png": {
+      "sha256": "2e8f2c20ff24b55cb0855e95eaa9cbc48a39b90f5f6175fd53dad03e72381325",
+      "bytes": 67994,
+      "width": 360,
+      "height": 992
+    },
+    "invitation-table-sorted-desktop.png": {
+      "sha256": "b098ae0c0053d3dae0b64fd9ff7428e72a8eda0ca11b5f62ddfae19fc636901d",
+      "bytes": 190473,
+      "width": 1280,
+      "height": 1311
+    },
+    "invitation-table-width-1024-desktop.png": {
+      "sha256": "563ac1874df4e218f4d49061f8a47dd41927324664feb74412f20902d908fc58",
+      "bytes": 170049,
+      "width": 1024,
+      "height": 1331
+    },
+    "invitation-table-width-320-desktop.png": {
+      "sha256": "0914e4d87dd9be2470bc18bfb7b6eee2fc72608b8021b70d81a4d0a8111bfd42",
+      "bytes": 98695,
+      "width": 320,
+      "height": 1539
+    },
+    "invitation-table-width-768-desktop.png": {
+      "sha256": "0ceb8a13bd71524b7bc946264de6114c9477161d3eba2a739af5c9d8fd2f46b6",
+      "bytes": 127109,
+      "width": 768,
+      "height": 1393
+    },
+    "lint.log": {
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    "mail-wait-retest.log": {
+      "sha256": "cc2b81701e5c583b050cb66c5df514332fe470757206e13340732d425e808a02",
+      "bytes": 2715
+    },
+    "report.md": {
+      "sha256": "81ab3f32f7361b2e9d39052c3f48ae1d88d1d4d18c25e7fa91a2ab2ec76be7a7",
+      "bytes": 10700
+    },
+    "school-settings-desktop.png": {
+      "sha256": "ea345fd1d4df90e3806618412b38f531f2a764ef996f19e5e4dae40a640ff28d",
+      "bytes": 95632,
+      "width": 1280,
+      "height": 895
+    },
+    "school-settings-mobile.png": {
+      "sha256": "959e53e448cbb32f42c679efdf7a0ca6c5a53bc510ae946f38bdcce76bf2a691",
+      "bytes": 73410,
+      "width": 360,
+      "height": 1186
+    },
+    "schools-desktop.png": {
+      "sha256": "34fb20f4e3fac91b876a2ae1fbf4a465e65b3d14a0f25577b1577db7f389d409",
+      "bytes": 63918,
+      "width": 1280,
+      "height": 720
+    },
+    "schools-mobile.png": {
+      "sha256": "445df4271c56162c9ef43bcd8756a6342532191e916e17a190294c0a6274296e",
+      "bytes": 78426,
+      "width": 360,
+      "height": 1004
+    },
+    "settings-profile-desktop.png": {
+      "sha256": "7685adeda67201bd66c3f644197f29323aec0dbf45d1921f3efd8c58d504668d",
+      "bytes": 54215,
+      "width": 1280,
+      "height": 720
+    },
+    "settings-profile-mobile.png": {
+      "sha256": "477e63d6c794fed406323adb181b0710bc9543af1bd78a798bc6e5c576932a6c",
+      "bytes": 36619,
+      "width": 360,
+      "height": 780
+    },
+    "ui-types.log": {
+      "sha256": "38ac890c60e7f38d59ddfb410325cdfb5fca83c9411765c5481754e01c021630",
+      "bytes": 32
+    },
+    "unit.log": {
+      "sha256": "683d9c38af8a5bd203d82c6ea35476d001a391623a24a588a159a8b9d7736798",
+      "bytes": 181
+    },
+    "web-build.log": {
+      "sha256": "fcdc8a149507fb4c3a7c057d19a2af5af275bc702cd05190cef7eeb7e3e375b6",
+      "bytes": 10763
+    },
+    "web-final.log": {
+      "sha256": "b48cecc8121825bc7835b8b513a2bccba73ae3e31858818dad2472d97addcdcb",
+      "bytes": 5676
+    },
+    "web-initial.log": {
+      "sha256": "aedf5ed4a588402f2afc99e970d609e62d245bdb382b229dbc79b4a4b2d4d689",
+      "bytes": 8510
+    },
+    "web-types.log": {
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    }
+  },
+  "checks": {
+    "web": {
+      "exitCode": 0,
+      "passed": 26
+    },
+    "integration": {
+      "exitCode": 0,
+      "passed": 15
+    },
+    "formBrowser": {
+      "exitCode": 0,
+      "passed": 14
+    },
+    "unit": {
+      "exitCode": 0,
+      "passed": 33
+    },
+    "builds": "passed",
+    "typechecks": "passed",
+    "scopedLint": "passed",
+    "format": "passed",
+    "architecture": "passed",
+    "bundle": "passed"
+  },
+  "origin": "Playwright complementary, local HTTP/PostgreSQL/Mailpit",
+  "nativeBrowserGate": "blocked: connected Browser/Chrome tools unavailable",
+  "gif": "pending",
+  "visualReview": "21 PNGs opened; independent finish review approved final images"
+}

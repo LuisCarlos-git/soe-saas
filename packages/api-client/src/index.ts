@@ -10,9 +10,21 @@ import {
   loginSchema,
   schoolAccessSchema,
   schoolListSchema,
+  managedSchoolsSchema,
+  managedSchoolsQuerySchema,
+  type ManagedSchoolsQuery,
   schoolSchema,
   provisionSchoolSchema,
   updateSchoolSchema,
+  invitationSchema,
+  invitationListSchema,
+  invitationListQuerySchema,
+  type InvitationListQuery,
+  inviteProfessionalSchema,
+  invitationTokenSchema,
+  invitationPreviewSchema,
+  registerInvitedIdentitySchema,
+  membershipsSchema,
 } from "@soe/contracts";
 
 export class ApiError extends Error {
@@ -117,11 +129,20 @@ export function createApiClient(
     path: string,
     schema: { parse: (body: unknown) => T },
     signal?: AbortSignal,
+    input?: unknown,
   ) {
     const headers = new Headers({ Accept: "application/json" });
     if (credential) headers.set("cookie", credential);
+    if (input !== undefined) headers.set("Content-Type", "application/json");
     return readResponse(
-      await send(`${baseUrl}/${path}`, { headers, ...(signal && { signal }) }),
+      await send(`${baseUrl}/${path}`, {
+        headers,
+        ...(input !== undefined && {
+          method: "POST",
+          body: JSON.stringify(input),
+        }),
+        ...(signal && { signal }),
+      }),
       schema,
     );
   }
@@ -139,8 +160,72 @@ export function createApiClient(
       schoolSchema,
     );
   }
+  async function invitationCommand(
+    path: string,
+    body: unknown,
+    signal?: AbortSignal,
+  ) {
+    const response = await send(`${baseUrl}/${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      ...(signal && { signal }),
+    });
+    await check(response);
+    return response;
+  }
   return {
     identity,
+    managedSchools: (
+      options: Partial<ManagedSchoolsQuery> = {},
+      signal?: AbortSignal,
+    ) =>
+      read(
+        "schools/search",
+        managedSchoolsSchema,
+        signal,
+        managedSchoolsQuerySchema.parse(options),
+      ),
+    invitations: (
+      organizationId: string,
+      options: Partial<InvitationListQuery> = {},
+      signal?: AbortSignal,
+    ) =>
+      read(
+        `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations/search`,
+        invitationListSchema,
+        signal,
+        invitationListQuerySchema.parse(options),
+      ),
+    inviteProfessional: async (organizationId: string, input: unknown) =>
+      readResponse(
+        await invitationCommand(
+          `schools/${encodeURIComponent(schoolSchema.shape.id.parse(organizationId))}/invitations`,
+          inviteProfessionalSchema.parse(input),
+        ),
+        invitationSchema,
+      ),
+    previewInvitation: async (token: string, signal?: AbortSignal) =>
+      readResponse(
+        await invitationCommand(
+          "invitations/preview",
+          invitationTokenSchema.parse({ token }),
+          signal,
+        ),
+        invitationPreviewSchema,
+      ),
+    registerInvitation: (input: unknown) =>
+      invitationCommand(
+        "invitations/register",
+        registerInvitedIdentitySchema.parse(input),
+      ),
+    acceptInvitation: (token: string) =>
+      invitationCommand(
+        "invitations/accept",
+        invitationTokenSchema.parse({ token }),
+      ),
+    memberships: (signal?: AbortSignal) =>
+      read("identity/memberships", membershipsSchema, signal),
     schoolAccess: (signal?: AbortSignal) =>
       read("identity/school-access", schoolAccessSchema, signal),
     schools: (offset = 0, signal?: AbortSignal) =>

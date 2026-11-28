@@ -1,0 +1,122 @@
+{
+  "issue": 6,
+  "run": "2026-11-22-compact-unified-schools",
+  "sourceBase": "5e7bf5a1bb91d17fdb40d3b3990010c9976ad01b",
+  "sourceFiles": {
+    "DESIGN.md": "4620998308d3569bbb1bf132b062fb044b4d5378e60e53a908a773224415492f",
+    "apps/web/src/app/application-sidebar.tsx": "ad9f82ed5517179da589deda948e3fa9993d6ef0326185b584447cff15c67b24",
+    "apps/web/src/app/page-heading.ts": "edf265bc11fe572a847370128287a1f068280b0156132f440f7db8d7a57ede2d",
+    "apps/web/src/modules/schools/index.ts": "3d746c2398efefa132b903501087d1b8ef6860c63a688713c5a1739e8f80a05a",
+    "apps/web/src/modules/schools/ui/school-directory-table.tsx": "80ac1a47681ab157cf1bec912eacd2ee922fbd81d342c1d22d19fd9cc0bc4f8a",
+    "apps/web/src/modules/schools/ui/school-directory.tsx": "c4fbe6e55c69af5e581163ddd4d3e1803adbdf82fba68fbf17839c264e9e2f64",
+    "apps/web/src/modules/schools/ui/schools-page.tsx": "474a4610a5caa803338d72fe8ddbb7379a568069e0eb1c67b90bea365f0fcc94",
+    "apps/web/src/modules/staff/ui/invitation-table.tsx": "5cb2fbc4c0d3ec9af1eee3b6248093f68816449e9b5d92a98a1fe9e21ba1fcca",
+    "apps/web/src/routes/_authenticated.schools.index.tsx": "01a44bbfbcf16669ebe229a0015c64c1894f7c30fa15d6f9c01b0a8b74753447",
+    "apps/web/src/routes/_authenticated.schools.professionals.tsx": "3f4df702dd1928eac184b5a531d8946bf34de6da9074f6ce8fcab3af0c8e0ada",
+    "apps/web/tests/invitations.spec.ts": "32ec3f95da4b1a9e0c786936a1aa4fbae090ee07fa9fe6f8a4cfc4906ebaa459",
+    "docs/runbooks/invitations.md": "08fbcfe60e78b8f795f3e197998a3cffd89bddb08d82db74a22ba2de9ce3f532"
+  },
+  "artifacts": {
+    "architecture.log": {
+      "bytes": 738,
+      "sha256": "b365c836dddb70f151b0f5f4aa3b449af23128811798fda260eb217d703cf230"
+    },
+    "baseline-invitations-desktop.png": {
+      "bytes": 175218,
+      "sha256": "fac024b496c0aa9956abfa08c26224f0937959f01e1e0c53085dc38aa2da5f15",
+      "width": 1280,
+      "height": 1163
+    },
+    "baseline-schools-desktop.png": {
+      "bytes": 69498,
+      "sha256": "eb7765a8aee271ac4331fe32e18414e513709bc1fd9fe840e710fd4a0079b140",
+      "width": 1280,
+      "height": 720
+    },
+    "baseline.log": {
+      "bytes": 1416,
+      "sha256": "c5d05f03a503030e1076cf64012080425534e1da5360a5aeab4c11d009e175db"
+    },
+    "build.log": {
+      "bytes": 10989,
+      "sha256": "20a73d09eeeb0de1e90666dc430e3499825dbf58e5e1056041bb5e94299e77cd"
+    },
+    "bundle.log": {
+      "bytes": 118,
+      "sha256": "33cc2df0db2b83cf9448644c67572d8c9eca4b3df5dd5d59898084d1474f5987"
+    },
+    "e2e-final.log": {
+      "bytes": 4133,
+      "sha256": "7ca7f4ffb2050976dfdc77432226d243f32aa89504d93fef9e13783069966221"
+    },
+    "e2e-initial.log": {
+      "bytes": 7707,
+      "sha256": "e1b4e68db55e5accca99c7d4593c5afaffcfbb374027875240832b6ebef94c5d"
+    },
+    "format.log": {
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    "invitations-desktop.png": {
+      "bytes": 171936,
+      "sha256": "2d1cc000dd452cc6a2677e0abe394f7dc26ba4eb379cb47cffcec66d198da20a",
+      "width": 1280,
+      "height": 923
+    },
+    "invitations-mobile.png": {
+      "bytes": 84756,
+      "sha256": "e42491c90103b08688c1ccf6aaf1bc418d4ebde9ded101611dbaa76e953358f4",
+      "width": 360,
+      "height": 1099
+    },
+    "lint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "report.md": {
+      "bytes": 5065,
+      "sha256": "fc4d3428f72245f7f7f28f3d1d569dd885dc544664b6d924cc6b5ac806b1d46d"
+    },
+    "schools-desktop.png": {
+      "bytes": 67053,
+      "sha256": "75b971fc139e00e1efc24d28b72aaf3719a89213eaae428de2125322e84ac9e7",
+      "width": 1280,
+      "height": 720
+    },
+    "schools-mobile.png": {
+      "bytes": 32498,
+      "sha256": "f82fca392f13c97a0d9ad24c326bd5566e42ec7750b0f3ce7d81ef34a7094ed9",
+      "width": 360,
+      "height": 780
+    },
+    "types.log": {
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    }
+  },
+  "checks": {
+    "baseline": {
+      "exitCode": 0,
+      "passed": 1
+    },
+    "finalWeb": {
+      "exitCode": 0,
+      "passed": 12
+    },
+    "build": "passed",
+    "types": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "architecture": "passed",
+    "bundle": "passed"
+  },
+  "rowHeightPx": {
+    "schoolBefore": 96.5,
+    "invitationBefore": 76.5,
+    "schoolAfter": 52.5,
+    "invitationAfter": 52.5
+  },
+  "nativeBrowser": "blocked: integration unavailable",
+  "gif": "pending",
+  "origin": "complementary Playwright with ephemeral local HTTP/PostgreSQL/Mailpit"
+}

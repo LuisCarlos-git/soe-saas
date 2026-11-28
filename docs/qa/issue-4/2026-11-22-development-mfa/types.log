@@ -1,0 +1,65 @@
+$ turbo run typecheck
+
+   • turbo 2.11.10
+   • Packages in scope: @soe/api, @soe/api-client, @soe/contracts, @soe/email, @soe/eslint-config, @soe/form, @soe/typescript-config, @soe/ui, @soe/web
+   • Running typecheck in 9 packages
+   • Remote caching disabled
+
+@soe/ui:typecheck: cache hit, replaying logs 3996ee9730e60c1a
+@soe/email:typecheck: cache hit, replaying logs 5fc7ee0efbb0820c
+@soe/contracts:typecheck: cache hit, replaying logs 01bc14748ff000da
+@soe/contracts:build: cache hit, replaying logs 8e7cb7a791f4a1ea
+@soe/email:build: cache hit, replaying logs a2e6c18b3fc40c34
+@soe/ui:typecheck: $ tsc -p tsconfig.json --noEmit
+@soe/contracts:typecheck: $ tsc -p tsconfig.json --noEmit
+@soe/email:typecheck: $ tsc -p tsconfig.json --noEmit
+@soe/contracts:build: $ tsc -p tsconfig.json
+@soe/email:build: $ tsc -p tsconfig.json && esbuild src/index.tsx --outdir=dist --bundle --format=esm --platform=node --packages=external --target=node24 --sourcemap
+@soe/email:build: 
+@soe/email:build:   dist/index.js      4.9kb
+@soe/email:build:   dist/index.js.map  6.6kb
+@soe/email:build: 
+@soe/email:build: ⚡ Done in 2ms
+@soe/api:typecheck: cache miss, executing e9090becbab7b25d
+@soe/api-client:typecheck: cache hit, replaying logs 16c69db3a858a729
+@soe/api-client:build: cache hit, replaying logs f36b79885970c599
+@soe/api-client:typecheck: $ tsc -p tsconfig.json --noEmit
+@soe/api-client:build: $ tsc -p tsconfig.json
+@soe/ui:build: cache hit, replaying logs 9774f29ca0c2a3e2
+@soe/ui:build: $ tsc -p tsconfig.json && node scripts/build-book.mjs && node scripts/bundle.mjs
+@soe/form:typecheck: cache hit, replaying logs dfef7ce70abe9cc8
+@soe/form:typecheck: $ tsc -p tsconfig.json --noEmit
+@soe/form:build: cache hit, replaying logs 7e43fbaab8a4c91d
+@soe/form:build: $ tsc -p tsconfig.json && esbuild src/index.ts src/context.ts --outdir=dist --bundle --splitting --format=esm --platform=browser --packages=external --target=es2022 --sourcemap
+@soe/form:build: 
+@soe/form:build:   dist/index.js                              3.7kb
+@soe/form:build:   dist/checkbox-group-field-UMO3S3WY.js      2.9kb
+@soe/form:build:   dist/chunk-CVXR6RKN.js                     1.8kb
+@soe/form:build:   dist/chunk-7PS2IZKW.js                     1.7kb
+@soe/form:build:   dist/radio-group-field-EPFVUNFQ.js         1.6kb
+@soe/form:build:   dist/native-select-field-VZHRJLY4.js       1.5kb
+@soe/form:build:   dist/select-field-453AV77R.js              1.5kb
+@soe/form:build:   dist/textarea-field-A3KGMQT2.js            982b 
+@soe/form:build:   dist/number-field-Z4NHGNDU.js              853b 
+@soe/form:build:   dist/checkbox-field-FFRB6SLC.js            825b 
+@soe/form:build:   dist/switch-field-TA6PYQ62.js              780b 
+@soe/form:build:   dist/chunk-TS354UVR.js                     299b 
+@soe/form:build:   dist/context.js                            221b 
+@soe/form:build:   dist/index.js.map                          8.7kb
+@soe/form:build:   dist/checkbox-group-field-UMO3S3WY.js.map  4.2kb
+@soe/form:build:   dist/chunk-CVXR6RKN.js.map                 3.7kb
+@soe/form:build:   dist/radio-group-field-EPFVUNFQ.js.map     2.8kb
+@soe/form:build:   dist/native-select-field-VZHRJLY4.js.map   2.7kb
+@soe/form:build:   dist/chunk-7PS2IZKW.js.map                 2.6kb
+@soe/form:build:   dist/select-field-453AV77R.js.map          2.5kb
+@soe/form:build:   ...and 6 more output files...
+@soe/form:build: 
+@soe/form:build: ⚡ Done in 4ms
+@soe/web:typecheck: cache hit, replaying logs eeb9f9c58353f49a
+@soe/web:typecheck: $ tsc --noEmit
+@soe/api:typecheck: $ tsc -p tsconfig.json --noEmit
+
+ Tasks:    12 successful, 12 total
+Cached:    11 cached, 12 total
+  Time:    1.51s 
+

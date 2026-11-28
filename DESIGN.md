@@ -31,6 +31,7 @@ Tailwind em vez de cores locais por funcionalidade.
 | `muted-foreground` | `#475569` | Explicações e metadados             |
 | `rule`             | `#E2E8F0` | Separadores e bordas decorativas    |
 | `control`          | `#64748B` | Bordas de campos                    |
+| `warning-solid`    | `#856300` | Tag pendente com texto branco       |
 
 Sucesso, atenção, erro e informação usam os tokens semânticos do mesmo arquivo.
 Vermelho comunica falha ou urgência operacional; nunca identifica um estudante.
@@ -86,6 +87,9 @@ split de login ou sua fotografia para cada tela interna.
 
 - Labels persistentes acima dos campos, ajuda perto do controle e foco visível.
   Campos com pelo menos 44 px de altura e largura coerente dentro do grupo.
+- Botões e inputs padrão têm a mesma altura de 44 px, inclusive durante loading.
+  No botão compartilhado, padding vertical de 8 px e altura mínima de 44 px
+  permitem crescimento natural quando o conteúdo exigir.
 - Uma ação principal por tarefa. Em formulários curtos de entrada, o botão ocupa
   100% da largura dos campos.
 - No loading, o texto sai para cima e o spinner entra de baixo até o mesmo
@@ -118,6 +122,60 @@ reais, termina junto delas e respeita `prefers-reduced-motion`. Tokens e receita
 compartilhadas ficam em `packages/ui/src/styles/motion.css` e `packages/ui/src/motion/`.
 
 ## Aplicação em novas telas
+
+### Cabeçalhos operacionais
+
+O shell autenticado concentra um único h1 de 18 px na faixa superior branca,
+onde ficava o breadcrumb. Em detalhes, a seta de 16 px fica imediatamente ao
+lado do título, com alvo de 40 px, gap de 4 px e nome acessível do destino.
+Páginas iniciais não inventam retorno. Em Configurações, a aba atual aparece
+como contexto da localização. Sidebar e faixa superior permanecem estáveis;
+a transição continua apenas no conteúdo.
+
+O conteúdo usa `PageToolbar` de `@soe/ui/components/page-toolbar` para contexto
+curto, como o nome da escola, e ações agrupadas à direita. Não repetir o título
+do shell nem reservar uma segunda faixa para voltar. No celular as ações
+podem ocupar a linha seguinte, mantendo atualizar e criar/convidar juntos.
+
+Não repita o título em um cabeçalho grande e em outro bloco da mesma lista.
+Atualizar uma lista usa botão secundário somente com ícone RefreshCw, label e
+title; a ação principal de criar/convidar fica ao lado. Preserve ações de
+formulário junto do envio, como recarregar configurações ao lado de salvar.
+Listas de gestão com busca, ordenação e paginação consultam a coleção no
+servidor; cabeçalhos ordenáveis indicam direção com ícone e `aria-sort`. Tags
+usam texto junto da cor semântica. Rolagem de tabelas fica contida em uma região
+com nome e acesso por teclado em telas pequenas.
+
+O suporte de tags de situação fica em tooltip com texto completo, acessível
+por foco, clique e hover; não ocupa uma linha fixa por registro. Detalhes e
+todos os papéis continuam disponíveis no menu da linha. Na tabela, mostrar no
+máximo dois papéis com reticências e truncar o excedente da largura da célula.
+
+Na equipe, Ativo usa fundo `positive`, Pendente usa `warning-solid` (amarelo
+escuro) e Expirado usa `negative`, todos com texto branco. Os rótulos e o
+suporte do tooltip preservam a identificação além da cor.
+
+Minhas escolas é a única seleção escolar em `/schools`; não duplicar essa lista
+em um item Profissionais na sidebar. O endereço antigo `/schools/professionals`
+redireciona para a lista unificada, preservando a permissão. O diretório mostra
+nome, ano/fuso, profissionais ativos e convites pendentes com total. O nome
+abre configurações; a contagem de profissionais e o menu levam à equipe.
+Busca, ordenação, páginas e contagens vêm da API no escopo autorizado.
+
+As tabelas de gestão usam células com 4 px de padding vertical, textos
+relacionados próximos e alinhamento vertical central. Linhas regulares ficam
+próximas de 53 px, preservando controles de 44 px. Nomes longos podem aumentar
+a altura naturalmente; não impor altura fixa que corte conteúdo.
+
+Em convites, nome e e-mail permanecem completos nos resumos. O e-mail ocupa
+a largura do grupo, abaixo do nome/avatar; preservar quebras naturais e usar
+`overflow-wrap: anywhere` apenas para segmentos que excedam a largura. Evitar
+`break-all` em textos de leitura. Títulos de modais usam 20 px no celular e
+24 px a partir de sm, reservando espaço para o fechar. Metadados do convite
+ficam em duas colunas compactas e a validade mantém data/hora juntas.
+
+Referências desta revisão: [Atlassian Page header](https://atlassian.design/components/page-header/usage)
+e [Polaris, retorno no cabeçalho](https://shopify.dev/docs/apps/build/app-home/migrate-from-polaris-react/breadcrumbs).
 
 1. Leia o PRD, esta base e as instruções de interface do repositório; consulte as
    skills exigidas. Taste orienta composição; Hairline é consultada quando houver

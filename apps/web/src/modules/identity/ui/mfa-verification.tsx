@@ -58,14 +58,21 @@ export function MfaVerification({
               />
             )}
           </form.AppField>
-          <form.SubmitButton className="w-full">
-            Verificar código
-          </form.SubmitButton>
+          <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              className="min-w-0 whitespace-normal px-3"
+              onClick={onCancel}
+            >
+              {cancelLabel}
+            </Button>
+            <form.SubmitButton className="min-w-0 whitespace-normal px-3">
+              Verificar código
+            </form.SubmitButton>
+          </div>
         </form>
       </form.AppForm>
-      <Button variant="outline" onClick={onCancel}>
-        {cancelLabel}
-      </Button>
       <p className="text-sm text-muted-foreground">
         Sem acesso ao aplicativo? Procure o responsável pelo piloto. A
         recuperação de conta ainda não está disponível.

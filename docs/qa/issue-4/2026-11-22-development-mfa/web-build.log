@@ -1,0 +1,108 @@
+$ vite build
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 2618 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/assets/app-C20PWi4R.css                                                  167.37 kB │ gzip:  25.66 kB
+dist/client/assets/navigation-path-DE9x1MLH.js                                         0.07 kB │ gzip:   0.09 kB
+dist/client/assets/check-Cf9w7JYa.js                                                   0.15 kB │ gzip:   0.15 kB
+dist/client/assets/_authenticated.account-CiCcOAPU.js                                  0.16 kB │ gzip:   0.15 kB
+dist/client/assets/_authenticated.settings.security-BPC7_xgm.js                        0.16 kB │ gzip:   0.15 kB
+dist/client/assets/login-C8PUeJXc.js                                                   0.16 kB │ gzip:   0.15 kB
+dist/client/assets/routes-DC7a7a1_.js                                                  0.16 kB │ gzip:   0.15 kB
+dist/client/assets/_authenticated.settings.profile-DQryJKXD.js                         0.17 kB │ gzip:   0.16 kB
+dist/client/assets/_authenticated.schools.index-DPyxZDjL.js                            0.21 kB │ gzip:   0.18 kB
+dist/client/assets/_authenticated.administration.schools-BYFsRfxk.js                   0.26 kB │ gzip:   0.21 kB
+dist/client/assets/_authenticated.schools._organizationId.settings-BCXd9tbe.js         0.27 kB │ gzip:   0.21 kB
+dist/client/assets/ClientOnly-DYdwwfFq.js                                              0.28 kB │ gzip:   0.22 kB
+dist/client/assets/shield-check-Dq9sDZOP.js                                            0.34 kB │ gzip:   0.26 kB
+dist/client/assets/invitations.accept-BeAXKYUW.js                                      0.36 kB │ gzip:   0.26 kB
+dist/client/assets/_authenticated.schools._organizationId.professionals-DQLBChdd.js    0.39 kB │ gzip:   0.28 kB
+dist/client/assets/number-field-Z4NHGNDU-DGM8-IAK.js                                   0.42 kB │ gzip:   0.29 kB
+dist/client/assets/checkbox-field-FFRB6SLC-Dit7HzQ-.js                                 0.47 kB │ gzip:   0.31 kB
+dist/client/assets/_authenticated-X0tBeMuI.js                                          0.47 kB │ gzip:   0.31 kB
+dist/client/assets/dist-auPwEvLC.js                                                    0.60 kB │ gzip:   0.38 kB
+dist/client/assets/dist-D3_u9q6b.js                                                    0.74 kB │ gzip:   0.45 kB
+dist/client/assets/chunk-7PS2IZKW-L_WG8GEi.js                                          1.03 kB │ gzip:   0.53 kB
+dist/client/assets/textarea-field-A3KGMQT2-CQbZoLLd.js                                 1.06 kB │ gzip:   0.60 kB
+dist/client/assets/checkbox-group-field-UMO3S3WY-DhphSaIA.js                           1.36 kB │ gzip:   0.65 kB
+dist/client/assets/useSelector-CKnXDWZe.js                                             1.88 kB │ gzip:   0.82 kB
+dist/client/assets/native-select-field-VZHRJLY4-DKM5q0Tt.js                            2.02 kB │ gzip:   0.95 kB
+dist/client/assets/dist-BlXQd9hi.js                                                    2.73 kB │ gzip:   1.18 kB
+dist/client/assets/dist-B45QbuoJ.js                                                    4.34 kB │ gzip:   1.78 kB
+dist/client/assets/checkbox-CVK5p_oB.js                                                4.84 kB │ gzip:   2.00 kB
+dist/client/assets/switch-field-TA6PYQ62-Dpf-M8q1.js                                   5.08 kB │ gzip:   2.09 kB
+dist/client/assets/_authenticated.settings-M8Zlp80T.js                                 6.92 kB │ gzip:   2.55 kB
+dist/client/assets/radio-group-field-EPFVUNFQ-ivVdv4q0.js                              7.32 kB │ gzip:   2.86 kB
+dist/client/assets/dist-DLJ9iz0G.js                                                    8.62 kB │ gzip:   3.02 kB
+dist/client/assets/book-runtime-rq0tYaGZ.js                                           15.05 kB │ gzip:   6.92 kB
+dist/client/assets/_authenticated-DpIqShlD.js                                         19.72 kB │ gzip:   5.90 kB
+dist/client/assets/es2015-Bfh-9SWa.js                                                 23.15 kB │ gzip:   8.30 kB
+dist/client/assets/select-field-453AV77R-BUo1etaZ.js                                  23.49 kB │ gzip:   7.97 kB
+dist/client/assets/staff-CLs4yRHh.js                                                  30.37 kB │ gzip:   9.03 kB
+dist/client/assets/queryOptions-KmkGES9y.js                                           30.59 kB │ gzip:  10.58 kB
+dist/client/assets/dist-DUlBeMGW.js                                                   46.87 kB │ gzip:  15.89 kB
+dist/client/assets/dist-C_8ngRTN.js                                                   48.35 kB │ gzip:  14.50 kB
+dist/client/assets/useNavigate-9OoS6Max.js                                            60.03 kB │ gzip:  21.30 kB
+dist/client/assets/chunk-CVXR6RKN-CPmZ_e_j.js                                         68.05 kB │ gzip:  16.79 kB
+dist/client/assets/dist-Cfj0jotI.js                                                  101.18 kB │ gzip:  29.93 kB
+dist/client/assets/index-o6iTcB08.js                                                 410.88 kB │ gzip: 127.41 kB
+
+✓ built in 755ms
+vite v8.3.8 building ssr environment for production...
+transforming...
+✓ 354 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/server/assets/step-flow-content-CMZACUl7.js                                       0.04 kB │ gzip:  0.05 kB
+dist/server/assets/navigation-path-DCmowR80.js                                         0.18 kB │ gzip:  0.15 kB
+dist/server/assets/empty-plugin-adapters-BsRz-CQL.js                                   0.26 kB │ gzip:  0.17 kB
+dist/server/assets/start-BBPm177G.js                                                   0.27 kB │ gzip:  0.19 kB
+dist/server/assets/routes-BEPt6cNz.js                                                  0.30 kB │ gzip:  0.21 kB
+dist/server/assets/login-DdndsHxI.js                                                   0.33 kB │ gzip:  0.23 kB
+dist/server/assets/_authenticated.account-m6_U3Nps.js                                  0.35 kB │ gzip:  0.24 kB
+dist/server/assets/_authenticated.settings.security-weNpX9Sg.js                        0.36 kB │ gzip:  0.24 kB
+dist/server/assets/_authenticated.settings.profile-ClrQ-o5N.js                         0.37 kB │ gzip:  0.24 kB
+dist/server/assets/_authenticated.schools.index-BUBFwBSE.js                            0.43 kB │ gzip:  0.28 kB
+dist/server/assets/_authenticated.administration.schools-D10SNunZ.js                   0.52 kB │ gzip:  0.32 kB
+dist/server/assets/_authenticated.schools._organizationId.settings-GSEmEe0i.js         0.55 kB │ gzip:  0.33 kB
+dist/server/assets/page-toolbar-De0NRHy1.js                                            0.67 kB │ gzip:  0.40 kB
+dist/server/assets/_authenticated-9iwAIG8f.js                                          0.70 kB │ gzip:  0.41 kB
+dist/server/assets/number-field-Z4NHGNDU-bDYEVd53.js                                   0.73 kB │ gzip:  0.41 kB
+dist/server/assets/invitations.accept-CZRuIOPv.js                                      0.75 kB │ gzip:  0.39 kB
+dist/server/assets/checkbox-field-FFRB6SLC-CP3fgGwf.js                                 0.75 kB │ gzip:  0.42 kB
+dist/server/assets/_authenticated.schools._organizationId.professionals-KjeOL3UT.js    0.78 kB │ gzip:  0.42 kB
+dist/server/assets/dist-yBA-FsDg.js                                                    1.05 kB │ gzip:  0.59 kB
+dist/server/assets/textarea-field-A3KGMQT2-BslLnoIR.js                                 1.52 kB │ gzip:  0.75 kB
+dist/server/assets/dist-BqkDB81g.js                                                    1.56 kB │ gzip:  0.62 kB
+dist/server/assets/dist-DxRlbRsm.js                                                    1.57 kB │ gzip:  0.69 kB
+dist/server/assets/chunk-7PS2IZKW-DvKs4j19.js                                          1.57 kB │ gzip:  0.70 kB
+dist/server/assets/chunk-CVXR6RKN-BHBQ207H.js                                          1.83 kB │ gzip:  0.79 kB
+dist/server/assets/checkbox-group-field-UMO3S3WY-Caq6YCi_.js                           2.06 kB │ gzip:  0.84 kB
+dist/server/assets/native-select-field-VZHRJLY4-f4bgOUxW.js                            2.85 kB │ gzip:  1.15 kB
+dist/server/assets/_tanstack-start-manifest_v-DT5SvUvE.js                              4.39 kB │ gzip:  0.99 kB
+dist/server/assets/dist-7qH9Ji5p.js                                                    5.79 kB │ gzip:  1.81 kB
+dist/server/assets/switch-field-TA6PYQ62-BPKVdXwM.js                                   9.36 kB │ gzip:  2.90 kB
+dist/server/assets/checkbox-Dqu_rwys.js                                                9.49 kB │ gzip:  2.79 kB
+dist/server/assets/dist-DozyWZHc.js                                                    9.97 kB │ gzip:  2.87 kB
+dist/server/assets/dist-B2xJg9JB.js                                                   10.69 kB │ gzip:  2.72 kB
+dist/server/assets/_authenticated.settings-Cdjs9pm-.js                                11.60 kB │ gzip:  3.45 kB
+dist/server/assets/radio-group-field-EPFVUNFQ-BQvGc7qt.js                             14.78 kB │ gzip:  3.96 kB
+dist/server/assets/dist-_lIC9OY4.js                                                   20.38 kB │ gzip:  4.68 kB
+dist/server/assets/dist-DML5mZun.js                                                   24.45 kB │ gzip:  6.50 kB
+dist/server/assets/identity-HnsfSrAu.js                                               25.19 kB │ gzip:  6.41 kB
+dist/server/assets/book-runtime-CyNMPJjw.js                                           28.21 kB │ gzip:  9.97 kB
+dist/server/assets/_authenticated-86O6MfZH.js                                         28.28 kB │ gzip:  6.80 kB
+dist/server/assets/dropdown-menu-Db9W7w71.js                                          29.55 kB │ gzip:  6.92 kB
+dist/server/assets/schools-DmpQ59Ky.js                                                33.10 kB │ gzip:  7.66 kB
+dist/server/assets/router-Co_ib7d-.js                                                 44.79 kB │ gzip: 10.76 kB
+dist/server/assets/staff-DvlHKpdc.js                                                  45.70 kB │ gzip: 11.01 kB
+dist/server/assets/select-field-453AV77R-pxgsL9Yv.js                                  50.42 kB │ gzip: 11.18 kB
+dist/server/assets/es2015-VSqFnMSt.js                                                 55.59 kB │ gzip: 13.64 kB
+dist/server/assets/dist-D2zAYfRz.js                                                   70.65 kB │ gzip: 16.58 kB
+dist/server/assets/dist-DMi3ZVq5.js                                                   70.78 kB │ gzip: 17.40 kB
+dist/server/assets/dist-B2o3cKOx.js                                                  100.80 kB │ gzip: 19.44 kB
+dist/server/server.js                                                                262.86 kB │ gzip: 63.74 kB
+
+✓ built in 481ms

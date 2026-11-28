@@ -1,0 +1,46 @@
+[WebServer] (node:22686) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22815) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:22859) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  1 [desktop] › apps/web/tests/invitations.spec.ts:190:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (627ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  2 [desktop] › apps/web/tests/invitations.spec.ts:215:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (19.8s)
+(node:23409) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › apps/web/tests/invitations.spec.ts:190:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (615ms)
+  ✘  4 [mobile] › apps/web/tests/invitations.spec.ts:215:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (14.0s)
+
+
+  1) [mobile] › apps/web/tests/invitations.spec.ts:215:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      177 |       return Boolean(mailId);
+      178 |     })
+    > 179 |     .toBe(true);
+          |      ^
+      180 |   const message = await (
+      181 |     await fetch(`${baseUrl}/api/v1/message/${mailId}`)
+      182 |   ).json();
+        at invitationLink (<repo>/apps/web/tests/invitations.spec.ts:179:6)
+        at <repo>/apps/web/tests/invitations.spec.ts:430:22
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-mobile/error-context.md
+
+  1 failed
+    [mobile] › apps/web/tests/invitations.spec.ts:215:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+  3 passed (39.8s)

@@ -11,6 +11,10 @@ export function mfaBoundary(auth: ReturnType<typeof createAuthentication>) {
     "/api/v1/identity/session",
     "/api/v1/identity/mfa",
     "/api/v1/identity/school-access",
+    "/api/v1/identity/memberships",
+    "/api/v1/invitations/preview",
+    "/api/v1/invitations/register",
+    "/api/v1/invitations/accept",
   ]);
   return async (req: Request, res: Response, next: NextFunction) => {
     if (!/^\/api\/v1(?:\/|$)/i.test(req.path) || publicPaths.has(req.path))

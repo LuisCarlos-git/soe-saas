@@ -11,12 +11,21 @@ export function createAuthentication(
   config: ReturnType<typeof parseConfiguration>,
   database: Database,
 ) {
+  const mfaPlugin = twoFactor({ issuer: "SOe" });
+  // The opt-in is validated as development + loopback only. Keep enrollment and
+  // verification endpoints intact; bypass only the password sign-in challenge.
+  if (config.DEV_MFA_BYPASS)
+    mfaPlugin.hooks.after = mfaPlugin.hooks.after.map((hook) => ({
+      ...hook,
+      matcher: (context) =>
+        context.path !== "/sign-in/email" && hook.matcher(context),
+    }));
   const auth = betterAuth({
     database: prismaAdapter(database, {
       provider: "postgresql",
       transaction: true,
     }),
-    plugins: [twoFactor({ issuer: "SOe" })],
+    plugins: [mfaPlugin],
     secret: config.AUTH_SECRET,
     baseURL: config.AUTH_ORIGIN,
     trustedOrigins: [config.AUTH_ORIGIN],
@@ -88,7 +97,10 @@ export function createAuthentication(
         });
         return {
           enabled: !!session.user.twoFactorEnabled,
-          verified: !!session.user.twoFactorEnabled && !!persisted?.mfaVerified,
+          verified:
+            config.DEV_MFA_BYPASS ||
+            (!!session.user.twoFactorEnabled && !!persisted?.mfaVerified),
+          ...(config.DEV_MFA_BYPASS && { developmentBypass: true as const }),
         };
       },
     }),

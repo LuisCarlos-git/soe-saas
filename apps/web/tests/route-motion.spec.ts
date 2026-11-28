@@ -37,7 +37,7 @@ async function observeRoute(
           ? "security"
           : text.includes("Seu perfil")
             ? "profile"
-            : text.includes("Seu espaço no SOE")
+            : text.includes("Consulte seu perfil e cuide da segurança")
               ? "overview"
               : "pending";
         window.routeMotionSamples.push({

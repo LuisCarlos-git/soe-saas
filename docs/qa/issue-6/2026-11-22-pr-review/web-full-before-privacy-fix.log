@@ -1,0 +1,92 @@
+[WebServer] (node:45862) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:46017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:46016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 26 tests using 1 worker
+
+(node:46050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › apps/web/tests/environment.spec.ts:4:1 › página SSR verifica dados sintéticos, informa falha e recupera após nova tentativa (678ms)
+  ✓   2 [desktop] › apps/web/tests/identity.spec.ts:4:1 › entrar, SSR de duas sessões independentes e sair sem persistir credenciais (2.2s)
+  ✓   3 [desktop] › apps/web/tests/login-layout.spec.ts:5:1 › login preserva formulário responsivo e mostra a cena realista (396ms)
+  ✓   4 [desktop] › apps/web/tests/login-layout.spec.ts:54:1 › validação local aparece sob os campos e falha da API permanece no toast (245ms)
+  ✓   5 [desktop] › apps/web/tests/login-layout.spec.ts:91:1 › login aguarda a resposta de autenticação e apresenta sua falha no toast (203ms)
+  ✓   6 [desktop] › apps/web/tests/motion.spec.ts:12:1 › spinners e livro acompanham a operação real, respeitando movimento reduzido (5.8s)
+  ✓   7 [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.8s)
+  ✓   8 [desktop] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (502ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓   9 [desktop] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (5.0s)
+  ✓  10 [desktop] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.4s)
+(node:46534) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [desktop] › apps/web/tests/invitations.spec.ts:272:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (596ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Table density {
+  state: 'school-directory',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓  12 [desktop] › apps/web/tests/invitations.spec.ts:297:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (22.3s)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  13 [desktop] › apps/web/tests/mfa.spec.ts:24:1 › configurar aplicativo, rejeitar código inválido e entrar com MFA (7.3s)
+(node:47218) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [mobile] › apps/web/tests/environment.spec.ts:4:1 › página SSR verifica dados sintéticos, informa falha e recupera após nova tentativa (543ms)
+  ✓  15 [mobile] › apps/web/tests/identity.spec.ts:4:1 › entrar, SSR de duas sessões independentes e sair sem persistir credenciais (8.2s)
+  ✓  16 [mobile] › apps/web/tests/login-layout.spec.ts:5:1 › login preserva formulário responsivo e mostra a cena realista (407ms)
+  ✓  17 [mobile] › apps/web/tests/login-layout.spec.ts:54:1 › validação local aparece sob os campos e falha da API permanece no toast (247ms)
+  ✓  18 [mobile] › apps/web/tests/login-layout.spec.ts:91:1 › login aguarda a resposta de autenticação e apresenta sua falha no toast (201ms)
+  ✓  19 [mobile] › apps/web/tests/motion.spec.ts:12:1 › spinners e livro acompanham a operação real, respeitando movimento reduzido (1.2s)
+  ✓  20 [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.6s)
+  ✓  21 [mobile] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (509ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓  22 [mobile] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (3.9s)
+  ✓  23 [mobile] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.3s)
+(node:47729) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 [mobile] › apps/web/tests/invitations.spec.ts:272:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (628ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Table density {
+  state: 'school-directory',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓  25 [mobile] › apps/web/tests/invitations.spec.ts:297:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (20.1s)
+  ✓  26 [mobile] › apps/web/tests/mfa.spec.ts:24:1 › configurar aplicativo, rejeitar código inválido e entrar com MFA (12.1s)
+
+  26 passed (1.8m)

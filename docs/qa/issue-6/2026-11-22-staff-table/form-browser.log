@@ -1,0 +1,28 @@
+$ playwright test --config playwright.config.ts
+[WebServer] (node:23789) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `pnpm --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23823) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:23883) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/browser.spec.ts:4:1 › campos conectados validam, enviam tipos corretos e restauram valores (3.1s)
+  ✓   2 [desktop] › tests/browser.spec.ts:99:1 › labels, foco, seleção por teclado, disabled e acessibilidade (1.4s)
+  ✓   3 [desktop] › tests/composition.spec.ts:20:3 › withForm liga blur e change aos erros acessíveis de Título (1.7s)
+  ✓   4 [desktop] › tests/composition.spec.ts:20:3 › withForm liga blur e change aos erros acessíveis de Observação (1.6s)
+  ✓   5 [desktop] › tests/composition.spec.ts:47:3 › submit revela campo intocado e impede envio inválido (título: vazio) (358ms)
+  ✓   6 [desktop] › tests/composition.spec.ts:47:3 › submit revela campo intocado e impede envio inválido (título: Título sintético) (337ms)
+  ✓   7 [desktop] › tests/composition.spec.ts:73:1 › AppForm compartilha contexto público e SubmitButton acompanha a promessa do consumidor (653ms)
+(node:24225) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [mobile] › tests/browser.spec.ts:4:1 › campos conectados validam, enviam tipos corretos e restauram valores (734ms)
+  ✓   9 [mobile] › tests/browser.spec.ts:99:1 › labels, foco, seleção por teclado, disabled e acessibilidade (1.1s)
+  ✓  10 [mobile] › tests/composition.spec.ts:20:3 › withForm liga blur e change aos erros acessíveis de Título (570ms)
+  ✓  11 [mobile] › tests/composition.spec.ts:20:3 › withForm liga blur e change aos erros acessíveis de Observação (546ms)
+  ✓  12 [mobile] › tests/composition.spec.ts:47:3 › submit revela campo intocado e impede envio inválido (título: vazio) (339ms)
+  ✓  13 [mobile] › tests/composition.spec.ts:47:3 › submit revela campo intocado e impede envio inválido (título: Título sintético) (354ms)
+  ✓  14 [mobile] › tests/composition.spec.ts:73:1 › AppForm compartilha contexto público e SubmitButton acompanha a promessa do consumidor (717ms)
+
+  14 passed (15.3s)

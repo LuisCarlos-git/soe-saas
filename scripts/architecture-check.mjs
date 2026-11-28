@@ -15,11 +15,36 @@ const production = check([
   "packages/api-client/src",
   "packages/ui/src",
   "packages/form/src",
+  "packages/email/src",
 ]);
 process.stdout.write(production.stdout);
 process.stderr.write(production.stderr);
 if (production.status !== 0) process.exit(1);
 const fixtures = [
+  {
+    path: "apps/api/src/infrastructure/architecture-negative.ts",
+    source:
+      "import { SchoolInvitationEmail } from '../../../../packages/email/src/templates/school-invitation'; console.log(SchoolInvitationEmail);",
+    rule: "no-email-internals",
+  },
+  {
+    path: "packages/ui/src/architecture-negative.ts",
+    source:
+      "import { SchoolInvitationEmail } from '../../email/src/index'; console.log(SchoolInvitationEmail);",
+    rule: "email-server-only",
+  },
+  {
+    path: "apps/web/src/architecture-negative.ts",
+    source:
+      "import { SchoolInvitationEmail } from '../../../packages/email/src/index'; console.log(SchoolInvitationEmail);",
+    rule: "web-no-server",
+  },
+  {
+    path: "packages/email/src/architecture-negative.ts",
+    source:
+      "import { loginSchema } from '@soe/contracts'; console.log(loginSchema);",
+    rule: "neutral-email",
+  },
   {
     path: "apps/web/src/architecture-negative.ts",
     source:

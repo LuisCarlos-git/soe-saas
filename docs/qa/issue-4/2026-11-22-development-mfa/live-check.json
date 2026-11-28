@@ -1,0 +1,13 @@
+{
+  "loginWithoutMfa": true,
+  "state": {
+    "enabled": true,
+    "verified": true,
+    "developmentBypass": true
+  },
+  "expiredInvitationVisible": true,
+  "colors": {
+    "background": "rgb(185, 28, 28)",
+    "foreground": "rgb(255, 255, 255)"
+  }
+}

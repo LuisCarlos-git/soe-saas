@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+test.use({ trace: "off" });
 import jsQR from "jsqr";
 import type { Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
@@ -91,12 +92,18 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
     path: `test-results/mfa-setup-modal-${test.info().project.name}.png`,
     fullPage: true,
     animations: "disabled",
+    mask: [qr, modal.locator("code")],
   });
   await modal
     .getByRole("button", { name: "Já adicionei ao aplicativo" })
     .click();
   await expect(modal.getByLabel("Código do aplicativo")).toBeFocused();
   await expect(qr).toHaveCount(0);
+  await page.screenshot({
+    path: `test-results/mfa-actions-back-${test.info().project.name}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
   await modal.getByRole("button", { name: "Voltar ao QR code" }).click();
   const animatedStep = modal.locator("[data-slot=step-flow-content]");
   await expect(animatedStep).toHaveAttribute("data-direction", "back");
@@ -134,6 +141,11 @@ test("configurar aplicativo, rejeitar código inválido e entrar com MFA", async
   await expect(modal).toBeVisible();
   await expect(modal).toHaveAccessibleName("Verifique seu acesso");
   await expect(page.getByLabel("Código do aplicativo")).toBeFocused();
+  await page.screenshot({
+    path: `test-results/mfa-actions-cancel-${test.info().project.name}.png`,
+    fullPage: true,
+    animations: "disabled",
+  });
   await page.keyboard.press("Escape");
   await expect(modal).toBeHidden();
   await expect(page.getByLabel("E-mail", { exact: true })).toBeFocused();

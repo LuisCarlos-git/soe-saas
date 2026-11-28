@@ -1,0 +1,102 @@
+{
+  "issues": [4, 6],
+  "pr": 46,
+  "sourceCommit": "334bf9c80b12746fd7c91ae6839a413ce2278e99",
+  "baselineCommit": "b00f319f400096dd0e3f423d186b6d58d62b6c4a",
+  "method": "Playwright complementar + HTTP/PostgreSQL",
+  "nativeChromeGifGate": "PENDENTE",
+  "artifacts": {
+    "api-build.log": {
+      "bytes": 480,
+      "sha256": "346d992db71aa795b54b3b931b71cae5f1ea47386f979f76a8aef9281a85b9ec"
+    },
+    "architecture.log": {
+      "bytes": 738,
+      "sha256": "ec2290340d79a3e095cfa9c14728c3ac39079c8edcae0add290090d44f594932"
+    },
+    "browser-final.log": {
+      "bytes": 1903,
+      "sha256": "2537cafa7d30f8731410809fe477c5681922184f4dc486141f0af57c9ab0e24d"
+    },
+    "browser-initial-config.log": {
+      "bytes": 1718,
+      "sha256": "d70d43543a5d913aef5100ac858e834e3c48864d9d13d79e3441aec2da605c5a"
+    },
+    "bundle.log": {
+      "bytes": 118,
+      "sha256": "33cc2df0db2b83cf9448644c67572d8c9eca4b3df5dd5d59898084d1474f5987"
+    },
+    "development-mfa-desktop.png": {
+      "bytes": 61986,
+      "sha256": "744d6589328478aba067c98076e50241148851a001e930eff5dd894c27cbf5e6"
+    },
+    "development-mfa-mobile.png": {
+      "bytes": 42042,
+      "sha256": "a740a5d985e0cc140689e17fe7ab8739384063606a70d8d1a4b9aa4193598c7a"
+    },
+    "expired-invitation-desktop.png": {
+      "bytes": 81961,
+      "sha256": "76dced42aebdb1b4c64f705224df24f79c0d4181559ea4c949210137857d28c0"
+    },
+    "expired-invitation-mobile.png": {
+      "bytes": 46888,
+      "sha256": "b98e6b26cfa6a64fe09900bde641a8f6b4e70d9a1039ea758dc999d9b8f3747c"
+    },
+    "format.log": {
+      "bytes": 87,
+      "sha256": "1d66faad74f5e8709353f7288592866bd3a9095da1174a916e7aa632949971e2"
+    },
+    "integration-final.log": {
+      "bytes": 2334,
+      "sha256": "ceaf7cda77852d1bc7333beb699ab528ab6e4cf37c271dd01ffc900c51e510ab"
+    },
+    "integration-initial-audit-fixture.log": {
+      "bytes": 3194,
+      "sha256": "bbc6466d04e3bae23435af65b4585505f26594fedc0806c57ff2c5152bf1a5b5"
+    },
+    "invitation-active-tooltip-mobile.png": {
+      "bytes": 38148,
+      "sha256": "e11e4ac711c3df293aeeab18b113dc9e67e5d0b994299f57eac8daa7e43870cb"
+    },
+    "invitation-pending-tooltip-desktop.png": {
+      "bytes": 86328,
+      "sha256": "ff56d3dd03696003bf288cb023118ba313225b3c0d3e9d735ee94fefb9df1ff2"
+    },
+    "lint.log": {
+      "bytes": 28,
+      "sha256": "960f1eb37ac4d28430af9bef2c98f32333254854ffde619330f53d373ce0f632"
+    },
+    "live-check.json": {
+      "bytes": 253,
+      "sha256": "45f039559e7ca6695a6cbcad3c740e7a6bcac517beedfef35f0602c692b765e2"
+    },
+    "live-check.log": {
+      "bytes": 227,
+      "sha256": "07f9773bf2e6a5cb23c340c93cc46f7f1943bbc94bcdb4afd3c1b2a691bfb174"
+    },
+    "report.md": {
+      "bytes": 5005,
+      "sha256": "bb9361d9b4b7bfbb39578e2dcff4b2660f2ed0b004a55c946fc7fc8722800d5e"
+    },
+    "status-browser.log": {
+      "bytes": 2222,
+      "sha256": "00bf4d12b9e597488940933bef929115fc9f0cf3d92fce54b5c771457d0c794f"
+    },
+    "status-contrast.json": {
+      "bytes": 300,
+      "sha256": "696b6c7b0d03ca652c455bdc67fe3549c90f9ed052fa8fa1d1bd22c4e8fbaf3e"
+    },
+    "types.log": {
+      "bytes": 3666,
+      "sha256": "274af22fb5f0dc9880910cdbd1e6e74a1926fa4dabbb348ed4ebf2ef2f01f7a2"
+    },
+    "unit.log": {
+      "bytes": 208,
+      "sha256": "89104887ea8d191f41419aab258d0cde2085b3efdec2a482ace3aef4adadd5c7"
+    },
+    "web-build.log": {
+      "bytes": 10989,
+      "sha256": "8018a7842ac7fd0111ac7c3da30e85ea5fea69049804eafb0bfd9df2c75ae3f9"
+    }
+  }
+}

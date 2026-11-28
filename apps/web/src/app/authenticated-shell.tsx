@@ -1,8 +1,10 @@
+import { pageHeading } from "./page-heading";
+import { buttonVariants } from "@soe/ui/primitives/button";
 import { normalizeNavigationPath } from "../shared/navigation-path";
 import { useState, type ReactNode } from "react";
-import { useRouter, useRouterState } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   SidebarInset,
   SidebarProvider,
@@ -28,9 +30,7 @@ export function AuthenticatedShell({
   const client = useQueryClient();
   const router = useRouter();
   const [pending, setPending] = useState(false);
-  const settings = pathname.startsWith("/settings");
-  const school = pathname === "/schools" || pathname.startsWith("/schools/");
-  const administration = pathname.startsWith("/administration/");
+  const heading = pageHeading(pathname);
   async function logout() {
     setPending(true);
     try {
@@ -61,55 +61,43 @@ export function AuthenticatedShell({
         pending={pending}
       />
       <SidebarInset className="min-w-0 bg-canvas">
-        <header className="flex min-h-16 items-center justify-between gap-3 border-b border-rule bg-surface px-4 sm:px-8">
-          <div className="flex min-w-0 items-center gap-3">
-            <SidebarTrigger
-              aria-label="Abrir menu de navegação"
-              className="size-11 md:hidden"
-            />
-            <nav aria-label="Localização">
-              <ol className="flex items-center gap-2 text-sm">
-                <li className="text-muted-foreground">
-                  {settings
-                    ? "Configurações"
-                    : school
-                      ? "Escola"
-                      : administration
-                        ? "Administração"
-                        : "Visão geral"}
-                </li>
-                {settings && (
-                  <>
-                    <li aria-hidden="true">
-                      <ChevronRight className="size-4 text-muted-foreground" />
-                    </li>
-                    <li aria-current="page" className="font-medium">
-                      {pathname.endsWith("security") ? "Segurança" : "Perfil"}
-                    </li>
-                  </>
-                )}
-                {(school || administration) && (
-                  <>
-                    <li aria-hidden="true">
-                      <ChevronRight className="size-4 text-muted-foreground" />
-                    </li>
-                    <li aria-current="page" className="font-medium">
-                      {administration
-                        ? "Escolas piloto"
-                        : pathname === "/schools"
-                          ? "Minhas escolas"
-                          : "Configurações da escola"}
-                    </li>
-                  </>
-                )}
-              </ol>
-            </nav>
+        <header className="flex min-h-16 items-center gap-1 border-b border-rule bg-surface px-4 py-2 sm:px-8">
+          <SidebarTrigger
+            aria-label="Abrir menu de navegação"
+            className="size-10 shrink-0 p-0 md:hidden"
+          />
+          {heading.back && (
+            <Link
+              to={heading.back}
+              aria-label={heading.backLabel}
+              title={heading.backLabel}
+              className={buttonVariants({
+                variant: "ghost",
+                size: "icon",
+                className: "size-10 shrink-0 text-muted-foreground",
+              })}
+            >
+              <ArrowLeft className="size-4" aria-hidden="true" />
+            </Link>
+          )}
+          <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 px-1">
+            <h1 className="text-lg font-semibold leading-6 tracking-tight">
+              {heading.title}
+            </h1>
+            {heading.section && (
+              <nav
+                aria-label="Localização"
+                className="text-sm text-muted-foreground"
+              >
+                {heading.section}
+              </nav>
+            )}
           </div>
         </header>
         <div
           id="main-content"
           tabIndex={-1}
-          className="mx-auto w-full max-w-6xl px-4 py-8 outline-none sm:px-8 sm:py-10 lg:px-12"
+          className="mx-auto w-full max-w-6xl px-4 py-6 outline-none sm:px-8 lg:px-12"
         >
           {children}
         </div>

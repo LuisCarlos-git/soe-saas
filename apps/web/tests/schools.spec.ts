@@ -28,7 +28,10 @@ async function login(page: Page, email: string) {
 }
 async function openMenu(page: Page) {
   const trigger = page.getByRole("button", { name: "Abrir menu de navegação" });
-  if (await trigger.isVisible()) await trigger.click();
+  if ((page.viewportSize()?.width ?? 1280) < 768) {
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+  }
 }
 test("pessoa sem permissão não vê menus escolares e não abre suas rotas", async ({
   page,
@@ -219,7 +222,7 @@ test("operador provisiona escola e responsável administra configurações isola
   await expect(page.getByRole("button", { name: "Nova escola" })).toHaveCount(
     0,
   );
-  await page.getByRole("link", { name: `${name} Configurar` }).click();
+  await page.getByRole("link", { name, exact: true }).click();
   await expect(page.getByLabel("Nome da escola")).toHaveValue(name);
   await expect(page.getByLabel("Fuso horário")).toHaveValue("America/Manaus");
   await expect(page.getByLabel("Ano letivo")).toHaveValue("2027");

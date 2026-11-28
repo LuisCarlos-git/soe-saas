@@ -1,0 +1,12 @@
+$ nest build && node scripts/bundle.mjs && node scripts/generate-openapi.mjs
+
+  dist/app.js                           158.7kb
+  dist/main.js                          154.9kb
+  dist/cli/synthetic-identities.js       65.1kb
+  dist/cli/seed-development.js           65.0kb
+  dist/app.js.map                       303.0kb
+  dist/main.js.map                      297.9kb
+  dist/cli/seed-development.js.map      158.6kb
+  dist/cli/synthetic-identities.js.map  158.4kb
+
+⚡ Done in 13ms

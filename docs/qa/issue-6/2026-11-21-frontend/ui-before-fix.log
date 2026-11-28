@@ -1,0 +1,84 @@
+[WebServer] (node:64190) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:64369) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:64368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:64391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › apps/web/tests/invitations.spec.ts:58:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (947ms)
+  ✘  2 [desktop] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (15.0s)
+(node:64840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › apps/web/tests/invitations.spec.ts:58:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (682ms)
+  ✘  4 [mobile] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (30.1s)
+
+
+  1) [desktop] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Convite indisponível', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Convite indisponível', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Convite indisponível', exact: true })
+
+
+      237 |         exact: true,
+      238 |       }),
+    > 239 |     ).toBeVisible();
+          |       ^
+      240 |   } finally {
+      241 |     await context.close();
+      242 |   }
+        at <repo>/apps/web/tests/invitations.spec.ts:239:7
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Sair', exact: true })
+
+
+      106 |   expect(created.status()).toBe(201);
+      107 |   const school = await created.json();
+    > 108 |   await page.getByRole("button", { name: "Sair", exact: true }).click();
+          |                                                                 ^
+      109 |   await login(page, adminEmail);
+      110 |   await enroll(page);
+      111 |   await page.reload();
+        at <repo>/apps/web/tests/invitations.spec.ts:108:65
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-mobile/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+    [mobile] › apps/web/tests/invitations.spec.ts:83:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+  2 passed (52.0s)

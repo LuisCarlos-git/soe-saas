@@ -41,6 +41,8 @@ export function ApplicationSidebar({
   });
   const { setOpenMobile } = useSidebar();
   const close = () => setOpenMobile(false);
+  const schoolPage =
+    pathname === "/schools" || pathname.startsWith("/schools/");
   return (
     <Sidebar
       role="complementary"
@@ -110,21 +112,13 @@ export function ApplicationSidebar({
                     <SidebarMenuItem>
                       <SidebarMenuButton
                         asChild
-                        isActive={
-                          pathname === "/schools" ||
-                          pathname.startsWith("/schools/")
-                        }
+                        isActive={schoolPage}
                         className="h-11 px-3"
                       >
                         <Link
                           to="/schools"
                           onClick={close}
-                          aria-current={
-                            pathname === "/schools" ||
-                            pathname.startsWith("/schools/")
-                              ? "page"
-                              : undefined
-                          }
+                          aria-current={schoolPage ? "page" : undefined}
                         >
                           <School aria-hidden="true" />
                           <span>Minhas escolas</span>

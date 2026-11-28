@@ -1,0 +1,76 @@
+[WebServer] (node:21554) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21789) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:21788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:21829) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › apps/web/tests/invitations.spec.ts:272:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (912ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Table density {
+  state: 'school-directory',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓   2 [desktop] › apps/web/tests/invitations.spec.ts:297:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (22.2s)
+(node:22626) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.8s)
+  ✓   4 [desktop] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (485ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [Error: aborted] { code: 'ECONNRESET' }
+  ✓   5 [desktop] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (5.0s)
+  ✓   6 [desktop] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.4s)
+(node:22836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [mobile] › apps/web/tests/invitations.spec.ts:272:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (623ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Table density {
+  state: 'school-directory',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+Table density {
+  state: 'table-sorted',
+  project: 'mobile',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✓   8 [mobile] › apps/web/tests/invitations.spec.ts:297:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (19.3s)
+(node:23297) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.5s)
+  ✓  10 [mobile] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (502ms)
+  ✓  11 [mobile] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (3.8s)
+  ✓  12 [mobile] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.3s)
+
+  12 passed (1.1m)

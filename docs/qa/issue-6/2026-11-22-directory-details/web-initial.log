@@ -1,0 +1,152 @@
+[WebServer] (node:54958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:55128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:55127) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 26 tests using 1 worker
+
+(node:55149) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › apps/web/tests/environment.spec.ts:4:1 › página SSR verifica dados sintéticos, informa falha e recupera após nova tentativa (557ms)
+  ✓   2 [desktop] › apps/web/tests/identity.spec.ts:4:1 › entrar, SSR de duas sessões independentes e sair sem persistir credenciais (2.0s)
+  ✓   3 [desktop] › apps/web/tests/login-layout.spec.ts:5:1 › login preserva formulário responsivo e mostra a cena realista (378ms)
+  ✓   4 [desktop] › apps/web/tests/login-layout.spec.ts:54:1 › validação local aparece sob os campos e falha da API permanece no toast (229ms)
+  ✓   5 [desktop] › apps/web/tests/login-layout.spec.ts:91:1 › login aguarda a resposta de autenticação e apresenta sua falha no toast (201ms)
+  ✓   6 [desktop] › apps/web/tests/motion.spec.ts:12:1 › spinners e livro acompanham a operação real, respeitando movimento reduzido (5.6s)
+  ✘   7 [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.9s)
+(node:55449) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [desktop] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (541ms)
+  ✓   9 [desktop] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (5.2s)
+  ✓  10 [desktop] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.3s)
+(node:55766) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [desktop] › apps/web/tests/invitations.spec.ts:256:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (596ms)
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✓  12 [desktop] › apps/web/tests/invitations.spec.ts:281:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (21.2s)
+  ✓  13 [desktop] › apps/web/tests/mfa.spec.ts:24:1 › configurar aplicativo, rejeitar código inválido e entrar com MFA (7.1s)
+(node:56473) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [mobile] › apps/web/tests/environment.spec.ts:4:1 › página SSR verifica dados sintéticos, informa falha e recupera após nova tentativa (524ms)
+  ✓  15 [mobile] › apps/web/tests/identity.spec.ts:4:1 › entrar, SSR de duas sessões independentes e sair sem persistir credenciais (8.0s)
+  ✓  16 [mobile] › apps/web/tests/login-layout.spec.ts:5:1 › login preserva formulário responsivo e mostra a cena realista (390ms)
+  ✓  17 [mobile] › apps/web/tests/login-layout.spec.ts:54:1 › validação local aparece sob os campos e falha da API permanece no toast (226ms)
+  ✓  18 [mobile] › apps/web/tests/login-layout.spec.ts:91:1 › login aguarda a resposta de autenticação e apresenta sua falha no toast (205ms)
+  ✓  19 [mobile] › apps/web/tests/motion.spec.ts:12:1 › spinners e livro acompanham a operação real, respeitando movimento reduzido (1.1s)
+  ✘  20 [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral (2.4s)
+(node:56883) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  21 [mobile] › apps/web/tests/schools.spec.ts:33:1 › pessoa sem permissão não vê menus escolares e não abre suas rotas (550ms)
+  ✓  22 [mobile] › apps/web/tests/schools.spec.ts:68:1 › operador provisiona escola e responsável administra configurações isoladas (3.8s)
+  ✓  23 [mobile] › apps/web/tests/settings.spec.ts:4:1 › configurações protegidas, abas com URL e navegação responsiva (1.2s)
+(node:57189) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 [mobile] › apps/web/tests/invitations.spec.ts:256:1 › QA-006-UI01: acesso sem permissão e convite inválido têm estados seguros (622ms)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Invitation close hit-test {
+  receivesClick: true,
+  topSlot: 'button',
+  pointerEvents: 'auto',
+  width: 44,
+  height: 44
+}
+  ✘  25 [mobile] › apps/web/tests/invitations.spec.ts:281:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (6.8s)
+(node:57449) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  26 [mobile] › apps/web/tests/mfa.spec.ts:24:1 › configurar aplicativo, rejeitar código inválido e entrar com MFA (12.0s)
+
+
+  1) [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral
+
+    Error: Visão geral
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 2
+    Received:   0
+
+      120 |   ] as const) {
+      121 |     const frames = await observeRoute(page, action, target);
+    > 122 |     expect(frames.length, name).toBeGreaterThan(2);
+          |                                 ^
+      123 |     const progressive = frames.filter(
+      124 |       (frame) => frame.opacity > 0.05 && frame.opacity < 0.98,
+      125 |     );
+        at <repo>/apps/web/tests/route-motion.spec.ts:122:33
+
+    Error Context: test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-desktop/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › apps/web/tests/invitations.spec.ts:281:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('tooltip')
+    Expected substring: "Aguardando o aceite"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('tooltip') with timeout 5000ms
+      - waiting for getByRole('tooltip')
+
+
+      432 |   });
+      433 |   await pendingStatus.focus();
+    > 434 |   await expect(page.getByRole("tooltip")).toContainText("Aguardando o aceite");
+          |                                           ^
+      435 |   await expect(page.getByRole("tooltip")).toContainText("E-mail enviado", {
+      436 |     timeout: 15000,
+      437 |   });
+        at <repo>/apps/web/tests/invitations.spec.ts:434:43
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-mobile/error-context.md
+
+  3) [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral
+
+    Error: Visão geral
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 2
+    Received:   0
+
+      120 |   ] as const) {
+      121 |     const frames = await observeRoute(page, action, target);
+    > 122 |     expect(frames.length, name).toBeGreaterThan(2);
+          |                                 ^
+      123 |     const progressive = frames.filter(
+      124 |       (frame) => frame.opacity > 0.05 && frame.opacity < 0.98,
+      125 |     );
+        at <repo>/apps/web/tests/route-motion.spec.ts:122:33
+
+    Error Context: test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-mobile/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/web/route-motion-o-conteúdo-fi-6f931-abas-e-voltar-à-visão-geral-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [desktop] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral
+    [mobile] › apps/web/tests/invitations.spec.ts:281:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real
+    [mobile] › apps/web/tests/route-motion.spec.ts:77:1 › o conteúdo final entra progressivamente ao trocar abas e voltar à visão geral
+  23 passed (1.5m)

@@ -1,0 +1,152 @@
+[
+  {
+    "file": "invitation-accepted-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-accepted-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-confirm-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-confirm-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-dialog-details-actions-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-dialog-details-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-dialog-details-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-dialog-review-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-dialog-review-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-empty-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-empty-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-existing-sign-in-desktop.png",
+    "width": 1280,
+    "height": 771,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-existing-sign-in-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-invalid-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-invalid-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-list-accepted-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-list-accepted-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-mfa-required-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-mfa-required-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-pending-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-pending-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-register-desktop.png",
+    "width": 1280,
+    "height": 835,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-register-mobile.png",
+    "width": 360,
+    "height": 846,
+    "viewport": "mobile"
+  },
+  {
+    "file": "invitation-wrong-account-desktop.png",
+    "width": 1280,
+    "height": 720,
+    "viewport": "desktop"
+  },
+  {
+    "file": "invitation-wrong-account-mobile.png",
+    "width": 360,
+    "height": 780,
+    "viewport": "mobile"
+  }
+]

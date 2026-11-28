@@ -1,0 +1,24 @@
+(node:20689) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL apps/api/tests/invitations-qa.test.mjs (10.93 s)
+  ● QA-006-T01-03: busca global, ordenação estável, paginação, estados e isolamento
+
+    error: new row for relation "school_invitation" violates check constraint "school_invitation_check"
+
+      630 |     [records[0].id, actor],
+      631 |   );
+    > 632 |   await db.query(
+          |   ^
+      633 |     "UPDATE school_invitation SET \"expiresAt\"=now()-interval '1 minute' WHERE id=$1",
+      634 |     [records[1].id],
+      635 |   );
+
+      at node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694:17
+      at Object.<anonymous> (apps/api/tests/invitations-qa.test.mjs:632:3)
+
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 14 passed, 15 total
+Snapshots:   0 total
+Time:        15.989 s, estimated 16 s
+Ran all test suites matching apps/api/tests/invitations.test.mjs|apps/api/tests/invitations-qa.test.mjs.

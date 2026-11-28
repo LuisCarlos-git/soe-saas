@@ -30,6 +30,87 @@ afterAll(async () => {
   await app?.close();
   await database?.stop();
 });
+
+test("dispensa local mantém senha, autorização e MFA persistido; desligar restaura exigência", async () => {
+  const login = { email: "mfa-ana@example.test", password: "12345678" };
+  const normal = request.agent(app.getHttpServer());
+  await normal
+    .post("/api/auth/sign-in/email")
+    .set("Origin", origin)
+    .send(login)
+    .expect(204);
+  const setup = await normal
+    .post("/api/auth/two-factor/enable")
+    .set("Origin", origin)
+    .send({ password: login.password })
+    .expect(200);
+  await normal
+    .post("/api/auth/two-factor/verify-totp")
+    .set("Origin", origin)
+    .send({ code: totp(setup.body.totpURI) })
+    .expect(204);
+  await request(app.getHttpServer())
+    .post("/api/auth/sign-in/email")
+    .set("Origin", origin)
+    .send(login)
+    .expect(200, { twoFactorRedirect: true });
+  const { createApi } = await import("../dist/app.js");
+  const local = await createApi({
+    NODE_ENV: "development",
+    DATABASE_URL: database.url,
+    DEV_MFA_BYPASS: "true",
+    AUTH_RATE_MAX: 100,
+    LOG_LEVEL: "silent",
+  });
+  try {
+    await local.init();
+    const agent = request.agent(local.getHttpServer());
+    await agent.get("/api/v1/schools").expect(401);
+    await agent
+      .post("/api/auth/sign-in/email")
+      .set("Origin", "https://external.example.test")
+      .send(login)
+      .expect(403);
+    await agent
+      .post("/api/auth/sign-in/email")
+      .set("Origin", origin)
+      .send({ ...login, password: "wrong-password" })
+      .expect(401);
+    const signedIn = await agent
+      .post("/api/auth/sign-in/email")
+      .set("Origin", origin)
+      .send(login)
+      .expect(204);
+    expect((await agent.get("/api/v1/identity/mfa").expect(200)).body).toEqual({
+      enabled: true,
+      verified: true,
+      developmentBypass: true,
+    });
+    expect(
+      (await agent.get("/api/v1/schools").expect(200)).body.schools,
+    ).toEqual([]);
+    await agent.get("/api/v1/administration/schools").expect(403);
+    const cookie = signedIn.headers["set-cookie"]
+      .find((value) => value.startsWith("soe.session_token="))
+      .split(";")[0];
+    const restored = await request(app.getHttpServer())
+      .get("/api/v1/identity/mfa")
+      .set("Cookie", cookie)
+      .expect(200);
+    expect(restored.body).toEqual({ enabled: true, verified: false });
+    await request(app.getHttpServer())
+      .get("/api/v1/schools")
+      .set("Cookie", cookie)
+      .expect(403);
+    await request(app.getHttpServer())
+      .post("/api/auth/sign-in/email")
+      .set("Origin", origin)
+      .send(login)
+      .expect(200, { twoFactorRedirect: true });
+  } finally {
+    await local.close();
+  }
+});
 test("MFA por HTTP exige inscrição verificada e não aceita sessões antigas ou desafio inválido", async () => {
   const api = () => request(app.getHttpServer());
   const agent = request.agent(app.getHttpServer());
@@ -153,7 +234,8 @@ test("MFA por HTTP exige inscrição verificada e não aceita sessões antigas o
   try {
     await audit.connect();
     const events = await audit.query(
-      `SELECT action FROM authentication_audit WHERE action LIKE 'MFA_%' ORDER BY "occurredAt"`,
+      `SELECT action FROM authentication_audit WHERE action LIKE 'MFA_%' AND "userId"=(SELECT id FROM "user" WHERE email=$1) ORDER BY "occurredAt"`,
+      [login.email],
     );
     expect(events.rows.map((row) => row.action)).toEqual([
       "MFA_ENABLED",

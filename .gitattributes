@@ -1,0 +1,2 @@
+# Preserve canonical pg-boss construction SQL and its already-applied checksum.
+apps/api/prisma/migrations/202611210002_invitation_queue/migration.sql linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof

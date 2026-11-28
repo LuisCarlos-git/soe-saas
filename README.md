@@ -1,6 +1,6 @@
 # SOE SaaS
 
-SaaS de acompanhamento educacional em construção. As entregas atuais incluem diagnóstico sintético, login, sessão revogável e logout. Ainda não há autorização para dados escolares reais.
+SaaS de acompanhamento educacional em construção. Inclui diagnóstico sintético, login/MFA, escolas piloto e convites de profissionais por e-mail de desenvolvimento. Ainda não há autorização para dados escolares reais.
 
 ## Desenvolvimento
 
@@ -20,11 +20,19 @@ pnpm dev
 
 Abra http://127.0.0.1:43120/login. Contas locais sintéticas: ana@example.test ou bia@example.test, senha 12345678. `pnpm dev:seed` é restrito ao Compose de desenvolvimento, idempotente e reinicia o contador de tentativas local. Não há cadastro público. A API usa http://127.0.0.1:43121.
 
+## E-mail local
+
+Para iniciar somente a caixa de e-mail local, execute `pnpm mailpit` e abra
+http://127.0.0.1:43124. O SMTP escuta em `127.0.0.1:43125`; os e-mails ficam no
+Mailpit, sem entrega externa. Para parar, use `pnpm mailpit:stop`.
+Se o seu `.env` já existia, adicione as variáveis `INVITATION_*` do
+[exemplo](.env.example) e reinicie a API para habilitar os envios locais.
+
 ## Organização
 
 - `apps/web`: TanStack Start/React; erros de API apresentados pelo Sonner global com richColors.
 - `apps/api`: NestJS, domain, use-cases, repositories, factories, Prisma, migrations, CLIs e testes backend. Imports internos sem extensão; TypeScript/Nest + esbuild geram bundles ESM Node.
-- `packages`: somente contracts, api-client neutro, ui e configurações independentes compartilhadas.
+- `packages`: contracts, api-client neutro, ui, form, templates React Email e configurações independentes compartilhadas.
 
 ## Documentação
 
@@ -33,6 +41,7 @@ Abra http://127.0.0.1:43120/login. Contas locais sintéticas: ana@example.test o
 - [Estrutura da API e feedback de erros](docs/architecture/api-structure.md)
 - [Desenvolvimento local](docs/runbooks/local-foundation.md)
 - [Autenticação e demonstração temporária](docs/runbooks/authentication.md)
+- [Teste manual dos convites pela interface](docs/runbooks/invitations.md)
 - [Decisões de produto](docs/product/decisions.md)
 - [Glossário](GLOSSARY.md)
 

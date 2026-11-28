@@ -1,0 +1,6 @@
+interface:
+  display_name: "QA com Chrome e evidências"
+  short_description: "Teste UI e API e publique evidências nas issues"
+  default_prompt: "Use $qa-browser-evidence para planejar e executar o QA desta etapa pelo Chrome e publicar cenários, prints, GIFs e resultados na issue."
+policy:
+  allow_implicit_invocation: true

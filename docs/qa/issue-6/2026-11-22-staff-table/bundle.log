@@ -1,0 +1,2 @@
+$ node scripts/check-client-bundle.mjs
+Client bundle contains no server-only package, credential or upstream address.

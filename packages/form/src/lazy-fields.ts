@@ -1,4 +1,10 @@
 import { lazyField } from "./lazy-field";
+import type { CheckboxGroupFieldProps } from "./components/checkbox-group-field";
+export const CheckboxGroupField = lazyField<CheckboxGroupFieldProps>(() =>
+  import("./components/checkbox-group-field").then(
+    ({ CheckboxGroupField }) => ({ default: CheckboxGroupField }),
+  ),
+);
 import type { TextareaFieldProps } from "./components/textarea-field";
 import type { CheckboxFieldProps } from "./components/checkbox-field";
 import type { SwitchFieldProps } from "./components/switch-field";

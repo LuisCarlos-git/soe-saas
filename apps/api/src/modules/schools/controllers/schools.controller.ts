@@ -8,6 +8,7 @@ import {
   Query,
   Headers,
   Header,
+  HttpCode,
   Inject,
   UnauthorizedException,
   ForbiddenException,
@@ -29,11 +30,14 @@ import {
   schoolSchema,
   schoolAccessSchema,
   schoolListSchema,
+  managedSchoolsSchema,
+  managedSchoolsQuerySchema,
 } from "@soe/contracts";
 import { AUTHENTICATION } from "../../identity/authentication.token";
 import type { createAuthentication } from "../../identity/factories/authentication.factory";
 import { FindSchoolAccess } from "../use-cases/find-school-access.use-case";
 import { ListPilotSchools } from "../use-cases/list-pilot-schools.use-case";
+import { ListManagedSchools } from "../use-cases/list-managed-schools.use-case";
 import { ProvisionSchool } from "../use-cases/provision-school.use-case";
 import { ReadSchoolSettings } from "../use-cases/read-school-settings.use-case";
 import { UpdateSchoolSettings } from "../use-cases/update-school-settings.use-case";
@@ -48,6 +52,11 @@ class UpdateRequest extends createZodDto(updateSchoolSchema) {}
 class SchoolResponse extends createZodDto(schoolSchema) {}
 class AccessResponse extends createZodDto(schoolAccessSchema) {}
 class ListResponse extends createZodDto(schoolListSchema) {}
+class ManagedSchoolsResponse extends createZodDto(managedSchoolsSchema) {}
+class ManagedSchoolsQuery extends createZodDto(managedSchoolsQuerySchema) {}
+class PublicManagedSchoolsQuery extends createZodDto(
+  managedSchoolsQuerySchema.omit({ search: true }),
+) {}
 class SchoolParams extends createZodDto(
   z.object({ organizationId: z.uuid() }),
 ) {}
@@ -71,6 +80,8 @@ export class SchoolsController {
     private readonly auth: ReturnType<typeof createAuthentication>,
     @Inject(FindSchoolAccess) private readonly findAccess: FindSchoolAccess,
     @Inject(ListPilotSchools) private readonly listSchools: ListPilotSchools,
+    @Inject(ListManagedSchools)
+    private readonly listManaged: ListManagedSchools,
     @Inject(ProvisionSchool) private readonly provisionSchool: ProvisionSchool,
     @Inject(ReadSchoolSettings)
     private readonly readSettings: ReadSchoolSettings,
@@ -110,6 +121,29 @@ export class SchoolsController {
   async list(@Headers("cookie") cookie = "", @Query() query: ListQuery) {
     const actor = await this.actor(cookie);
     return this.run(() => this.listSchools.execute(actor, query.offset));
+  }
+  @Get("schools")
+  @ApiOkResponse({ type: ManagedSchoolsResponse })
+  @Header("Cache-Control", "no-store")
+  @ZodSerializerDto(ManagedSchoolsResponse)
+  async managed(
+    @Headers("cookie") cookie = "",
+    @Query() query: PublicManagedSchoolsQuery,
+  ) {
+    return this.searchManaged(cookie, { ...query, search: "" });
+  }
+  @Post("schools/search")
+  @HttpCode(200)
+  @ApiOkResponse({ type: ManagedSchoolsResponse })
+  @Header("Cache-Control", "no-store")
+  @ZodSerializerDto(ManagedSchoolsResponse)
+  async searchManaged(
+    @Headers("cookie") cookie = "",
+    @Body() query: ManagedSchoolsQuery,
+  ) {
+    return this.run(async () =>
+      this.listManaged.execute(await this.actor(cookie), query),
+    );
   }
   @Post("administration/schools")
   @ApiCreatedResponse({ type: SchoolResponse })

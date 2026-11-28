@@ -1,0 +1,43 @@
+[WebServer] (node:76849) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:77006) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:77005) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:77042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] [srvx] Unhandled error in fetch handler: [DOMException [AbortError]: This operation was aborted]
+Table density {
+  state: 'school-directory',
+  project: 'desktop',
+  rowHeight: 52.5,
+  paddingTop: '4px',
+  paddingBottom: '4px'
+}
+  ✘  1 [desktop] › apps/web/tests/invitations.spec.ts:344:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real (5.5s)
+
+
+  1) [desktop] › apps/web/tests/invitations.spec.ts:344:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      136 |             ),
+      137 |           ),
+    > 138 |       ).toBe(true);
+          |         ^
+      139 |       await page.screenshot({
+      140 |         path: `test-results/invitation-${name}-width-${width}.png`,
+      141 |         fullPage: false,
+        at capture (/Users/zenklub/Documents/www/SOE/apps/web/tests/invitations.spec.ts:138:9)
+        at /Users/zenklub/Documents/www/SOE/apps/web/tests/invitations.spec.ts:549:3
+
+    Error Context: test-results/web/invitations-QA-006-UI02-07-c6383-atário-aceita-o-e-mail-real-desktop/error-context.md
+
+  1 failed
+    [desktop] › apps/web/tests/invitations.spec.ts:344:1 › QA-006-UI02-07: admin convida pela modal e destinatário aceita o e-mail real 

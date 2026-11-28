@@ -1,0 +1,298 @@
+{
+  "issue": 6,
+  "run": "2026-11-22-directory-details",
+  "sourceBase": "3480c138cae15ae0d67202cabcd2477174b7fb9a",
+  "sourceFiles": {
+    "DESIGN.md": "8c14c0866fda4d9ac7879af4e6b35f9cfc5f3a9c187b31c0ca62ca3aa709659f",
+    "apps/api/src/modules/schools/controllers/schools.controller.ts": "bc0a53977a0d795ed1f157fda942836d592c33c08af07e2a1facb4fece340512",
+    "apps/api/src/modules/schools/domain/school.ts": "c6493e7cbbaa56bd5f0158eb1d3c14f087f3a49effc2c73470bb9dadb682fbcf",
+    "apps/api/src/modules/schools/infrastructure/prisma-school-unit-of-work.ts": "13cc2913cbb2d3f69207b0a43dbeaf335860d447c5f6b67da0091b331eb4084e",
+    "apps/api/src/modules/schools/repositories/school-unit-of-work.ts": "3408b0eb0fa24532f56c73fd6eba5478be2edf4d60f13dcf178eede6622891b1",
+    "apps/api/src/modules/schools/schools.module.ts": "fa3783a9ac4363e75a3354542ac7f67842e948a7f36d091f593bbb96f1f014bc",
+    "apps/api/src/modules/schools/use-cases/list-managed-schools.use-case.ts": "07cba7efce24ee3d6f99d4696d9f8f1c1ec75af7667387458e4fe5d8c49e9093",
+    "apps/api/tests/invitations-qa.test.mjs": "383859fe8bc7b1cea08f18c2f9c7498b416908241da51d9da0c88fb7a19663e7",
+    "apps/web/src/app/authenticated-shell.tsx": "45b1a2081db2a754ed53de8e8798bf8428b277d12ff63ac3d57cc3f985fe229e",
+    "apps/web/src/app/page-heading.ts": "faabe2cdb0d64ac52c6eb14bdbf08d35cca43ccfe1d62c5f6bb99837c2db14eb",
+    "apps/web/src/modules/identity/ui/account-page.tsx": "2b0cec0cef5e106bb1dd2e686267bd5467ecb2fe4033efe052eb7e4d2f98a67d",
+    "apps/web/src/modules/schools/data/queries.ts": "deb2e3dd03a712861b6921e865e2d415f86c2bb0bca0e9dfbbd5bc605d53e3b9",
+    "apps/web/src/modules/schools/index.ts": "5e2a5a9e4d9b627b48b319d81dbceff025e80b3e0fb74b506d37b7fc43bad276",
+    "apps/web/src/modules/schools/ui/school-directory-table.tsx": "096cac85b3a9d5dca03ba12b07ceef09e4dd6456dfc303a65c3ef1cb784c0274",
+    "apps/web/src/modules/schools/ui/school-directory.tsx": "d3e3127ec1f89dcb02586ccb425b79cf2db2e7c1725d76e491497815f81514af",
+    "apps/web/src/modules/schools/ui/school-settings-page.tsx": "8631b5794aa3a0af9e3f4efdeac5f6fc3b612ea6a3fd047e1b2d607b8a0fb9c9",
+    "apps/web/src/modules/schools/ui/schools-page.tsx": "8ac9d8345a75566ce990ffff74e641200190102921e40f32dd8e45ec371311ea",
+    "apps/web/src/modules/settings/ui/settings-layout.tsx": "ddf41ad20f704e5b60b5ba4a85a4496e76445fc9baab41e908af2593d47c04b9",
+    "apps/web/src/modules/staff/index.ts": "ad3ad1974414e3c9d1daf316d72c7133d6f87566ecee1b332565908fe229af79",
+    "apps/web/src/modules/staff/ui/invitation-actions.tsx": "f857d4769caaa95ccaad8efa0f9b68dff20fad09e5714432a3386c3f290a2d99",
+    "apps/web/src/modules/staff/ui/invitation-dialog.tsx": "5d9ce4eb7f384e31f261f1f3c72fa52322611183059b00aa9aff7c272fd68282",
+    "apps/web/src/modules/staff/ui/invitation-status.tsx": "8679a2af5ac433e14197d5a4664b808b4cb99add07386bc49dad66d9e31ddb7f",
+    "apps/web/src/modules/staff/ui/invitation-table.tsx": "8afb1ec6c3b70a5594b7cb454088f04cc0ebce96b4c2d7fce2e56dae30f5971b",
+    "apps/web/src/modules/staff/ui/staff-page.tsx": "39b82d49579247e882fcc028e765a2f51f656ea850ed43343afd1e47a365a21e",
+    "apps/web/src/routes/_authenticated.schools.professionals.tsx": "b80ff30c290c4a4298cccff3f6524d3717301baf9fa6991f3d49045f3587da08",
+    "apps/web/tests/invitations.spec.ts": "037c02b27ad36905adf814e98d52c8916cdc6a9121070e77b84068f10e3a7c13",
+    "apps/web/tests/route-motion.spec.ts": "a7164bd1f3f2c0e1fe57743be07921c0cbe580bd7d5ef250e1ddd10cfb149aa8",
+    "apps/web/tests/schools.spec.ts": "0dc7252d6c5bb4bd1f426b9af0ca9c5641f7b4f73a2291d6a2f3fe2971249e32",
+    "docs/architecture/ui-components.md": "6720e4025e8a44ffcf78dd0b117089e0e9bd1b84eddc23ad5e772f28c0dc9a48",
+    "packages/api-client/src/index.ts": "4af99c222a1a04e612cb6309b56d85fd0edb4071b9beb86c3323720863e328e5",
+    "packages/contracts/src/schools.ts": "f8b9c1e9e1bf1c2542eb9548a7ed7bea5478f33d439b1235b11f340aed9741c7",
+    "packages/ui/src/components/page-toolbar.tsx": "bf54a83476c93947a1cff976a263b0c027ccaf672ee3cde7296e0b07548e74d1"
+  },
+  "deletedSourceFiles": ["packages/ui/src/components/page-header.tsx"],
+  "artifacts": {
+    "api-build.log": {
+      "bytes": 480,
+      "sha256": "900fa043468f4adb842c0506569633b188fb2407edf31d1e0c45d00c07fc47c0"
+    },
+    "api-types.log": {
+      "bytes": 32,
+      "sha256": "38ac890c60e7f38d59ddfb410325cdfb5fca83c9411765c5481754e01c021630"
+    },
+    "architecture.log": {
+      "bytes": 738,
+      "sha256": "da8f82940e94429cad997564483307ea3bece6615b3af63442c450c152b4d56d"
+    },
+    "baseline.log": {
+      "bytes": 1773,
+      "sha256": "d4a72de716b00c52f02d86e19540c0e603f30bb6f805f345327224c567648a82"
+    },
+    "bundle.log": {
+      "bytes": 118,
+      "sha256": "33cc2df0db2b83cf9448644c67572d8c9eca4b3df5dd5d59898084d1474f5987"
+    },
+    "counts-evidence.log": {
+      "bytes": 1611,
+      "sha256": "bb4c13b97f6ba2b0d4fea838db8d75f4ffe07839091947bfcb031ced39b3a004"
+    },
+    "details-final.log": {
+      "bytes": 1914,
+      "sha256": "65a066755ae4d6b5df9a6434d3dc3dfec97cecac5c79a305da8c4f704a38178a"
+    },
+    "details-initial.log": {
+      "bytes": 56648,
+      "sha256": "9d428ffde93b2644ea5948aedfd331e5dc47ed6a616412f1b456961e2b36b0c4"
+    },
+    "format.log": {
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    "integration.log": {
+      "bytes": 418,
+      "sha256": "d3d8663747d290968d81e60b076311ed38f340ba8e7f4fdd433779f3f4637b76"
+    },
+    "invitation-active-tooltip-mobile.png": {
+      "bytes": 38306,
+      "sha256": "da0d8c8a07aa160230eec70a2f0d8684011ffedc35b9e9aa1662c57391dee023",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-details-menu-desktop.png": {
+      "bytes": 176579,
+      "sha256": "bac82c54119f7b536d6cb81da319b21eff02d8947bcb58c6e183024d4a8f1370",
+      "width": 1280,
+      "height": 1163
+    },
+    "invitation-details-menu-mobile.png": {
+      "bytes": 88098,
+      "sha256": "ff754d911a8cfae0e81244df23cd289fa1c3636773ec83a89ef9366ac6e75054",
+      "width": 360,
+      "height": 1339
+    },
+    "invitation-details-modal-actions-mobile.png": {
+      "bytes": 87697,
+      "sha256": "cfbaaf31738a6084a8cc3c4abdc73844f9cd1eb6c7d40755212ee79b9321cec5",
+      "width": 360,
+      "height": 1339
+    },
+    "invitation-details-modal-desktop.png": {
+      "bytes": 179169,
+      "sha256": "d99d52ba0bd03fdbea92d35c1f670b2da6a89bc35c7b861015713ef9db411e6b",
+      "width": 1280,
+      "height": 1163
+    },
+    "invitation-details-modal-mobile.png": {
+      "bytes": 89983,
+      "sha256": "aec92bae640e2132b1ceab9b1a7c2aef77942d5c6e2b0bfc2d34bca7fbffe4af",
+      "width": 360,
+      "height": 1339
+    },
+    "invitation-dialog-review-desktop.png": {
+      "bytes": 83576,
+      "sha256": "68215a0339fa1d339a2fd4919b26408c5ba40754e13d2f37cb6c682cecf244d2",
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-dialog-review-mobile.png": {
+      "bytes": 49069,
+      "sha256": "3538c40a7b154cea93d3a54772e7b47f7007a993372b0a40f94e57783847813f",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-dialog-success-desktop.png": {
+      "bytes": 90279,
+      "sha256": "faf7432dee02ce19d66306d7b5375c8a0e6346625a3ee10b88aebf80768196d1",
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-dialog-success-mobile.png": {
+      "bytes": 43644,
+      "sha256": "efd72805d6cb191926332e854cf9ad2fdcb86a4221ad4733bdbde6ef7208038f",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-my-schools-directory-desktop.png": {
+      "bytes": 68755,
+      "sha256": "f2dbdeca5dfd4f5acaa6ecf00c20558bbcc43b30652d67179c4ef92764cc395f",
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-my-schools-directory-mobile.png": {
+      "bytes": 32638,
+      "sha256": "3eda2f69b934eff15fdfc2f859b78b768b22bf62bb2b34cbc4789068b43d719f",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-pending-tooltip-desktop.png": {
+      "bytes": 85593,
+      "sha256": "ca2ebc4a386c38852f98a0d312e0ad4c9a03a418ac362d70e2ef2708ca36dcb5",
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-pending-tooltip-mobile.png": {
+      "bytes": 42083,
+      "sha256": "3a1eeb26f3a568606cc5481dbfb18fb3a1841c2b90bb048130ccb1dae0a6d76a",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-school-directory-counts-mobile.png": {
+      "bytes": 30246,
+      "sha256": "ae63e35af8cd9ca86aa9b7396adf8f53850a9e7e376d143b22178339218b535b",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-school-directory-desktop.png": {
+      "bytes": 69498,
+      "sha256": "eb7765a8aee271ac4331fe32e18414e513709bc1fd9fe840e710fd4a0079b140",
+      "width": 1280,
+      "height": 720
+    },
+    "invitation-school-directory-mobile.png": {
+      "bytes": 32390,
+      "sha256": "583c1ff0b08050a96561dfd74fb9d8e25c86e1b512af69bcdff00a9380a42947",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-school-directory-no-results-mobile.png": {
+      "bytes": 28080,
+      "sha256": "603ee6cea9189cc967dd7fe545b9527e9600d4ab619d90fc1dc59805174a3526",
+      "width": 360,
+      "height": 780
+    },
+    "invitation-table-width-768-desktop.png": {
+      "bytes": 121866,
+      "sha256": "76d35c1beb2224e8a4b40f75302a295f6a9c0337d0a15200aef90cd4c45f0c53",
+      "width": 768,
+      "height": 1425
+    },
+    "lint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "refinement-lint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "report.md": {
+      "bytes": 13320,
+      "sha256": "3f50c207758de492a5cadef9b86b090d5570953deae5641256ca26f709764328"
+    },
+    "school-settings-mobile.png": {
+      "bytes": 68193,
+      "sha256": "1736a473227a3234353884636a1b86176db94d1d675d5f543393c3552caf5685",
+      "width": 360,
+      "height": 1134
+    },
+    "settings-profile-desktop.png": {
+      "bytes": 50967,
+      "sha256": "89d54dae25618cdda59a484afd966bd5992ee06b2fcb29dcf717899c419db981",
+      "width": 1280,
+      "height": 720
+    },
+    "surface-final.log": {
+      "bytes": 3397,
+      "sha256": "517bb61a0e03e6f34d40792bc4f044b509876bb5ea08ae4769a8f2e7874883c9"
+    },
+    "test-lint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ui-types.log": {
+      "bytes": 32,
+      "sha256": "38ac890c60e7f38d59ddfb410325cdfb5fca83c9411765c5481754e01c021630"
+    },
+    "unit.log": {
+      "bytes": 181,
+      "sha256": "12fb68fe8e3d77c13d75359c0169c93a1c04d58c8b71dc47f46a94c0627e813f"
+    },
+    "web-all.log": {
+      "bytes": 5655,
+      "sha256": "346d1942e908543bed2e1aac28c3b9b95b62ab532e85c4e7d4b5b5375a7b779b"
+    },
+    "web-build.log": {
+      "bytes": 11218,
+      "sha256": "080038374e2dbb4e1b5bc24e2010727c610ce76b7a17a1f32006424371f27ac9"
+    },
+    "web-initial.log": {
+      "bytes": 10517,
+      "sha256": "1144cb3d8ef689599bb81071593ef3d54d79bd5db47de1376f37ada859db75ab"
+    },
+    "web-tooltip-initial.log": {
+      "bytes": 7373,
+      "sha256": "64a6602d5620fe6f6562e705ffa42d1d1b5b002768d367f47b381c9283819b9c"
+    },
+    "web-types.log": {
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    "x-diagnosis.log": {
+      "bytes": 2157,
+      "sha256": "afbda1534c040853388ff2e5da826d223ca07cd3bd8181b1962f071cb6fffade"
+    },
+    "x-red.log": {
+      "bytes": 1947,
+      "sha256": "5460fae533e2b401e5250d5b7931060523e3f590be1e576b0aa85bb57e9a1cde"
+    }
+  },
+  "checks": {
+    "webRegression": {
+      "exitCode": 0,
+      "passed": 26,
+      "note": "before route-only module composition adjustment"
+    },
+    "finalAffectedSurfaces": {
+      "exitCode": 0,
+      "passed": 12
+    },
+    "finalCountsJourneys": {
+      "exitCode": 0,
+      "passed": 2,
+      "note": "after compacting numeric columns; desktop/mobile"
+    },
+    "httpPostgres": {
+      "exitCode": 0,
+      "passed": 17
+    },
+    "unit": {
+      "exitCode": 0,
+      "passed": 33
+    },
+    "build": "passed",
+    "types": "passed",
+    "lint": "passed",
+    "format": "passed",
+    "architecture": "passed",
+    "bundle": "passed"
+  },
+  "nativeBrowser": "blocked: no connected Browser/Chrome tool exposed",
+  "gif": "pending",
+  "evidenceOrigin": "complementary Playwright with real local API/PostgreSQL/Mailpit",
+  "visualReview": "21 PNGs opened; independent reviewer approved final desktop/mobile and numeric columns"
+}
