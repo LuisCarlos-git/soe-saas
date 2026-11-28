@@ -1,8 +1,5 @@
 {
-  "issues": [
-    4,
-    6
-  ],
+  "issues": [4, 6],
   "pr": 46,
   "sourceCommit": "334bf9c80b12746fd7c91ae6839a413ce2278e99",
   "baselineCommit": "b00f319f400096dd0e3f423d186b6d58d62b6c4a",
@@ -70,8 +67,8 @@
       "sha256": "960f1eb37ac4d28430af9bef2c98f32333254854ffde619330f53d373ce0f632"
     },
     "live-check.json": {
-      "bytes": 252,
-      "sha256": "28a622ba277e569ef611d8aba618efd4e053951f1603f462062ea073380a98ec"
+      "bytes": 253,
+      "sha256": "45f039559e7ca6695a6cbcad3c740e7a6bcac517beedfef35f0602c692b765e2"
     },
     "live-check.log": {
       "bytes": 227,
