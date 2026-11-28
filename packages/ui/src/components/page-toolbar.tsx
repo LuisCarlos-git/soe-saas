@@ -23,7 +23,7 @@ export function PageToolbar({
         </p>
       )}
       {actions && (
-        <div className="ml-auto flex shrink-0 items-center gap-2">
+        <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2">
           {actions}
         </div>
       )}
