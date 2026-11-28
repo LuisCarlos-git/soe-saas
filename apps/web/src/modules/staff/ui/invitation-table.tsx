@@ -54,7 +54,7 @@ export function InvitationTable({
             <p className="break-words font-medium text-ink">
               {row.original.name}
             </p>
-            <p className="break-all text-muted-foreground">
+            <p className="[overflow-wrap:anywhere] text-muted-foreground">
               {row.original.email}
             </p>
           </div>
