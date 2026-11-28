@@ -141,6 +141,36 @@ async function capture(page: Page, name: string) {
               clientWidth: element.clientWidth,
             };
           }),
+          overflowElements: Array.from(body.querySelectorAll<HTMLElement>("*"))
+            .map((element) => {
+              const rect = element.getBoundingClientRect();
+              const style = getComputedStyle(element);
+              return {
+                tag: element.tagName,
+                className: element.className,
+                left: rect.left,
+                right: rect.right,
+                width: rect.width,
+                scrollWidth: element.scrollWidth,
+                clientWidth: element.clientWidth,
+                overflowX: style.overflowX,
+                display: style.display,
+              };
+            })
+            .filter(
+              (element) =>
+                element.right > window.innerWidth + 0.5 ||
+                element.left < -0.5 ||
+                element.scrollWidth > element.clientWidth + 1,
+            )
+            .sort(
+              (left, right) =>
+                right.right - left.right ||
+                right.scrollWidth -
+                  right.clientWidth -
+                  (left.scrollWidth - left.clientWidth),
+            )
+            .slice(0, 12),
         };
       });
       expect(
